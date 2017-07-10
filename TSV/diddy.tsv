@@ -1,0 +1,37 @@
+2	16	spotdodgeActive
+26	spotdodgeFAF
+4	15	frollActive
+28	frollFAF
+4	15	brollActive
+28	brollFAF
+2	26	airdodgeActive
+32	airdodgeFAF
+1	12	ledgejumpActive
+13	ledgejumpFAF
+1	26	ledgerollActive
+50	ledgerollFAF
+1	33	ledgegetupActive
+35	ledgegetupFAF
+1	20	ledgeattackActive
+55	ledgeattackFAF
+4	jumpsquat
+2	lightLanding
+4	hardLanding
+13	landingAirN
+26	landingAirF
+12	landingAirB
+21	landingAirHi
+28	landingAirLw
+0	landingAirZ
+1	22	getupFActive
+30	getupFFAF
+1	22	getupBActive
+30	getupBFAF
+1	22	getupfrollFActive
+36	getupfrollFFAF
+1	22	getupfrollBActive
+36	getupfrollBFAF
+1	22	getupbrollFActive
+36	getupbrollFFAF
+1	22	getupbrollBActive
+36	getupbrollBFAF

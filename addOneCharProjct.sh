@@ -21,15 +21,18 @@ do
     for f in $FILES
     do
 	fbasename=$(basename $f)
+	bodyWeaponName=${i:${#dbasename}:-5}
 	#if [ ${i:${#dbasename}:-5} == "body"  ] && [ ${fbasename:0:2} == "0x" ] && [ $fbasename != "0xE0D78C1E.acm"  ]
 	#if [ $fbasename == "Run.acm"  ]
-	#then
-	#    mv $f ${i::-5}Output/animcmd/$(basename $f)
-	#else
-	echo "Processing file $f for $(basename $d)..."
+	if [ $(python3 stretchChecker.py $dbasename $bodyWeaponName $fbasename) == "blacklisted" ]
+	then
+	    echo "Moving blacklisted file $f for $(basename $d)..."
+	    mv $f ${i::-5}Output/animcmd/$(basename $f)
+	else
+	    echo "Processing file $f for $(basename $d)..."
 	    #mv $f ${i::-5}Output/animcmd/$(basename $f)
-	python3 gameToEffectScript.py $f > ${i::-5}Output/animcmd/$(basename $f)
-	#fi
+	    python3 gameToEffectScript.py $f > ${i::-5}Output/animcmd/$(basename $f)
+	fi
     done
       
     ./FITC.exe -o AllFighterDataCompiled/${i::-5}Compiled ${i::-5}Output/fighter.mlist

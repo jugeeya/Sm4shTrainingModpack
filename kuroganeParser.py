@@ -286,6 +286,29 @@ def main():
         print(getupbrollFFAF, "getupbrollFFAF", sep="\t")
         print(getupbrollBActive[0], getupbrollBActive[1], "getupbrollBActive", sep="\t")
         print(getupbrollBFAF, "getupbrollBFAF", sep="\t")
-                
+
+        passiveActive = ['1', '20']
+        passiveFAF = '27'
+        passiveFActive = ['1', '20']
+        passiveFFAF = '41'
+        passiveBActive = ['1', '20']
+        passiveBFAF = '41'
+        if (charName in {"duckhunt","pacman"}):
+            passiveFAF = '26'
+            passiveFFAF = '40'
+            passiveBFAF = '40'
+        if (charName == "rockman"):
+            passiveFFAF = '40'
+            passiveBFAF = '40'
+        if (charName == "littlemac"):
+            passiveBFAF = '40'
+
+        print(passiveActive[0], passiveActive[1], "passiveActive", sep="\t")
+        print(passiveFAF, "passiveFAF", sep="\t")
+        print(passiveFActive[0], passiveFActive[1], "getupBActive", sep="\t")
+        print(passiveFFAF, "passiveFFAF", sep="\t")
+        print(passiveBActive[0], passiveBActive[1], "passiveBActive", sep="\t")
+        print(passiveBFAF, "passiveBFAF", sep="\t")
+
 main()
 

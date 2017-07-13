@@ -35,3 +35,9 @@
 36	getupbrollFFAF
 1	20	getupbrollBActive
 36	getupbrollBFAF
+1	20	passiveActive
+27	passiveFAF
+1	20	getupBActive
+41	passiveFFAF
+1	20	passiveBActive
+41	passiveBFAF

@@ -2,8 +2,8 @@ import sys
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
-gameChars = "bayonetta,captain,cloud,dedede,diddy,donkey,duckhunt,falco,fox,gamewatch,ganon,gekkouga,ike,kamui,kirby,koopa,koopajr,link,littlemac,lizardon,lucario,lucas,lucina,luigi,mario,mariod,marth,metaknight,mewtwo,murabito,ness,pacman,palutena,peach,pikachu,pikmin,pit,pitb,purin,reflet,robot,rockman,rosetta,roy,ryu,samus,sheik,shulk,sonic,szerosuit,toonlink,wario,wiifit,yoshi,zelda".split(",")
-kuroChars = "Bayonetta,Captain%20Falcon,Cloud,King%20Dedede,Diddy%20Kong,Donkey%20Kong,Duck%20Hunt,Falco,Fox,Game%20And%20Watch,Ganondorf,Greninja,Ike,Corrin,Kirby,Bowser,Bowser%20Jr,Link,Little%20Mac,Charizard,Lucario,Lucas,Lucina,Luigi,Mario,Dr.%20Mario,Marth,Meta%20Knight,Mewtwo,Villager,Ness,PAC-MAN,Palutena,Peach,Pikachu,Olimar,Pit,Dark%20Pit,Jigglypuff,Robin,R.O.B,Mega%20Man,Rosalina%20And%20Luma,Roy,Ryu,Samus,Sheik,Shulk,Sonic,Zero%20Suit%20Samus,Toon%20Link,Wario,Wii%20Fit%20Trainer,Yoshi,Zelda".split(",")
+gameChars = "bayonetta,captain,cloud,dedede,diddy,donkey,duckhunt,falco,fox,gamewatch,ganon,gekkouga,ike,kamui,kirby,koopa,koopajr,link,littlemac,lizardon,lucario,lucas,lucina,luigi,mario,mariod,marth,metaknight,mewtwo,murabito,ness,pacman,palutena,peach,pikachu,pikmin,pit,pitb,purin,reflet,robot,rockman,rosetta,roy,ryu,samus,sheik,shulk,sonic,szerosuit,toonlink,wario,wiifit,yoshi,zelda,miiswordsman,miifighter,miigunner".split(",")
+kuroChars = "Bayonetta,Captain%20Falcon,Cloud,King%20Dedede,Diddy%20Kong,Donkey%20Kong,Duck%20Hunt,Falco,Fox,Game%20And%20Watch,Ganondorf,Greninja,Ike,Corrin,Kirby,Bowser,Bowser%20Jr,Link,Little%20Mac,Charizard,Lucario,Lucas,Lucina,Luigi,Mario,Dr.%20Mario,Marth,Meta%20Knight,Mewtwo,Villager,Ness,PAC-MAN,Palutena,Peach,Pikachu,Olimar,Pit,Dark%20Pit,Jigglypuff,Robin,R.O.B,Mega%20Man,Rosalina%20And%20Luma,Roy,Ryu,Samus,Sheik,Shulk,Sonic,Zero%20Suit%20Samus,Toon%20Link,Wario,Wii%20Fit%20Trainer,Yoshi,Zelda,Mii%20Swordfighter,Mii%20Brawler,Mii%20Gunner".split(",")
 
 gameToKuro = {}
 for i in range(len(gameChars)):
@@ -30,6 +30,8 @@ getupbrollFActive = []
 getupbrollFFAF = ""
 getupbrollBActive = []
 getupbrollBFAF = ""
+jabresetUActive = []
+jabresetDActive = []
     
 def getLedgeData(option):
     global ledgejumpActive, ledgejumpFAF, ledgerollActive, ledgerollFAF, ledgegetupActive, ledgegetupFAF, ledgeattackActive, ledgeattackFAF
@@ -111,10 +113,10 @@ def getGetupData(getupOption):
     elif (getupOption in {"getupfrollF", "getupfrollB"}):
         doc = urlopen("http://kuroganehammer.com/Smash4/GetUpForwardRoll")
         soup = BeautifulSoup(doc,"lxml")
-        dodgeData = []
         tables = soup.find_all('table', id="AutoNumber1")
         tableNum = 0
         for table in tables:
+            dodgeData = []
             tableNum = tableNum + 1
             table_body = table.find('tbody')
             rows = table_body.find_all('tr')
@@ -145,10 +147,10 @@ def getGetupData(getupOption):
     elif (getupOption in {"getupbrollF", "getupbrollB"}):
         doc = urlopen("http://kuroganehammer.com/Smash4/GetUpBackRoll")
         soup = BeautifulSoup(doc,"lxml")
-        dodgeData = []
         tables = soup.find_all('table', id="AutoNumber1")
         tableNum = 0
         for table in tables:
+            dodgeData = []
             tableNum = tableNum + 1
             table_body = table.find('tbody')
             rows = table_body.find_all('tr')
@@ -174,7 +176,38 @@ def getGetupData(getupOption):
                     getupbrollBFAF = '36'
                 if (tableNum == 2 and notEveryoneElse2 == False):
                     getupbrollFActive = ['1', '22']
-                    getupbrollFFAF = '36'                    
+                    getupbrollFFAF = '36'
+
+def getJabresetData():
+    global jabresetUActive, jabresetDActive
+    doc = urlopen("http://kuroganehammer.com/Smash4/JabLock")
+    soup = BeautifulSoup(doc,"lxml")
+    tables = soup.find_all('table', id="AutoNumber1")
+    tableNum = 0
+    for table in tables:
+        dodgeData = []
+        tableNum = tableNum + 1
+        table_body = table.find('tbody')
+        rows = table_body.find_all('tr')
+        notEveryoneElse1 = False
+        notEveryoneElse2 = False
+        
+        for row in rows:
+            cols = row.find_all('td')
+            cols = [ele.text.strip() for ele in cols]
+            dodgeData.append([ele for ele in cols if ele])
+            for d in dodgeData:
+                if (d[1].replace(" ", "%20").lower() == kuroName.lower() or (kuroName == "Duck%20Hunt" and d[1] =="Duck Hunt Dog") or (kuroName == "King%20Dedede" and d[1] == "Dedede") or (kuroName == "Diddy%20Kong" and d[1] == "Diddy") or (kuroName == "Game%20And%20Watch" and d[1] == "Game & Watch") or (kuroName == "R.O.B" and d[1] == "R.O.B.") or (kuroName == "Rosalina%20And%20Luma" and d[1] == "Rosalina") or (kuroName == "Bowser%20Jr" and d[1] == "Bowser Jr")):
+                    if (tableNum == 1):
+                        jabresetUActive = ['1', d[2]] 
+                        notEveryoneElse1 = True
+                    if (tableNum == 2):
+                        jabresetDActive = ['1', d[2]] 
+                        notEveryoneElse2 = True
+            if (tableNum == 1 and notEveryoneElse1 == False):
+                jabresetUActive = ['1', '26']
+            if (tableNum == 2 and notEveryoneElse2 == False):
+                jabresetDActive = ['1', '26']
                         
 def main():
         if (len(sys.argv) != 2):
@@ -309,6 +342,11 @@ def main():
         print(passiveFFAF, "passiveFFAF", sep="\t")
         print(passiveBActive[0], passiveBActive[1], "passiveBActive", sep="\t")
         print(passiveBFAF, "passiveBFAF", sep="\t")
+
+        getJabresetData()
+
+        print(jabresetUActive[0], jabresetUActive[1], "jabresetUActive", sep="\t")
+        print(jabresetDActive[0], jabresetDActive[1], "jabresetDActive", sep="\t")
 
 main()
 

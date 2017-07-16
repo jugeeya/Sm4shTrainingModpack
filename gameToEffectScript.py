@@ -60,30 +60,14 @@ def didHandleEdgeCase(char, move):
     if char == "cloud":
         if move == "0xF37FC0B3.acm":  # SpecialHiFall
             addEffect(asynchronousTimer.format('1'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x41000000', '0x3E428F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x40D55555', '0x3E428F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x40AAAAAB', '0x3E428F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x40800000', '0x3E428F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x40933333', '0x41100000', '0x3EC28F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x408EEEEF', '0x40D55555', '0x3EC28F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x408AAAAB', '0x408AAAAB', '0x3EC28F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
-            addEffect(
-                extendedHitboxNew.format('0x0', '0x0', '0x40866666', '0x40000000', '0x3EC28F5C', '0x437E0000', '0x0',
-                                         '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x41000000', '0x3E428F5C', '0x437E0000', '0x0', '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x40D55555', '0x3E428F5C', '0x437E0000', '0x0', '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x40AAAAAB', '0x3E428F5C', '0x437E0000', '0x0', '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40000000', '0x40800000', '0x3E428F5C', '0x437E0000', '0x0', '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40933333', '0x41100000', '0x3EC28F5C', '0x437E0000', '0x0', '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x408EEEEF', '0x40D55555', '0x3EC28F5C', '0x437E0000', '0x0', '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x408AAAAB', '0x408AAAAB', '0x3EC28F5C', '0x437E0000', '0x0', '0x437E0000'))
+            addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40866666', '0x40000000', '0x3EC28F5C', '0x437E0000', '0x0', '0x437E0000'))
             addEffect(scriptEnd)
             return True
     if char == "sonic":

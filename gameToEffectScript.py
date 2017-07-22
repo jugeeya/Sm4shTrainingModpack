@@ -32,6 +32,7 @@ setLoop = "Set_Loop(Iterations={}){{"
 ifCompare = "If_Compare(Variable={}, Method={}, Variable2={})"
 ifCompare2 = "If_Compare2(Variable={}, Method={}, Value={})"
 ifBitIsSet = "If_Bit_is_Set(Variable={})"
+isExistArticle = "IS_EXIST_ARTICLE(Unknown={})"
 someCompare = "unk_477705C2(unknown={}, unknown={}, unknown={})"
 someCompare2 = "unk_2DA7E2B6(unknown={}, unknown={}, unknown={})"
 TRUEComp = "TRUE(Unknown={}){{"
@@ -45,11 +46,16 @@ testHitbox = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unk
 testTerminate = "Terminate_Graphic_Effect(Graphic={}, unknown={}, unknown={})"
 
 effectLines = "\tEffect()\n\t{\r\n"
-# effectString: [hitboxID, isDeleted]
+
+# effectStringDict functions as follows:
+# effectString: [hitboxID, isDeleted, hitboxOrGrabbox]
+#                ID,        [-1,0,1]    [-1,0,1]
 effectStringDict = OrderedDict()
 
-condList = []
-hasParsed = False
+falseVals = []
+falseIndex = 0
+trueVals = []
+trueIndex = 0
 
 inLoop = False
 inCompare = 0
@@ -70,30 +76,215 @@ def didHandleEdgeCase(char, move):
             addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40866666', '0x40000000', '0x3EC28F5C', '0x437E0000', '0x0', '0x437E0000'))
             addEffect(scriptEnd)
             return True
-    if char == "sonic":
-        if  move == "SpecialHi.acm":
-            addDodgeEffects2(['5', '13'])
-            removeLastEffect(scriptEnd)
-            addEffect(asynchronousTimer.format('16'))
-            addEffect(extsubroutine.format('0x3392B468'))
+    if char == "kamui":
+        if move in {"AttackS4.acm", "AttackS4Hi.acm", "AttackS4Lw.acm"}:
             addEffect(scriptEnd)
+            return True
+    if char == "ryu":
+        if move == "SpecialHi.acm":
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x16, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x15, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)")
+            addEffect("Asynchronous_Timer(Frames=3)")
+            addEffect("Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)")
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(terminateOverlays)
+            addEffect("unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)")
+            addEffect("TRUE(Unknown=0x10){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x41F55555, unknown=0x0)")
+            addEffect("}")
+            addEffect("FALSE(Unknown=0x1a){")
+            addEffect("	unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)")
+            addEffect("	TRUE(Unknown=0x16){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x41755555, unknown=0x0)")
+            addEffect("	}")
+            addEffect("	FALSE(Unknown=0x14){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("	}")
+            addEffect("}")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)")
+            addEffect("TRUE(Unknown=0x16){")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)")
+            addEffect("}")
+            addEffect("FALSE(Unknown=0x1a){")
+            addEffect("	unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)")
+            addEffect("	TRUE(Unknown=0x16){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)")
+            addEffect("	}")
+            addEffect("	FALSE(Unknown=0x14){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)")
+            addEffect("	}")
+            addEffect("}")
+            addEffect("Asynchronous_Timer(Frames=9)")
+            addEffect("unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)")
+            addEffect("TRUE(Unknown=0x16){")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("}")
+            addEffect("FALSE(Unknown=0x1a){")
+            addEffect("	unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)")
+            addEffect("	TRUE(Unknown=0x16){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("	}")
+            addEffect("	FALSE(Unknown=0x14){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("	}")
+            addEffect("}")
+            addEffect("Asynchronous_Timer(Frames=15)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000031, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=20)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "0x73CD97DF.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect("Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x16, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x15, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)")
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect("unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)")
+            addEffect("TRUE(Unknown=0x10){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x41F55555, unknown=0x0)")
+            addEffect("}")
+            addEffect("FALSE(Unknown=0x1a){")
+            addEffect("	unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)")
+            addEffect("	TRUE(Unknown=0x16){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x41755555, unknown=0x0)")
+            addEffect("	}")
+            addEffect("	FALSE(Unknown=0x14){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("	}")
+            addEffect("}")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(terminateOverlays)
+            addEffect("unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)")
+            addEffect("TRUE(Unknown=0x16){")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)")
+            addEffect("}")
+            addEffect("FALSE(Unknown=0x1a){")
+            addEffect("	unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)")
+            addEffect("	TRUE(Unknown=0x16){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)")
+            addEffect("	}")
+            addEffect("	FALSE(Unknown=0x14){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)")
+            addEffect("	}")
+            addEffect("}")
+            addEffect("Asynchronous_Timer(Frames=9)")
+            addEffect("unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)")
+            addEffect("TRUE(Unknown=0x16){")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("}")
+            addEffect("FALSE(Unknown=0x1a){")
+            addEffect("	unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)")
+            addEffect("	TRUE(Unknown=0x16){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("	}")
+            addEffect("	FALSE(Unknown=0x14){")
+            addEffect("		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("	}")
+            addEffect("}")
+            addEffect("Asynchronous_Timer(Frames=15)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000031, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=20)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
             return True
     return False
 
-def parseForConditionals(lines):
-    global condList, hasParsed
-    if hasParsed:
-        return
-    inEffect = False
-    for i in lines:
-        if i == "\tEffect()\n\t{\r":
-            inEffect = True
-        if inEffect:
-            if i[:len("\t\tTRUE")] == "\t\tTRUE" or i[:len("\t\tFALSE")] == "\t\tFALSE":
-                condList.append(getParamList(i)[0])
-            if i == "\t}\n\r":
-                inEffect = False
-    hasParsed = True
+def editLastTrue(value):
+    global effectLines, trueIndex
+    if value == 2:
+        removeLastEffectString()
+        removeLastEffectString()
+        removeLastEffectString()
+        trueIndex = trueIndex - 1
+    else:
+        i = effectLines.rfind("TRUE")
+        trueOnwards = effectLines[i:]
+        effectLines = effectLines[:i] + TRUEComp.format(hex(value)) + effectLines[i + trueOnwards.find(")")+2:]
+
+def falseExists():
+    for e in effectStringDict:
+        if e[:len("FALSE")] == "FALSE":
+            return True
+    return False
+
+def parseUntilLastTrue(trueNum):
+    trueVals[trueNum] = 0
+    allEffectLines = effectLines.split("\r\n")[:-1]
+    indices = []
+    for i in range(len(allEffectLines)):
+        allEffectLines[i] = removeBeginningWhitespace(allEffectLines[i])
+        if allEffectLines[i][:len("TRUE")] == "TRUE":
+            indices.append(i)
+    for q in range(indices[trueNum],len(allEffectLines)-1):
+        thisParamList = getParamList(allEffectLines[q])
+        if thisParamList[0] != "":
+            trueVals[trueNum] = trueVals[trueNum] + len(thisParamList) + 1
+        else:
+            trueVals[trueNum] = trueVals[trueNum] + len(thisParamList)
+    if falseExists():
+        trueVals[trueNum] = trueVals[trueNum] + 2
+
+def editLastFalse(value):
+    global effectLines
+    i = effectLines.rfind("FALSE")
+    falseOnwards = effectLines[i:]
+    effectLines = effectLines[:i] + FALSEComp.format(hex(value)) + effectLines[i + falseOnwards.find(")")+2:]
+
+def parseUntilLastFalse(falseNum):
+    falseVals[falseNum] = 0
+    allEffectLines = effectLines.split("\r\n")[:-1]
+    indices = []
+    for i in range(len(allEffectLines)):
+        allEffectLines[i] = removeBeginningWhitespace(allEffectLines[i])
+        if allEffectLines[i][:len("FALSE")] == "FALSE":
+            indices.append(i)
+    for q in range(indices[falseNum],len(allEffectLines)-1):
+        thisParamList = getParamList(allEffectLines[q])
+        if thisParamList[0] != "":
+            falseVals[falseNum] = falseVals[falseNum] + len(thisParamList) + 1
+        else:
+            falseVals[falseNum] = falseVals[falseNum] + len(thisParamList)
+        # print(allEffectLines[q], len(thisParamList), falseVals[falseNum])
 
 def float_to_hex(f):
     return hex(struct.unpack('<I', struct.pack('<f', f))[0])
@@ -108,30 +299,56 @@ def getParamList(line):
     paramList = [x[x.find("=") + 1:] for x in fullParamList]
     return paramList
 
+def addEffectLines(fulltext):
+    lines = fulltext.split("\r\n")
+    for i in lines:
+        addEffect(i[2:])
+
 def addEffect(effectString):
-    addEffectID(effectString, -1)
+    addEffectID(effectString, -1, -1)
 
-def markAllHitboxesDeleted():
+def markDeleted(hitboxID, hitboxOrGrabbox):
+    numReadded = 0
     for e in effectStringDict:
-        effectStringDict[e][1] = 1
+        currlist = effectStringDict[e]
+        if currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:
+            if currlist[0] != hitboxID:
+                # addEffectID(e, currlist[0], currlist[2])
+                addEffect(e)
+                numReadded = numReadded + 1
+    i = 0
+    for e in effectStringDict: # mark all except just added ones
+        if i == len(effectStringDict) - numReadded - 1:
+            break
+        currlist = effectStringDict[e]
+        if currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:
+            if currlist[0] == hitboxID:
+                currlist[1] = 1
+        i = i + 1
 
-def addEffectID(effectString, hitboxID):
+def markAllDeleted(hitboxOrGrabbox):
+    for e in effectStringDict:
+        currlist = effectStringDict[e]
+        if currlist[2] == hitboxOrGrabbox:
+            effectStringDict[e][1] = 1
+
+def addEffectID(effectString, hitboxID, hitboxOrGrabbox):
     global effectLines, effectStringDict
     if hitboxID != -1:
         for e in effectStringDict:
             currlist = effectStringDict[e]
-            if hitboxID == currlist[0] and currlist[1] == 0:
+            if hitboxID == currlist[0] and currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:  # equal ID, not deleted, hitbox/grabbox
                 addEffect(terminateGraphic13)
-                markAllHitboxesDeleted()
+                markAllDeleted(hitboxOrGrabbox)
                 break
     effectLines = effectLines + "\t\t"
     tabs = inCompare
     if inLoop:
-        tabs = tabs + 1
+       tabs = tabs + 1
     for q in range(tabs):
         effectLines = effectLines + "    "
     effectLines = effectLines + effectString + "\r\n"
-    effectStringDict[effectString] = [hitboxID, 0]
+    effectStringDict[effectString] = [hitboxID, 0, hitboxOrGrabbox]
 
 def getLastEffectString():
     allEffectLines = effectLines.split("\r\n")
@@ -144,6 +361,13 @@ def removeBeginningWhitespace(string):
             removed = string[q:]
             break
     return removed
+
+def removeLastEffectString():
+    global effectLines
+    tabIndex = effectLines.rfind("\t")
+    while (effectLines[tabIndex] == "\t"):
+        tabIndex = tabIndex - 1
+    effectLines = effectLines[:tabIndex+1]
 
 def removeLastEffect(effectString):
     global effectLines
@@ -166,20 +390,20 @@ def getDamageRGB(damageStr, angleStr):
     damage = float(damageStr)
     angle = int(angleStr, 16)
     if 240 <= angle <= 300:
-        red = getHexFloat(254)
+        red = getHexFloat(255)
         green = getHexFloat(0)
-        blue = getHexFloat(254)
+        blue = getHexFloat(230)
     elif damage == 0:
         red = getHexFloat(255)
         green = getHexFloat(255)
         blue = getHexFloat(255)
     elif damage > 15:
-        red = getHexFloat(254)
+        red = getHexFloat(255)
         green = getHexFloat(0)
         blue = getHexFloat(0)
     else:
-        red = getHexFloat(254)
-        green = getHexFloat(254 - (damage * 254 / 15))
+        red = getHexFloat(255)
+        green = getHexFloat(230 - (damage * 230 / 15))
         blue = getHexFloat(0)
 
     return red, green, blue
@@ -223,14 +447,18 @@ def main():
         lines = f.readlines()
     lines = [x.strip('\n') for x in lines]
 
-    global effectLines, inLoop, inCompare
+    global effectLines, inLoop, inCompare, falseVals, trueVals, falseIndex, trueIndex
     inMain = False
     shouldExitLoop = False
     gotoNum = 0
     offsetBegin = 0
     offsetEnd = 0
     prevFrame = 0
-    condIndex = 0
+    inFalse = 0
+    inTrue = 0
+
+    loopNum = 0
+    loopLines = 0
 
     tsvLines = []
 
@@ -385,6 +613,16 @@ def main():
                     if inLoop:
                         inLoop = False
                         addEffect(endLoopOrCompare)
+                    if inFalse:
+                        parseUntilLastFalse(falseIndex - 1)
+                        editLastFalse(falseVals[falseIndex-1])
+                        inFalse = inFalse - 1
+                        # falseIndex = falseIndex - 1
+                    if inTrue:
+                        parseUntilLastTrue(trueIndex - 1)
+                        editLastTrue(trueVals[trueIndex-1])
+                        inTrue = inTrue - 1
+                        # trueIndex = trueIndex - 1
 
                 compare = "If_Compare"
                 compare2 = "If_Compare2"
@@ -395,6 +633,9 @@ def main():
                 ifBitIsSetStr = "If_Bit_is_Set"
                 if i[:len(ifBitIsSetStr)] == ifBitIsSetStr:
                     addEffect(ifBitIsSet.format(paramList[0]))
+                isExistArticleStr = "IS_EXIST_ARTICLE"
+                if i[:len(isExistArticleStr)] == isExistArticleStr:
+                    addEffect(isExistArticle.format(paramList[0]))
                 someCompareStr = "unk_477705C2"
                 if i[:len(someCompareStr)] == someCompareStr:
                     addEffect(someCompare.format(paramList[0], paramList[1], paramList[2]))
@@ -404,38 +645,36 @@ def main():
 
                 TRUEstr = "TRUE"
                 if i[:len(TRUEstr)] == TRUEstr:
-                    parseForConditionals(lines)
-                    currVar = ""
-                    if condIndex < len(condList):
-                        currVar = condList[condIndex]
-                    else:
-                        currVar = paramList[0]
-                    addEffect(TRUEComp.format(currVar))
-                    condIndex = condIndex + 1
+                    addEffect(TRUEComp.format(paramList[0]))
                     inCompare = inCompare + 1
+                    trueIndex = trueIndex + 1
+                    inTrue = inTrue + 1
+                    trueVals.append(0)
 
                 FALSEstr = "FALSE"
                 if i[:len(FALSEstr)] == FALSEstr:
-                    parseForConditionals(lines)
-                    currVar = ""
-                    if condIndex < len(condList):
-                        currVar = condList[condIndex]
-                    else:
-                        currVar = paramList[0]
-                    addEffect(FALSEComp.format(currVar))
-                    condIndex = condIndex + 1
+                    addEffect(FALSEComp.format(paramList[0]))
                     inCompare = inCompare + 1
+                    falseIndex = falseIndex + 1
+                    inFalse = inFalse + 1
+                    falseVals.append(0)
 
                 gotoStr = "Goto"
                 if i[:len(gotoStr)] == gotoStr:
+                    #inLoop = False
+                    #if loopNum:
+                    #    loopNum = loopNum - 1
+                    #    index = index - loopLines
                     addEffect(goto.format(-gotoNum))
                     gotoNum = 0
 
                 loop = "Set_Loop"
                 if i[:len(loop)] == loop:
-                    loopNum = int(paramList[0])
+                    loopNum = int(paramList[0]) - 1 if paramList[0] != "-1" else 0
                     addEffect(setLoop.format(loopNum))
                     inLoop = True
+                elif inLoop:
+                    loopLines = loopLines + 1
 
                 looprest = "Loop_Rest()"
                 if i[:len(looprest)] == looprest:
@@ -465,17 +704,7 @@ def main():
                     y = getHexFloat(float(paramList[5]))
                     x = getHexFloat(float(paramList[6]))
                     red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
-                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0])
-
-                grabcoll2 = "Grab_Collision2"
-                if i[:len(grabcoll2)] == grabcoll2:
-                    bone = paramList[1]
-                    size = getHexFloat(float(paramList[2]) * 19 / 200)
-                    z = getHexFloat(float(paramList[3]))
-                    y = getHexFloat(float(paramList[4]))
-                    x = getHexFloat(float(paramList[5]))
-                    red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
-                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0])
+                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
 
                 subr = "Subroutine"
                 if i[:len(subr)] == subr:
@@ -541,11 +770,25 @@ def main():
                     addEffect(terminateGraphic31)
 
                 removeHitb = "Remove_All_Hitboxes"
-                terminateGrab = "Terminate_Grab_Collisions"
                 enableAction = "Enable Action Status"
-                if i[:len(removeHitb)] == removeHitb or i[:len(terminateGrab)] == terminateGrab or i[:len(enableAction)] == enableAction:
+                if i[:len(removeHitb)] == removeHitb or i[:len(enableAction)] == enableAction:
                     addEffect(terminateGraphic13)
-                    markAllHitboxesDeleted()
+                    markAllDeleted(0)
+
+                terminateGrab = "Terminate_Grab_Collisions"
+                if i[:len(terminateGrab)] == terminateGrab:
+                    addEffect(terminateGraphic13)
+                    markAllDeleted(1)
+
+                deleteGrab = "Delete_Catch_Collision"
+                if i[:len(deleteGrab)] == deleteGrab:
+                    addEffect(terminateGraphic13)
+                    markDeleted(paramList[0], 1)
+
+                deleteHitb = "Delete_Hitbox"
+                if i[:len(deleteHitb)] == deleteHitb:
+                    addEffect(terminateGraphic13)
+                    markDeleted(paramList[0], 0)
 
                 boneIntangability = "Set_Bone_Intangability"
                 if i[:len(boneIntangability)] == boneIntangability:
@@ -563,7 +806,7 @@ def main():
                     x = getHexFloat(float(paramList[11]))
                     red, green, blue = getDamageRGB(paramList[3], paramList[4])
                     # addEffect(normalOrSpecialHitbox.format(bone, z, y, x, size))
-                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0])
+                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 0)
 
                 extendedHitb = "Extended_Hitbox"
                 if i[:len(extendedHitb)] == extendedHitb:
@@ -582,9 +825,9 @@ def main():
                         red, green, blue = getDamageRGB(paramList[3], paramList[4])
                         # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
                         if j == 0:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0])
+                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
                         else:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1)
+                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
 
                 extendedSpecialHitb = "Extended_Special_Hitbox"
                 if i[:len(extendedSpecialHitb)] == extendedSpecialHitb:
@@ -603,18 +846,28 @@ def main():
                         red, green, blue = getDamageRGB(paramList[3], paramList[4])
                         # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
                         if j == 0:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0])
+                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
                         else:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1)
+                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
 
+                grabcoll2 = "Grab_Collision2"
                 grabcoll = "Grab_Collision"
-                if i[:len(grabcoll)] == grabcoll:
+                if i[:len(grabcoll2)] == grabcoll2:
                     bone = paramList[1]
                     size = getHexFloat(float(paramList[2]) * 19 / 200)
                     z = getHexFloat(float(paramList[3]))
                     y = getHexFloat(float(paramList[4]))
                     x = getHexFloat(float(paramList[5]))
-                    addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0])
+                    red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
+                    # addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
+                    addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
+                elif i[:len(grabcoll)] == grabcoll:
+                    bone = paramList[1]
+                    size = getHexFloat(float(paramList[2]) * 19 / 200)
+                    z = getHexFloat(float(paramList[3]))
+                    y = getHexFloat(float(paramList[4]))
+                    x = getHexFloat(float(paramList[5]))
+                    addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
 
                 grabHitb = "Extended_Grab_Collision"
                 if i[:len(grabHitb)] == grabHitb:
@@ -631,9 +884,9 @@ def main():
                         ycurr = getHexFloat(yinit + ((yfinal - yinit) / 2 * j))
                         xcurr = getHexFloat(xinit + ((xfinal - xinit) / 2 * j))
                         if j == 0:
-                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), paramList[0])
+                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), paramList[0], 1)
                         else:
-                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), -1)
+                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), -1, 1)
 
                 if inLoop and i[:len(loop)] != loop:
                     thisParamList = getParamList(getLastEffectString())

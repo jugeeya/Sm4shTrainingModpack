@@ -21,17 +21,35 @@ def main():
     lines = [x.strip('\n') for x in lines]
 
     inEffect = False
+    tabs = 0
 
     for i in lines:
         removed = removeWhitespaceBeforeAndAfter(i)
+        # firstChar = removed[0] if len(removed) >= 1 else ''
         if removed[:len("TRUE")] == "TRUE" or removed[:len("FALSE")] == "FALSE":
             removed = removed + "{"
         if removed == "":
             removed = "}"
+            if inEffect:
+                tabs = tabs - 1
+        for t in range(tabs):
+            removed = "\t" + removed
         if inEffect:
             print("addEffect(\"",end="")
             print(removed,end="")
             print("\")",end="\n")
+        trueIndex = removed.find("TRUE")
+        falseIndex = removed.find("FALSE")
+        if removed[tabs:tabs+len("TRUE")] == "TRUE":
+            if inEffect:
+                tabs = tabs + 1
+        if removed[tabs:tabs+len("FALSE")] == "FALSE":
+            if inEffect:
+                tabs = tabs + 1
+        setLoopIndex = removed.find("Set_Loop")
+        if removed[tabs:len("Set_Loop")] == "Set_Loop":
+            if inEffect:
+                tabs = tabs + 1
         if removed == "Effect()":
             inEffect = True
         if removed == "Script_End()":

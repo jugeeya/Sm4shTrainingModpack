@@ -43,3 +43,27 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	5	6	25
+Jab 2	6	7	35
+Dash Attack	9	12	42
+Ftilt (High)	9	11 	38
+Utilt	5	11 	39
+Dtilt	7	9 	23
+Fsmash	22	23 	55
+Usmash	14	15 	50
+Dsmash	11	12 	56
+Standing Grab	8	9	31
+Dash Grab	10	11	39
+Pivot Grab	11	12	37
+Nair	10	13	39
+Fair	18	20	56
+Bair	7	8	32
+Uair	6	10 	38
+Dair	14	16	55
+Giant Punch (Uncharged)	18 	-	63
+Giant Punch (Full Charge)	19	20 	48
+Headbutt (Ground)	20	21	64
+Headbutt (Air)	20	21	64
+Spinning Kong (Hit 1, Grounded)	19 	-	93
+Hand Slap	19	31... 	75
+Hand Slap (Hit 1, Aerial)	19	21	62

@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	4	5	16
+Rapid Jab Finisher	2	3	24
+Dash Attack	6	9	38
+Ftilt	10	-	38
+Utilt (Hit 1)	10	12	36
+Dtilt	6	11 	40
+Fsmash	17	18	43
+Usmash	24	25 	39
+Dsmash	15	19	42
+Standing Grab	6	7	30
+Dash Grab	8	9	37
+Pivot Grab	9	10	35
+Nair (Hit 1)	7	-	43
+Fair	10	11	45
+Bair (Hits 1-3)	10	21	40
+Bair (Landing)	1	2	On Hit: 16
+Uair (Hit 1)	6	12	40
+Dair	12	13	50
+Chef (Pan)	18	20	50
+Judge 1	16	24	50
+Fire (Windbox)	2	8 	41
+Oil Panic	Absorbs from: Frame 7	-	50
+Oil Panic (Attack)	2	7	50

@@ -43,3 +43,25 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	3	18
+Jab 2	2	4	18
+Rapid Jab Finisher	5	6	53
+Dash Attack	5	6	41
+Ftilt	5	8	25
+Utilt (Hit 1)	5	8	36
+Dtilt	5	6	30
+Fsmash (Hit 1)	12	-	51
+Usmash (Hit 1)	11 	-	53
+Dsmash (Hit 1)	11	12	55
+Standing Grab	6	7	28
+Dash Grab	8	9	35
+Pivot Grab	9	10	33
+Nair	3	6	50
+Fair	5	7	35
+Bair	4	6	38
+Uair	4	15 	44
+Dair	15	18	55
+Needle Storm (6 Needles, Thrown On)	11, 14, 17, 20, 23, 26	-	54
+Needle Storm (1-5 Needles, Thrown On)	5, 7, 9, 11, 13	-	48
+Burst Grenade (Thrown)	15		81
+Burst Grenade (Detonation)	28	48	40

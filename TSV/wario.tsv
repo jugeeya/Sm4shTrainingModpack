@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	8	9	30
+Jab 2	4	5	34
+Dash Attack	4	5	49
+Ftilt (Angled Up)	12	15	40
+Utilt	12	14 	36
+Dtilt	5	-	18
+Fsmash	18	19	66
+Usmash	11	12 	58
+Dsmash (Early)	8	17	68
+Standing Grab	8	9	30
+Dash Grab	8	9	37
+Pivot Grab	8	9	35
+Nair (Hit 1)	4	-	50
+Fair	5	6	38
+Bair	9	11	50
+Uair	8	9	47
+Dair (Hits 1-6)	9, 11, 13, 15, 17, 19	-	48
+Chomp	8	 	38 (Max Hold Frames: 48)
+Chomp (Eating Explosive)	18 	-	73
+Chomp ("Food")		 	28
+Wario Bike	20		28
+Wario Waft (No Charge)	16	18 	80
+Wario Waft (15 Seconds)	10	11	65
+Wario Waft (55 Seconds)	5	8	50
+Wario Waft (110 Seconds)	9	10 	60

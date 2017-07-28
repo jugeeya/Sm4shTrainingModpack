@@ -43,3 +43,27 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	30	jabresetDActive
+Jab 1	4	-	30
+Jab 2	4	5	18
+Dash Attack (Hit 1)	8	10	38
+Ftilt	15	17	36
+Utilt (Hits 1-5)	6, 8, 10, 12, 14	-	44
+Dtilt	6	12	30
+Fsmash (Early)	11	14	40
+Usmash	12	15	56
+Dsmash	10	13	39
+Standing Grab	10	19	50
+Dash Grab	10	19	53
+Pivot Grab	10	19	36
+Nair (Hits 1-4)	7	20	54
+Fair	7	9 	43
+Bair	10	13 	49
+Uair	8	15 	35
+Dair	9 	-	52
+Pikmin Pluck	Pikmin Generated: Frame 1	-	9
+Pikmin Pluck (Failure)			33
+Pikmin Pluck (Air)			47
+Pikmin Toss	9		25
+Pikmin Toss (Purple)	9		25
+Winged Pikmin			39
+Pikmin Order	Super Armor: 6	12	21

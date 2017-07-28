@@ -43,3 +43,27 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+http://api.kuroganehammer.com/api/characters/name/Rob/moves
+Jab 1	3	4	21
+Jab 2	3	4	21
+Dash Attack	7	8	36
+Ftilt (All Angles)	7	9	34
+Utilt	4	5	27
+Dtilt	3	-	15
+Fsmash (All angles)	16	17	55
+Usmash (Launcher)	10	11 	49
+Dsmash	7	14 	46
+Standing Grab	7	8	31
+Dash Grab	9	10	38
+Pivot Grab	11	12	37
+Nair	18	32	48
+Fair	6	7	36
+Bair	19	23	53
+Uair	7, 9, 13, 17	-	52
+Dair	20	21	70
+Robo Beam (No Charge)	25		50
+Arm Rotor (Final Hit)	7	-	53
+Robo Burner (Ground)		 	24
+Gyro (Charging)	Charge: 90 Frames	-	97
+Gyro	9	-	43
+Gyro (Failure)			61

@@ -43,3 +43,31 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	4	5	30
+Jab 2	5	6	33
+Jab 3	6	7	38
+Dash Attack	9	13	46
+Ftilt	9	10	36
+Utilt	6	9	33
+Dtilt	7	8 	41
+Fsmash (Hit 1)	19	-	64
+Usmash (Early)	15	-	47
+Dsmash	8	9	50
+Standing Grab	7	8	32
+Dash Grab	10	11	40
+Pivot Grab	11	12	37
+Nair	5	15	39
+Fair	18	19	54
+Bair	11	13	42
+Uair	7	9	45
+Dair	11	13	60
+Blade Beam (Windbox)	16	17	61
+Limit Blade Beam (Ground, Projectile)	16	58 	61
+Limit Blade Beam (Aerial, Projectile)	16	58 	61
+Cross Slash 1	10	11	41
+Cross Slash 2	2	3	32
+Cross Slash 3 (Hit 1)	2	3	56
+Limit Cross Slash (Hit 1)	10	11 	61
+Climhazard (Landing)	1	2	21
+Finishing Touch (Grounded)	16	17 	80
+Finishing Touch (Aerial)	16	17 	80

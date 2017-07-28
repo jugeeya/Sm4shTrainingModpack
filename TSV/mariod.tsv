@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	25	jabresetUActive
 1	26	jabresetDActive
+http://api.kuroganehammer.com/api/characters/name/Drmario/moves
+Jab 1	2	3	23
+Jab 2	2	3	25
+Jab 3	7	8	36
+Dash Attack	6	9	38
+Ftilt (All Angles)	5	7	31
+Utilt	5	11	30
+Dtilt	5	7	28
+Fsmash (Angled Up)	15	17	48
+Usmash	9	13 	40
+Dsmash (Hit 1)	5	6	44
+Standing Grab	6	7	29
+Dash Grab	8	9	36
+Pivot Grab	9	10	34
+Nair	3	7	46
+Fair (Early)	16	-	60
+Bair	6	8	34
+Uair	4	12	32
+Dair	11	26 	52
+Megavitamins (Early)	17	20	53
+Super Sheet	12	14 	36
+Dr. Tornado (Ground)	10	33 	75
+Dr. Tornado (Aerial)	10	33 	75

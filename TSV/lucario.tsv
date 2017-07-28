@@ -43,3 +43,27 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	6	-	34
+Jab 2	5	6	38
+Jab 3	9	11	41
+Dash Attack	7	9	42
+Ftilt (Hit 1, All Angles)	12	14	33
+Utilt	6	13	33
+Dtilt	9	12	25
+Fsmash	22	23	55
+Usmash (Hit 1)	15	17	64
+Dsmash	19	21	55
+Standing Grab	6	7	29
+Dash Grab	8	9	36
+Pivot Grab	9	10	34
+Nair	8	11	43
+Fair	7	8	28
+Bair	16	19	49
+Uair	10	11	39
+Dair (Hit 1)	4	5	31
+Aura Sphere (Release from Charge)	6	65	49
+Aura Sphere (Full Charge)	19	78	62
+Force Palm (Command Grab)	9	-	51 (On grab)
+Force Palm (Projectile)	24	25	64
+Counter	Counters: 5	39 	80
+Counter (Attack)	28	? 	61

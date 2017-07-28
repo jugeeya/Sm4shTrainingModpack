@@ -43,3 +43,31 @@
 40	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	1	-	22
+Jab 2	1	2	22
+Jab 3	4	-	32
+Rapid Jab Finisher	5	-	35
+Dash Attack (Windbox)	1	4	34
+Ftilt (Hit 1)	4	5 	38
+Utilt	4	10 	30
+Dtilt	3	4	22
+Fsmash (Windbox, All Angles)	6	12	44
+Usmash	10 	-	48
+Dsmash (Hit 1)	10	11 	43
+Standing Grab	9	10	33
+Dash Grab	10	11	41
+Pivot Grab	11	12	34
+Nair	2	-	16
+Fair	10	12	37
+Bair	11	12	38
+Uair	5	8	42
+Dair	7	10	28
+KO Punch	9	11 	97
+KO Punch (Aerial)	9	12	76
+Straight Lunge (No Charge)	36	37	82
+Straight Lunge (Full Charge, Early)	123	125	232
+Straight Lunge (No Charge, Aerial)	?	-	?
+Straight Lunge (No Charge, Late, Aerial)	?	-	?
+Straight Lunge (Full Charge, Aerial)	?	-	?
+Slip Counter	Counters: 5	29 	63
+Slip Counter (Attack)	16	21 	62

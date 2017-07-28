@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	3	28
+Jab 2	2	3	30
+Dash Attack (Hit 1)	6	9	38
+Ftilt (Early)	7	-	37
+Utilt	9	13	38
+Dtilt	13	14 	28
+Fsmash (Tennis Racket)	15	17	46
+Fsmash (Golf Club)	15	17	46
+Fsmash (Frying Pan)	15	17	46
+Usmash	14	16 	45
+Dsmash (Hits 1-4)	6	22	55
+Standing Grab	6	7	32
+Dash Grab	8	9	40
+Pivot Grab	10	11	38
+Nair	5	8	49
+Fair	16	20	58
+Bair	6	7	54
+Uair (Hit 1, Early)	10	-	46
+Dair (Hits 1-3)	12	25	39
+Toad	Counters: 10	34 	63
+Toad (Attack)	1	22 	60
+Peach Bomber (Ground)	Inert Detector: 14	29	65
+Peach Bomber (Aerial)	Inert Detector: 20	44	95
+Peach Bomber (Hitbox)	1	3	21
+Vegetable	Generates Item on: Frame 1	-	43

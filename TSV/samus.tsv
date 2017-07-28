@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	3	4	18
+Jab 2	6	9	30
+Dash Attack (Early)	8	9	34
+Ftilt (Angled Up)	8	10	34
+Utilt	15	18	40
+Dtilt	6	8	40
+Fsmash (Angled Up)	10	11	49
+Usmash (Hit 1)	11	12	57
+Dsmash (Hit 1)	9	10	45
+Standing Grab	16	25	70
+Dash Grab	16	26	68
+Pivot Grab	17	28	84
+Nair (Hit 1)	8	11	46
+Fair (Hit 1)	6	7	60
+Bair	9	10	39
+Uair (Hit 1)	5	6	40
+Dair (Early)	17	18	49
+Zair (Hit 1)	8	17	60
+Charge Shot	Can Shoot From: 16, Full Charge: 140	-	54
+Charge Shot (Full Charge)	16	84	61
+Homing Missile	18	118	57
+Super Missile	21	84	59
+Bomb	63	80	54

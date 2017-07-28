@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	4	23
+Jab 2	3	5	26
+Rapid Jab Finisher	5	6	40
+Dash Attack	8	11	40
+Ftilt (All Angles)	6	8	28
+Utilt (Hit 1)	5 	-	37
+Dtilt	7	9	28
+Fsmash	17	19	49
+Usmash (Hit 1)	7	8 	50
+Dsmash	7	9 	47
+Standing Grab	8	9	32
+Dash Grab	10	11	40
+Pivot Grab	11	12	38
+Nair (Hit 1)	3	5	49
+Fair	10	27 	50
+Bair	4	5	38
+Uair	7	11	34
+Dair	16	19	52
+Blaster	11	43	59
+Blaster (Aerial)	9	41	50
+Falco Phantasm (Ground)	18	22	61
+Falco Phantasm (Aerial)	18	22	67
+Reflector	5	14 	51

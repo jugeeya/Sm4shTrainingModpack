@@ -43,3 +43,26 @@
 40	passiveBFAF
 1	25	jabresetUActive
 1	25	jabresetDActive
+http://api.kuroganehammer.com/api/characters/name/Pacman/moves
+Jab 1	4	6	20
+Jab 2	4	6	22
+Jab 3	4	7	34
+Dash Attack (Windbox)	3	9	42
+Ftilt (All Angles)	5	7	31
+Utilt	7	10 	34
+Dtilt	7	9	29
+Fsmash	18	20	53
+Usmash (Hit 1)	13	-	50
+Dsmash	18	20	55
+Standing Grab	12	39	76
+Dash Grab	12	39	76
+Pivot Grab	12	39	76
+Nair (Early)	3	5	52
+Fair	5	8	26
+Bair	9	11	41
+Uair	9	16	37
+Dair (Hits 1-3)	6	23	60
+Bonus Fruit (Throw)	12		45
+Power Pellet	23		94
+Fire Hydrant	Hydrant Appears: 12	-	40
+Fire Hydrant (Air)	Hydrant Appears: 9	-	35

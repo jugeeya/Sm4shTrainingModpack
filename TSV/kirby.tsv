@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	3	-	16
+Jab 2	3	4	16
+Rapid Jab Finisher	5	6	51
+Dash Attack (Hits 1-3)	12, 15, 19	-	54
+Ftilt (All Angles)	5	8	28
+Utilt	4	5 	21
+Dtilt	4	6	21
+Fsmash (Angled Up)	13	15	48
+Fsmash	13	15	48
+Fsmash (Angled Down)	13	15	48
+Usmash (Early)	14 	-	48
+Dsmash	10	14 	54
+Standing Grab	6	7	28
+Dash Grab	8	9	39
+Pivot Grab	10	12	33
+Nair (Earliest)	10	11	73
+Fair (Hit 1)	10	11	48
+Bair	6	7	41
+Uair	10	15	40
+Dair (Hits 1-5)	18	31	55
+Inhale	14		73
+Hammer Flip (Ground, No Charge)	26	27	70
+Hammer Flip (Air, No Charge)	28	43	72
+Final Cutter (Landing)	1	-	35
+Stone (Landing)	1	-	32

@@ -11,6 +11,13 @@ kuroChars = "Bayonetta,Captain%20Falcon,Cloud,King%20Dedede,Diddy%20Kong,Donkey%
 
 counterChars = "gekkouga,ike,kamui,littlemac,lucario,lucina,marth,palutena,peach,roy,shulk".split(",")
 
+kuroMoves = "Medium Jab 1,Jab 2,Jab 3,Dash Attack,Ftilt,Ftilt,Ftilt,Light Ftilt,Medium Ftilt,Utilt,Light Utilt,Medium Utilt,Dtilt,Light Dtilt,Medium Dtilt,Fsmash,Usmash,Dsmash,Standing Grab,Dash Grab,Pivot Grab,Nair,Fair,Bair,Uair,Dair".split(",")
+gameMoves = "Attack11s,Attack12,Attack13,AttackDash,AttackS3,AttackS3Hi,AttackS3Lw,0x008C1CDD,0x07E1D8C4,AttackHi3,AttackHi3w,AttackHi3s,AttackLw3,AttackLw3w,AttackLw3s,AttackS4,AttackHi4,AttackLw4,Catch,CatchDash,CatchTurn,AttackAirN,AttackAirF,AttackAirB,AttackAirHi,AttackAirLw".split(",")
+
+gameMovesToKuro = {}
+for i in range(len(gameMoves)):
+    gameMovesToKuro[gameMoves[i]] = kuroMoves[i]
+
 # game code lines
 asynchronousTimer = "Asynchronous_Timer(Frames={})"
 synchronousTimer = "Synchronous_Timer(Frames={})"
@@ -56,10 +63,16 @@ falseVals = []
 falseIndex = 0
 trueVals = []
 trueIndex = 0
+RED = ['255', '0', '0', '128']
+GREEN = ['0', '255', '0', '128']
+BLUE = ['0', '0', '255', '128']
+ORANGE = ['255', '165', '0', '128']
+MAGENTA = ['255', '0', '255', '128']
+
 
 inLoop = False
 inCompare = 0
-
+FAF = 100000
 
 def didHandleEdgeCase(char, move):
     global inLoop, inCompare
@@ -76,9 +89,957 @@ def didHandleEdgeCase(char, move):
             addEffect(extendedHitboxNew.format('0x0', '0x0', '0x40866666', '0x40000000', '0x3EC28F5C', '0x437E0000', '0x0', '0x437E0000'))
             addEffect(scriptEnd)
             return True
+        if move == "0xFB284F7A.acm":
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=7)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40A6DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40ADB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40B49249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40BB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40C24925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40C92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40D00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41700000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x415C9249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41492492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x4135B6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41224925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x410EDB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40F6DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40D00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=8)")
+            addEffect("Asynchronous_Timer(Frames=9)")
+            addEffect("Asynchronous_Timer(Frames=10)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41680000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41549249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41412492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x412DB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x411A4925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x4106DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40E6DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=11)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41680000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41549249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41412492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x412DB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x411A4925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x4106DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40E6DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41680000, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41549249, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x41412492, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x412DB6DB, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x411A4925, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x4106DB6E, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40E6DB6E, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x19, unknown=0x0, unknown=0x40C00000, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(asynchronousTimer.format('12'))
+            addEffect(terminateOverlays)
+            addEffect("Asynchronous_Timer(Frames=14)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=15)")
+            addEffect("Asynchronous_Timer(Frames=25)")
+            addEffect("Asynchronous_Timer(Frames=29)")
+            addEffect("Asynchronous_Timer(Frames=35)")
+            addEffect("Asynchronous_Timer(Frames=36)")
+            addEffect("Asynchronous_Timer(Frames=40)")
+            addEffect("Script_End()")
+            return True
     if char == "kamui":
         if move in {"AttackS4.acm", "AttackS4Hi.acm", "AttackS4Lw.acm"}:
             addEffect(scriptEnd)
+            return True
+        if move == "SpecialSJump.acm":
+            addDodgeEffects2(['2', '5'])
+            return True
+        if move == "SpecialLw.acm":
+            addEffect(asynchronousTimer.format('6'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(asynchronousTimer.format('7'))
+            addEffect(terminateOverlays)
+            addEffect(colorOverlay.format('255', '0', '0', '128'))
+            addEffect(asynchronousTimer.format('25'))
+            addEffect(terminateOverlays)
+            addEffect(scriptEnd)
+            return True
+        if move == "SpecialLwHit.acm":
+            addDodgeEffects2(['1','49'])
+            return True
+        if move == "SpecialHi.acm":
+            addEffect("Asynchronous_Timer(Frames=3)")
+            addEffect("Synchronous_Timer(Frames=7)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(synchronousTimer.format('8'))
+            addEffect(terminateOverlays)
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0xBF800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0xBEDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x3E124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x3F36DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x3FA49249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x3FEDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x401B6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0xC1600000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0xC11C9249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0xC0B24925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0xBFADB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0x4036DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0x40E24925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0x41349249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40600000, unknown=0x41780000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Set_Loop(Iterations=3){")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=1)")
+            addEffect("	Goto(Unknown=-62)")
+            addEffect("}")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Set_Loop(Iterations=2){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=2)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-64)")
+            addEffect("}")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0xC0E00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F4EB852, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0x40E00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F4EB852, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=39)")
+            addEffect("Script_End()")
+            return True
+    if char == "pitb":
+        if move == "dude":
+            return True
+    if char == "donkey":
+        if move == "SpecialAirHi.acm":
+            addEffect(asynchronousTimer.format('3'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0xC0E00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F3B4396, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F3B4396, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=7)")
+            addEffect(terminateOverlays)
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=12)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x16, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x10, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)")
+            addEffect("Set_Loop(Iterations=4){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x10, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x10, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB3F7CF, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB3F7CF, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=8)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-64)")
+            addEffect("}")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000031, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=44)")
+            addEffect("Set_Loop(Iterations=2){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x10, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x10, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB3F7CF, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB3F7CF, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=8)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-64)")
+            addEffect("}")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "gamewatch":
+        if move == "SpecialHi.acm":
+            addEffect("Asynchronous_Timer(Frames=2)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40A00000, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F733333, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40A00000, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F733333, unknown=0x1, unknown=0x437F0000, unknown=0x437F0000, unknown=0x437F0000)")
+            addEffect(asynchronousTimer.format('5'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=9)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x404CCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=11)")
+            addEffect("Asynchronous_Timer(Frames=14)")
+            addEffect(terminateOverlays)
+            addEffect("Asynchronous_Timer(Frames=26)")
+            addEffect("Asynchronous_Timer(Frames=30)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=33)")
+            addEffect("Script_End()")
+            return True
+    if char == "ness":
+        if move == "SpecialAirHi.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x3F000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Set_Loop(Iterations=5){")
+            addEffect("	Synchronous_Timer(Frames=2)")
+            addEffect("	Goto(Unknown=-2)")
+            addEffect("}")
+            addEffect(terminateOverlays)
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x3F000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EE978D5, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=33)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    #check
+    if char == "robot":
+        if move == "SpecialHi.acm":
+            addDodgeEffects2(['2','4'])
+            return True
+    if char == "gekkouga":
+        if move == "SpecialLwHit.acm":
+            addDodgeEffects2(['1', '37'])
+            return True
+    if char == "purin":
+        if move == "SpecialLwL.acm":
+            addEffect(asynchronousTimer.format('1'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=2)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0xD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EA56042, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=3)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(asynchronousTimer.format('28'))
+            addEffect(terminateOverlays)
+            addEffect("Script_End()")
+            return True
+    if char == "kirby":
+        if move == "SpecialSMax.acm":
+            addEffect(asynchronousTimer.format('2'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect("Color_Overlay(Red=255, Green=0, Blue=255, Alpha=128)")
+            addEffect("Asynchronous_Timer(Frames=11)")
+            addEffect(terminateOverlays)
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40866666, unknown=0x41380000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40866666, unknown=0x40B00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EBDB22D, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Terminate_Overlays()")
+            addEffect("Asynchronous_Timer(Frames=56)")
+            addEffect("Script_End()")
+            return True
+    if char == "littlemac":
+        if move == "SpecialHiStart.acm":
+            addEffect(asynchronousTimer.format('1'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=3)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40C00000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40DB6DB7, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40F6DB6E, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41092492, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4116DB6E, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41249249, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41324925, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40A00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40C00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41300000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=4)")
+            addEffect(terminateOverlays)
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialLwHit.acm":
+            addEffect(asynchronousTimer.format('1'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=15)")
+            addEffect("Asynchronous_Timer(Frames=16)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=19)")
+            addEffect(terminateOverlays)
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x40400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x4076DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x4096DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x40B24925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x40CDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x40E92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x41024925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41100000, unknown=0x41100000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=22)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "lucas":
+        if move == "SpecialAirHi.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F5AE148, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x40400000, unknown=0xC0400000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F5AE148, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            # hit 1
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBE924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF36DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBEDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFEDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0249249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0524925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            # hit 2
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBE924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF36DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBEDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFEDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0249249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0524925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            # hit 3
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBE924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF36DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBEDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFEDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0249249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0524925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            # remove intangibility then hit 4
+            addEffect(terminateOverlays)
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBE924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF36DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBEDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFEDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0249249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0524925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            # hit 5
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBE924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF36DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ED126E9, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBEDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFEDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0249249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0524925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+
+            addEffect("Set_Loop(Iterations=5){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBE924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF36DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3E924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBEDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBF924925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xBFEDB6DB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0249249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0524925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0A9FBE, unknown=0x1, unknown=0x437F0000, unknown=0x434F0000, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=2)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Synchronous_Timer(Frames=1)")
+            addEffect("	Goto(Unknown=-38)")
+            addEffect("}")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x3F800000, unknown=0xBF800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F91EB85, unknown=0x1, unknown=0x437F0000, unknown=0x42995555, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "lucina":
+        if move == "SpecialHi.acm":
+            addEffect("Asynchronous_Timer(Frames=4)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x41000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(terminateOverlays)
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=7)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=12)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialAirHi.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x41000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(terminateOverlays)
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=7)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=12)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "luigi":
+        if move == "0x2A81E865.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x12, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect(asynchronousTimer.format('6'))
+            addEffect(terminateOverlays)
+            addEffect("Asynchronous_Timer(Frames=14)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=25)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialHi.acm":
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40C00000, unknown=0x40E00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E560419, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Subroutine(Hash=0x1A201091)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialAirHi.acm":
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40C00000, unknown=0x40E00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E560419, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Subroutine(Hash=0x1A201091)")
+            addEffect("Script_End()")
+            return True
+        if move == "0x1A201091.acm":
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x13, unknown=0x0, unknown=0x404CCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F3AC711, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x4099999A, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F17C1BE, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(terminateOverlays)
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Asynchronous_Timer(Frames=10)")
+            addEffect("Asynchronous_Timer(Frames=24)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "mario":
+        if move == "SpecialHi.acm":
+            addEffect("Asynchronous_Timer(Frames=3)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40C00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40C00000, unknown=0x41100000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(terminateOverlays)
+            addEffect("Set_Loop(Iterations=3){")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41080000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=1)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-34)")
+            addEffect("}")
+            addEffect("Set_Loop(Iterations=2){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41080000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3ECC49BA, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=2)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-36)")
+            addEffect("}")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F733333, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41080000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F733333, unknown=0x1, unknown=0x437F0000, unknown=0x43380000, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "marth":
+        if move == "SpecialHi.acm":
+            addEffect("Asynchronous_Timer(Frames=4)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x41000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(terminateOverlays)
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=7)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=12)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialAirHi.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x41000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(terminateOverlays)
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=7)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42755555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x0, unknown=0x0, unknown=0xBFC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=12)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialLwHit.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x3F800000, unknown=0x0, unknown=0x3FC00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0xE, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x3EA, unknown=0x3F800000, unknown=0x0, unknown=0x40E00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=8)")
+            addEffect(terminateOverlays)
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        ## CHECK UP B
+    if char == "pikachu:":
+        if move == "LandingAirB.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(colorOverlay.format(*GREEN))
+            addEffect(asynchronousTimer.format('31'))
+            addEffect(terminateOverlays)
+            addEffect("Script_End()")
+            return True
+        if move == "LandingAirLw.acm":
+            addEffect("Asynchronous_Timer(Frames=1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(colorOverlay.format(*GREEN))
+            addEffect(asynchronousTimer.format('41'))
+            addEffect(terminateOverlays)
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialLwHit.acm":
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41233333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F9E147B, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=3)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(synchronousTimer.format('8'))
+            addEffect(terminateOverlays)
+            addEffect("Script_End()")
             return True
     if char == "ryu":
         if move == "SpecialHi.acm":
@@ -227,6 +1188,407 @@ def didHandleEdgeCase(char, move):
             addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
             addEffect("Script_End()")
             return True
+    if char == "rockman":
+        if move == "AttackHi3.acm":
+            addEffect(asynchronousTimer.format('5'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=6)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40C00000, unknown=0x41000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E733333, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=7)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)")
+            addEffect(asynchronousTimer.format('8'))
+            addEffect(terminateOverlays)
+            addEffect("Asynchronous_Timer(Frames=10)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40900000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=17)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialHi.acm":
+            addEffect(asynchronousTimer.format('6'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(asynchronousTimer.format('10'))
+            addEffect(terminateOverlays)
+            return True
+    if char == "roy":
+        if move == "SpecialHi.acm":
+            addEffect("Asynchronous_Timer(Frames=4)")
+            addEffect("Color_Overlay(Red=255, Green=0, Blue=255, Alpha=128)")
+            addEffect("Asynchronous_Timer(Frames=9)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41300000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x411AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41055555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41300000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x411AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41055555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF81062, unknown=0x1, unknown=0x437F0000, unknown=0x4311AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(terminateOverlays)
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Terminate_Overlays()")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43552222, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F00E560, unknown=0x1, unknown=0x437F0000, unknown=0x43552222, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43552222, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F00E560, unknown=0x1, unknown=0x437F0000, unknown=0x43552222, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=14)")
+            addEffect("Asynchronous_Timer(Frames=20)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41755555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x415AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43552222, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F00E560, unknown=0x1, unknown=0x437F0000, unknown=0x43552222, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41755555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x415AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F1E147B, unknown=0x1, unknown=0x437F0000, unknown=0x42D6AAAB, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialAirHi.acm":
+            addEffect("Asynchronous_Timer(Frames=9)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41300000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x411AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41055555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41300000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x411AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41055555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40E00000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x43210000, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=10)")
+            addEffect(terminateOverlays)
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F083127, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F083127, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("Asynchronous_Timer(Frames=14)")
+            addEffect("Asynchronous_Timer(Frames=20)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41755555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x415AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F083127, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41880000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41755555, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x415AAAAB, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41400000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F19374C, unknown=0x1, unknown=0x437F0000, unknown=0x430A0000, unknown=0x0)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "samus":
+        if move == "SpecialHi.acm":
+            addEffect(asynchronousTimer.format('3'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF99999A, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB8D4FE, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF99999A, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB8D4FE, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB8D4FE, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EB8D4FE, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(synchronousTimer.format('1'))
+            addEffect(terminateOverlays)
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Set_Loop(Iterations=3){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xC0A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x3FD55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xBFD55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xC0A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=2)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-62)")
+            addEffect("}")
+            addEffect("Set_Loop(Iterations=6){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xC0A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x3FD55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xBFD55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xC0A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=2)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-64)")
+            addEffect("}")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F6978D5, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+        if move == "SpecialAirHi.acm":
+            addEffect(asynchronousTimer.format('3'))
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=5)")
+
+            # hit 1
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E8D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E8D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF4CCCCD, unknown=0x40B33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EA08312, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF4CCCCD, unknown=0xC0B33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EA08312, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect(terminateOverlays)
+            addEffect(synchronousTimer.format('1'))
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            # hit 2
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E8D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E8D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF4CCCCD, unknown=0x40B33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EA08312, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF4CCCCD, unknown=0xC0B33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EA08312, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            # hit 3
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E8D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x4119999A, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E8D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF4CCCCD, unknown=0x40B33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EA08312, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0xBF4CCCCD, unknown=0xC0B33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EA08312, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+
+
+            addEffect("Set_Loop(Iterations=8){")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xC0A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EAA3D71, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x40A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0x3FD55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xBFD55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40D00000, unknown=0xC0A00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("	Synchronous_Timer(Frames=2)")
+            addEffect("	Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("	Goto(Unknown=-50)")
+            addEffect("}")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40A66666, unknown=0x3FCCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F6978D5, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=2)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Script_End()")
+            return True
+    if char == "sheik":
+        if move == "SpecialLw.acm":
+            addDodgeEffects2(['3','4'])
+            return True
+        if move == "SpecialAirLw.acm":
+            addDodgeEffects2(['3','4'])
+            return True
+    if char == "murabito":
+        if move == "SpecialN.acm":
+            addDodgeEffects2(['5','23'])
+            return True
+    if char == "zelda":
+        if move == "SpecialN.acm":
+            addEffect("Asynchronous_Timer(Frames=5)")
+            addEffect(colorOverlay.format(*BLUE))
+            addEffect("Asynchronous_Timer(Frames=13)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC036DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xBFDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xBF124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x3FDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x4036DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x43475555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC1200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC0E49249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC0892492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xBFB6DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x3FB6DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40892492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40E49249, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x41200000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
+            addEffect(asynchronousTimer.format('16'))
+            addEffect(terminateOverlays)
+            addEffect("Asynchronous_Timer(Frames=25)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=28)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC0800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC036DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xBFDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xBF124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x3F124925, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x3FDB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x4036DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x43195555, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC1300000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC0FB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xC096DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0xBFC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x3FC92492, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x4096DB6E, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x40FB6DB7, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect(
+                "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41000000, unknown=0x41300000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)")
+            addEffect("Synchronous_Timer(Frames=1)")
+            addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
+            addEffect("Asynchronous_Timer(Frames=43)")
+            addEffect("Script_End()")
+            return True
+    ''' 
+    TODO:
+     pitb
+     metaknight
+     pit
+     reflet
+     sonic spindash (in FITX v2.0)
+    '''
+    return False
+
+def moreHitboxesExist(remainingLines):
+    for i in remainingLines:
+        if i.find("Hitbox") != -1 or i.find("Grab") != -1:
+            return True
+    return False
+
+def getTSVLine(moveName, tsvLines):
+    for line in tsvLines:
+        for value in line.split("\t"):
+            if value[:len(moveName)] == moveName:
+                return line
+
+def didProcessEndlag(lines, index, basename, tsvLines):
+    if not moreHitboxesExist(lines[index + 1:]):
+        currMove = basename[:-4]
+        if currMove in gameMoves and len(tsvLines) >= 1:
+            addEffect(colorOverlay.format(*GREEN))
+            currTSVLine = getTSVLine(gameMovesToKuro[currMove], tsvLines)
+            FAFStr = currTSVLine.split('\t')[-1]
+            FAFStr = FAFStr.split(' ')[0]
+            FAF = int(FAFStr)
+            addEffect(asynchronousTimer.format(FAF))
+            addEffect(terminateOverlays)
+            if not inLoop and not inCompare:
+                addEffect(scriptEnd)
+            return True
     return False
 
 def editLastTrue(value):
@@ -298,11 +1660,6 @@ def getParamList(line):
     fullParamList = parameters.split(',')
     paramList = [x[x.find("=") + 1:] for x in fullParamList]
     return paramList
-
-def addEffectLines(fulltext):
-    lines = fulltext.split("\r\n")
-    for i in lines:
-        addEffect(i[2:])
 
 def addEffect(effectString):
     addEffectID(effectString, -1, -1)
@@ -381,7 +1738,8 @@ def printOutput(lines):
             inEffect = True
             print(effectLines, end="\t}\n\r\n")
         if not inEffect:
-            print(i, end="\n")
+            if i != "\t\tTRUE(Unknown=0x2)\r":
+                print(i, end="\n")
         else:
             if i == "\t}\n\r":
                 inEffect = False
@@ -410,38 +1768,43 @@ def getDamageRGB(damageStr, angleStr):
 
 def addDodgeEffects2(dodgeActive):
     addEffect(asynchronousTimer.format(dodgeActive[0]))
-    addEffect(colorOverlay.format("0", "0", "255", "128"))
+    addEffect(colorOverlay.format(*BLUE))
     addEffect(asynchronousTimer.format(str(int(dodgeActive[1]) + 1)))
     addEffect(terminateOverlays)
     addEffect(scriptEnd)
 
 def addDodgeEffects(dodgeActive, dodgeFAF):
     # starting frames
-    addEffect(colorOverlay.format("0", "255", "0", "128"))
+    addEffect(colorOverlay.format(*GREEN))
     # invuln
     addEffect(asynchronousTimer.format(dodgeActive[0]))
     addEffect(terminateOverlays)
-    addEffect(colorOverlay.format("0", "0", "255", "128"))
+    addEffect(colorOverlay.format(*BLUE))
     addEffect(asynchronousTimer.format(str(int(dodgeActive[1]) + 1)))
     addEffect(terminateOverlays)
     # lag
-    addEffect(colorOverlay.format("0", "255", "0", "128"))
+    addEffect(colorOverlay.format(*GREEN))
     addEffect(asynchronousTimer.format(dodgeFAF))
     addEffect(terminateOverlays)
     addEffect(scriptEnd)
 
 def addLagEffects(lagLength):
     addEffect(asynchronousTimer.format("1"))
-    addEffect(colorOverlay.format("0", "255", "0", "128"))
+    addEffect(colorOverlay.format(*GREEN))
     addEffect(asynchronousTimer.format(str(int(lagLength) + 1)))
     addEffect(terminateOverlays)
     addEffect(scriptEnd)
 
 def main():
-    if len(sys.argv) != 2:
-        print("Needs one argument: .acm move file path")
+    if len(sys.argv) < 2:
+        print("Needs one argument: .acm move file path, optional blacklisted second arg")
         exit()
     filename = sys.argv[1]
+    blacklisted = False
+    if len(sys.argv) == 3:
+        blacklistArg = sys.argv[2]
+        if blacklistArg == 'y':
+            blacklisted = True
 
     with open(filename, newline="\r\n") as f:
         lines = f.readlines()
@@ -456,6 +1819,7 @@ def main():
     prevFrame = 0
     inFalse = 0
     inTrue = 0
+    processedEndlag = False
 
     loopNum = 0
     loopLines = 0
@@ -467,9 +1831,10 @@ def main():
     if charName[-4:] == "body":
         charName = charName[:-4]
         tsvPath = "TSV/{}.tsv".format(charName)
-        with open(tsvPath) as tsv:
-            tsvLines = tsv.readlines()
-        tsvLines = [x.strip('\n') for x in tsvLines]
+        if os.path.isfile(tsvPath):
+            with open(tsvPath) as tsv:
+                tsvLines = tsv.readlines()
+            tsvLines = [x.strip('\n') for x in tsvLines]
 
     basename = os.path.basename(filename)
 
@@ -523,7 +1888,7 @@ def main():
         addLagEffects('20')
     elif basename == spinningAnim:
         addEffect(asynchronousTimer.format('1'))
-        addEffect(colorOverlay.format(255, 165, 0, 128))
+        addEffect(colorOverlay.format(*ORANGE))
         addEffect(scriptEnd)
     elif basename == spotdodge:
         addDodgeEffects(tsvLines[0].split("\t")[0:2], tsvLines[1].split("\t")[0])
@@ -549,11 +1914,11 @@ def main():
         addLagEffects(tsvLines[19].split("\t")[0])
     elif basename == landingAirF:
         addLagEffects(tsvLines[20].split("\t")[0])
-    elif basename == landingAirB:
+    elif basename == landingAirB and charName != "pikachu":
         addLagEffects(tsvLines[21].split("\t")[0])
     elif basename == landingAirHi:
         addLagEffects(tsvLines[22].split("\t")[0])
-    elif basename == landingAirLw:
+    elif basename == landingAirLw and charName != "pikachu":
         addLagEffects(tsvLines[23].split("\t")[0])
     elif basename == downStandU:
         addDodgeEffects(tsvLines[25].split("\t")[0:2], tsvLines[26].split("\t")[0])
@@ -583,7 +1948,7 @@ def main():
         addLagEffects(tsvLines[44].split("\t")[1])
     elif basename in {jabresetU, jabresetD}:
         addEffect(asynchronousTimer.format("1"))
-        addEffect(colorOverlay.format("0", "255", "0", "128"))
+        addEffect(colorOverlay.format(*GREEN))
         addEffect(scriptEnd)
     else:
         if basename == ledgeattack:
@@ -661,16 +2026,12 @@ def main():
 
                 gotoStr = "Goto"
                 if i[:len(gotoStr)] == gotoStr:
-                    #inLoop = False
-                    #if loopNum:
-                    #    loopNum = loopNum - 1
-                    #    index = index - loopLines
                     addEffect(goto.format(-gotoNum))
                     gotoNum = 0
 
                 loop = "Set_Loop"
                 if i[:len(loop)] == loop:
-                    loopNum = int(paramList[0]) - 1 if paramList[0] != "-1" else 0
+                    loopNum = int(paramList[0]) if paramList[0] != "-1" else 0
                     addEffect(setLoop.format(loopNum))
                     inLoop = True
                 elif inLoop:
@@ -686,7 +2047,7 @@ def main():
                     if state == "0x0":
                         addEffect(terminateOverlays)
                     else:
-                        addEffect(colorOverlay.format(255, 0, 255, 128))
+                        addEffect(colorOverlay.format(*MAGENTA))
 
                 bodycoll = "Body_Collision"
                 if i[:len(bodycoll)] == bodycoll:
@@ -694,7 +2055,7 @@ def main():
                     if state == "0x0":
                         addEffect(terminateOverlays)
                     else:
-                        addEffect(colorOverlay.format(0, 0, 255, 128))
+                        addEffect(colorOverlay.format(*BLUE))
 
                 detect = "Search_Collision"
                 if i[:len(detect)] == detect:
@@ -722,14 +2083,14 @@ def main():
 
                 defensive = "Defensive_Collision"
                 if i[:len(defensive)] == defensive:
-                    addEffect(colorOverlay.format('255', '0', '0', '128'))
+                    addEffect(colorOverlay.format(*RED))
 
                 bitvarset = "Bit_Variable_Set"
                 if i[:len(bitvarset)] == bitvarset:
                     var = paramList[0]
                     specialLw = "SpecialLw"
                     if var == "0x2100000E" and basename[:len(specialLw)] == specialLw and charName in counterChars:  # counter
-                        addEffect(colorOverlay.format('255', '0', '0', '128'))
+                        addEffect(colorOverlay.format(*RED))
 
                 bitvarclear = "Bit_Variable_Clear"
                 if i[:len(bitvarclear)] == bitvarclear:
@@ -752,7 +2113,7 @@ def main():
                         offsetEnd = int(paramList[0], 16)
 
                 asyncTimer = "Asynchronous_Timer"
-                if i[:len(asyncTimer)] == asyncTimer:
+                if i[:len(asyncTimer)] == asyncTimer and not processedEndlag:
                     if offsetEnd != 0:
                         addEffect(asynchronousTimer.format(offsetEnd + prevFrame))
                         addEffect(terminateGraphic13)
@@ -762,7 +2123,7 @@ def main():
                         addEffect(asynchronousTimer.format(paramList[0]))
 
                 syncTimer = "Synchronous_Timer"
-                if i[:len(syncTimer)] == syncTimer:
+                if i[:len(syncTimer)] == syncTimer and not processedEndlag:
                     addEffect(synchronousTimer.format(paramList[0]))
 
                 undoBone = "Undo_Bone_Collision"
@@ -774,81 +2135,98 @@ def main():
                 if i[:len(removeHitb)] == removeHitb or i[:len(enableAction)] == enableAction:
                     addEffect(terminateGraphic13)
                     markAllDeleted(0)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
 
                 terminateGrab = "Terminate_Grab_Collisions"
                 if i[:len(terminateGrab)] == terminateGrab:
                     addEffect(terminateGraphic13)
                     markAllDeleted(1)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
 
                 deleteGrab = "Delete_Catch_Collision"
                 if i[:len(deleteGrab)] == deleteGrab:
                     addEffect(terminateGraphic13)
                     markDeleted(paramList[0], 1)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
 
                 deleteHitb = "Delete_Hitbox"
                 if i[:len(deleteHitb)] == deleteHitb:
                     addEffect(terminateGraphic13)
                     markDeleted(paramList[0], 0)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
 
                 boneIntangability = "Set_Bone_Intangability"
                 if i[:len(boneIntangability)] == boneIntangability:
                     bone = paramList[0]
                     addEffect(setBoneIntangability.format(bone))
 
-                hitb = "Hitbox"
-                specialHitb = "Special_Hitbox"
-                collateralHitb = "Collateral_Hitbox"
-                if i[:len(hitb)] == hitb or i[:len(specialHitb)] == specialHitb or i[:len(collateralHitb)] == collateralHitb:
-                    bone = paramList[2]
-                    size = getHexFloat(float(paramList[8]) * 19 / 200)
-                    z = getHexFloat(float(paramList[9]))
-                    y = getHexFloat(float(paramList[10]))
-                    x = getHexFloat(float(paramList[11]))
-                    red, green, blue = getDamageRGB(paramList[3], paramList[4])
-                    # addEffect(normalOrSpecialHitbox.format(bone, z, y, x, size))
-                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 0)
-
-                extendedHitb = "Extended_Hitbox"
-                if i[:len(extendedHitb)] == extendedHitb:
-                    bone = paramList[2]
-                    size = getHexFloat(float(paramList[8]) * 19 / 200)
-                    zinit = float(paramList[9])
-                    yinit = float(paramList[10])
-                    xinit = float(paramList[11])
-                    zfinal = float(paramList[24])
-                    yfinal = float(paramList[25])
-                    xfinal = float(paramList[26])
-                    for j in range(0, 4):
-                        zcurr = getHexFloat(zinit + ((zfinal - zinit) / 3 * j))
-                        ycurr = getHexFloat(yinit + ((yfinal - yinit) / 3 * j))
-                        xcurr = getHexFloat(xinit + ((xfinal - xinit) / 3 * j))
+                if not blacklisted:
+                    hitb = "Hitbox"
+                    specialHitb = "Special_Hitbox"
+                    collateralHitb = "Collateral_Hitbox"
+                    if i[:len(hitb)] == hitb or i[:len(specialHitb)] == specialHitb or i[:len(collateralHitb)] == collateralHitb:
+                        bone = paramList[2]
+                        size = getHexFloat(float(paramList[8]) * 19 / 200)
+                        z = getHexFloat(float(paramList[9]))
+                        y = getHexFloat(float(paramList[10]))
+                        x = getHexFloat(float(paramList[11]))
                         red, green, blue = getDamageRGB(paramList[3], paramList[4])
-                        # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
-                        if j == 0:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
-                        else:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
+                        # addEffect(normalOrSpecialHitbox.format(bone, z, y, x, size))
+                        addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 0)
 
-                extendedSpecialHitb = "Extended_Special_Hitbox"
-                if i[:len(extendedSpecialHitb)] == extendedSpecialHitb:
-                    bone = paramList[2]
-                    size = getHexFloat(float(paramList[8]) * 19 / 200)
-                    zinit = float(paramList[9])
-                    yinit = float(paramList[10])
-                    xinit = float(paramList[11])
-                    zfinal = float(paramList[40])
-                    yfinal = float(paramList[41])
-                    xfinal = float(paramList[42])
-                    for j in range(0, 8):
-                        zcurr = getHexFloat(zinit + ((zfinal - zinit) / 7 * j))
-                        ycurr = getHexFloat(yinit + ((yfinal - yinit) / 7 * j))
-                        xcurr = getHexFloat(xinit + ((xfinal - xinit) / 7 * j))
-                        red, green, blue = getDamageRGB(paramList[3], paramList[4])
-                        # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
-                        if j == 0:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
-                        else:
-                            addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
+                    extendedHitb = "Extended_Hitbox"
+                    if i[:len(extendedHitb)] == extendedHitb:
+                        bone = paramList[2]
+                        size = getHexFloat(float(paramList[8]) * 19 / 200)
+                        zinit = float(paramList[9])
+                        yinit = float(paramList[10])
+                        xinit = float(paramList[11])
+                        zfinal = float(paramList[24])
+                        yfinal = float(paramList[25])
+                        xfinal = float(paramList[26])
+                        for j in range(0, 4):
+                            zcurr = getHexFloat(zinit + ((zfinal - zinit) / 3 * j))
+                            ycurr = getHexFloat(yinit + ((yfinal - yinit) / 3 * j))
+                            xcurr = getHexFloat(xinit + ((xfinal - xinit) / 3 * j))
+                            red, green, blue = getDamageRGB(paramList[3], paramList[4])
+                            # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
+                            if j == 0:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
+                            else:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
+
+                    extendedSpecialHitb = "Extended_Special_Hitbox"
+                    if i[:len(extendedSpecialHitb)] == extendedSpecialHitb:
+                        bone = paramList[2]
+                        size = getHexFloat(float(paramList[8]) * 19 / 200)
+                        zinit = float(paramList[9])
+                        yinit = float(paramList[10])
+                        xinit = float(paramList[11])
+                        zfinal = float(paramList[40])
+                        yfinal = float(paramList[41])
+                        xfinal = float(paramList[42])
+                        for j in range(0, 8):
+                            zcurr = getHexFloat(zinit + ((zfinal - zinit) / 7 * j))
+                            ycurr = getHexFloat(yinit + ((yfinal - yinit) / 7 * j))
+                            xcurr = getHexFloat(xinit + ((xfinal - xinit) / 7 * j))
+                            red, green, blue = getDamageRGB(paramList[3], paramList[4])
+                            # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
+                            if j == 0:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
+                            else:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
 
                 grabcoll2 = "Grab_Collision2"
                 grabcoll = "Grab_Collision"

@@ -43,3 +43,29 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	4	5	24
+Jab 2	3	4	28
+Jab 3	5	8	39
+Dash Attack	15	16 	52
+Ftilt (All Angles)	13	14	42
+Utilt	11	13	48
+Dtilt	7	8	29
+Fsmash	31	32	84
+Usmash	25	29	71
+Dsmash (Hit 1)	13	15	71
+Standing Grab	7	8	33
+Dash Grab	10	11	41
+Pivot Grab	11	12	39
+Nair	12	21	60
+Fair	12	15	55
+Bair	7	9	55
+Uair	13	29	57
+Dair	16	17	55
+Eruption (Charging)	Starts Charging: Frame 20	-	Max Charge: Frames 180-189
+Eruption	30	34	79
+Eruption (Fully Charged)	239	243 	288
+Quickdraw (Travel)	Travel Time: 12 Frames	-	57
+Quickdraw (Attack)	16	18	59
+Aether (Landing)	1	-	38
+Counter	Counters: 9	35 	59
+Counter (Attack)	5	6 	35

@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	7	8	29
+Dash Attack	10	12	38
+Ftilt	10	12	40
+Utilt (Windboxes)	6	70	115
+Dtilt	10	12	36
+Fsmash (All Angles)	21	26	60
+Usmash	21	23	42
+Dsmash (Hit 1)	15	18	64
+Standing Grab	7	8	36
+Dash Grab	11	12	45
+Pivot Grab	10	11	42
+Nair (Hit 1)	7	8	42
+Fair	14	19	45
+Bair	10	12	36
+Uair (Early)	6	10	34
+Dair	16	18	47
+Warlock Punch	70	71 	118
+Warlock Punch (B-Reversed)	80	81 	128
+Flame Choke (Ground)	16	30	60
+Flame Choke (Ground, Attack)	32 	-	62
+Flame Choke (Aerial, Attack)	1	2	41
+Dark Dive (Latch)			60
+Wizard's Foot (Ground)	16	35	77
+Wizard's Foot (Aerial)	16	18	58
+Wizard's Foot (Landing)	2	3	45

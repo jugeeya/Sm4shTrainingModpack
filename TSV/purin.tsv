@@ -43,3 +43,24 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	5	6	17
+Jab 2	5	6	20
+Dash Attack	5	9 	40
+Ftilt (All Angles)	7	10	28
+Utilt	9	10	24
+Dtilt	10	12	31
+Fsmash	16	19	50
+Usmash	16	19	46
+Dsmash	14	15 	49
+Standing Grab	6	7	27
+Dash Grab	8	9	33
+Pivot Grab	9	10	32
+Nair	6	7	44
+Fair	8	9	37
+Bair	12	13	40
+Uair	9	21	45
+Dair (Hits 1-8)	7	29	53
+Rollout (Ground, Release)	1		74 (On hit)
+Pound	13	28	46
+Sing	29	134	180
+Rest	2	4 	230

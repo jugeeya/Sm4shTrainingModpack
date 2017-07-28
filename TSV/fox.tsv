@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	-	18
+Jab 2	2	3	21
+Rapid Jab Finisher	3	4	33
+Dash Attack	4	7	36
+Ftilt (Up)	6	8	24
+Utilt	3	5	28
+Dtilt	7	9	28
+Fsmash	13	15	46
+Usmash	8	9 	56
+Dsmash	6	7 	53
+Standing Grab	6	7	29
+Dash Grab	10	11	36
+Pivot Grab	11	12	34
+Nair	4	6	42
+Fair (Hit 1)	7	8	50
+Bair	9	11	49
+Uair (Hit 1)	9	10	36
+Dair (Hits 1-6)	5	21	50
+Blaster (Early, Ground)	11	12	40
+Blaster (Early, Aerial)	9	10	38
+Fox Illusion (Grounded)	21	25	70
+Fox Illusion (Aerial)	21	25	70
+Reflector	6	7 	41

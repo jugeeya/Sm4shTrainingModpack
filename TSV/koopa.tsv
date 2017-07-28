@@ -43,3 +43,25 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	7	9 	21
+Jab 2	9	11 	26
+Dash Attack	11	14	56
+Ftilt (All Angles)	10	14 	38
+Utilt	11	16 	41
+Dtilt (Hit 1)	10	12 	46
+Fsmash	22	23 	70
+Usmash	16	23 	58
+Dsmash (Hit 1)	10	-	72
+Standing Grab	9	10	39
+Dash Grab	10	11	48
+Pivot Grab	11	12	46
+Nair (Hit 1)	8	29	48
+Fair	11	14	42
+Bair	9	11	45
+Uair	9	13 	45
+Dair (Meteor)	17	24	78
+Fire Breath	23, 30, 37, 44...	-	78
+Flying Slam (Command Grab, Ground)	8	-	43
+Flying Slam (Command Grab, Aerial)	17	-	50
+Whirling Fortress (Ground)	6	38 	82
+Bowser Bomb (Landing)	1	2 	56

@@ -6,11 +6,8 @@ mkdir AllFighterDataCompiled
 for d in $FIGHTERDIRS
 do
     dbasename=$(basename $d)
-    #if [ $dbasename != "bayonetta" ] && [ $dbasename != "dedede" ] && [ $dbasename != "kirby" ] && [ $dbasename != "gamewatch" ] && [ $dbasename != "palutena" ]
-    #then
-    if [ $dbasename != "mewtwo" ] && [ $dbasename != "murabito" ] && [ $dbasename != "reflet" ] && [ $dbasename != "sonic" ] && [ $dbasename != "yoshi" ] && [ $dbasename != "koopajr" ]
+    if [ $dbasename != "reflet" ] && [ $dbasename != "koopajr" ] && [ $dbasename != "sonic" ]
     then
-	./addOneCharProjct.sh $(basename $d)
+	    ./addMultCharProjct.sh $(basename $d)
     fi
-    #fi
 done

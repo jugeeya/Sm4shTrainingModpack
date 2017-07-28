@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	3	4	34
+Jab 2	5	6	37
+Jab 3	9	10	35
+Rapid Jab Finisher	5	6	39
+Dash Attack (Hit 1)	9	-	46
+Ftilt (All Angles)	10	-	37
+Utilt	6	11	33
+Dtilt	4	5	19
+Fsmash (Hit 1)	12	13	51
+Usmash (Hit 1)	5	8	54
+Dsmash (Hit 1)	6	7	53
+Standing Grab	6	7	32
+Dash Grab	8	9	39
+Pivot Grab	9	10	37
+Nair	8	20	49
+Fair	6	9	47
+Bair	5	8	31
+Uair	4	7	39
+Dair	17	-	49
+Peanut Popgun (Peanut)	18		49
+Peanut Popgun (Explosion)	123	-	229
+Monkey Flip (Grab)	20	42	44
+Monkey Flip (Attack Input)	6	10	30
+Banana Peel	20		40
+Banana Peel (Failed)			50

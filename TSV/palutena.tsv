@@ -43,3 +43,25 @@
 41	passiveBFAF
 1	25	jabresetUActive
 1	25	jabresetDActive
+Jab 1	8	10	26
+Rapid Jab Finisher	3	4	43
+Dash Attack	6	9 	52
+Ftilt (Hit 1)	17	24 	68
+Utilt	10	38 	68
+Dtilt	14	24 	40
+Fsmash	18	19	67
+Usmash	18	26	68
+Dsmash	17	-	72
+Standing Grab	7	8	32
+Dash Grab	9	10	40
+Pivot Grab	10	11	40
+Nair	5	27 	52
+Fair	9	11	45
+Bair	8	10 	50
+Uair	8	23 	52
+Dair	10	-	59
+Autoreticle (Target)	8	-	68
+Reflect Barrier	8 	-	56
+Warp	Invisible: 16	31	67
+Counter	Counters: 10	31 	75
+Counter (Attack)	4	6 	56

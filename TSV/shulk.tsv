@@ -43,3 +43,34 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	5	6	26
+Jab 2	5	7	34
+Jab 3	12	13	45
+Dash Attack	15	16	53
+Ftilt	12	13	44
+Utilt	11	12	40
+Dtilt	10	11	32
+Fsmash (Hit 1, Angled Up)	14	16	68
+Fsmash (Hit 1)	14	15	68
+Fsmash (Hit 1, Angled Down)	14	16	68
+Usmash (Hit 1)	18	21 	68
+Dsmash (Hit 1)	18	19	83
+Standing Grab	7	8	30
+Dash Grab	9	10	37
+Pivot Grab	10	11	35
+Nair	13	30	71
+Fair	14	18	42
+Bair	18	20	55
+Uair (Hit 1)	14	15	60
+Dair (Hit 1)	14	15	61
+Monado Arts Activation	Intangible: 1	14	6
+Backslash (Landing)	1	2	41
+Vision	Counters: 7	41 	70
+Vision (Depreciated)	Counters: 7	30 	70
+Vision (Depreciated)	Counters: 7	22 	70
+Vision (Depreciated)	Counters: 7	17 	70
+Vision (Depreciated)	Counters: 7	13 	70
+Vision (Depreciated)	Counters: 7	11 	70
+Vision (Grounded, Attack)	45	46 	97
+Vision (Aerial, Attack)	45	46 	97
+Vision (Forward Attack)	29	30 	65

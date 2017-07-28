@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	25	jabresetUActive
 1	26	jabresetDActive
+Jab 1	4	6	20
+Jab 2	4	6	40
+Rapid Jab Finisher	9	11	40
+Dash Attack	8	20 	50
+Ftilt (All Angles)	7	9	34
+Utilt	7	14	33
+Dtilt (Hit 1)	4	6	41
+Fsmash	18	32 	56
+Usmash (Launcher)	7	9 	57
+Dsmash	15	16	60
+Standing Grab	12	13	36
+Dash Grab	13	14	45
+Pivot Grab	12	13	42
+Nair (Early)	7	8	44
+Fair (Early)	10	13	44
+Bair	12	13	46
+Uair	6	9	26
+Dair	15	38 	57
+Dair (Landing)	1	2	26 (On Hit)
+Clown Cannon (No Charge)	43		81
+Clown Cannon (Full Charge)	103		141
+Abandon Ship! (Hammer)	8, 13	-	40
+Mechakoopa (Projectile)	54	197 	68

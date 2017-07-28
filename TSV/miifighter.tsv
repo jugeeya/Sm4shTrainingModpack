@@ -43,3 +43,37 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	3	16
+Jab 2	2	3	19
+Rapid Jab	?	-	?
+Rapid Jab Finisher	4	5	41
+Dash Attack	6	9	38
+Ftilt (High)	6	8	28
+Utilt	5	12	30
+Dtilt	7	8	28
+Fsmash (All Angles)	17	-	68
+Usmash	8	11 	48
+Dsmash	9	10	44
+Standing Grab	6	7	30
+Dash Grab	8	9	37
+Pivot Grab	9	10	35
+Nair	3	5	56
+Fair (Hit 1)	8	9	45
+Bair	7	9	40
+Uair	6	10	36
+Dair	16	-	50
+Neutral 1: Shot Put	28	?	80
+Neutral 2: Ultimate Uppercut (No Charge, Ground)	19	-	66
+Neutral 2: Ultimate Uppercut (Full Charge)	12	-	69
+Neutral 3: Exploding Side Kick	50	52 	90
+Neutral 3: Exploding Side Kick (B-Reversed)	58	60 	98
+Side 1: Onslaught (Inert Hitbox, Ground)	16	35	74
+Side 1: Onslaught (Attack, Ground)	4	17 	70
+Side 1: Onslaught (Attack, Aerial)	4	17 	70
+Side 3: Headache Maker (Landing)	1	2	39
+Up 1: Soaring Axe Kick (Landing)	2	3	41
+Down 1: Head-On Assault (Hit 1)	8 	-	59
+Down 2: Feint Jump			32
+Down 2: Feint Jump (Attack)	12	25	38
+Down 3: Foot Flurry (Ground, Hits 1-7)	16, 19, 22, 25, 28, 31, 34, 37	-	88
+Down 3: Foot Flurry (Aerial, Hits 1-6)	16, 19, 22, 25, 28, 31, 34	-	88

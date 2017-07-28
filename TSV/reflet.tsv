@@ -43,3 +43,30 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	4	7	32
+Jab 2	4	8	35
+Jab 3 (Fire)	10	11	36
+Rapid Jab Finisher (Wind)	8	-	41
+Dash Attack	8	10	50
+Ftilt	9	10	33
+Utilt	6	13	36
+Dtilt	7	8	22
+Fsmash (Levin Sword)	16	18	58
+Usmash (Levin Sword, Early)	12	-	53
+Dsmash (Levin Sword)	16	17	57
+Standing Grab	7	8	40
+Dash Grab	8	9	50
+Pivot Grab	9	10	47
+Nair (Hit 1)	9	12	50
+Fair (Levin Sword)	12	15	34
+Bair (Levin Sword)	9	10	40
+Uair (Levin Sword)	10	13	46
+Dair (Levin Sword, Early)	13	14	60
+Thunder	11	23 	39
+Elthunder	11	54 	48
+Arcthunder (Projectile)	11	67 	48
+Thoron	20	?? 	62
+Super Thoron	20	?? 	71
+Arcfire (Projectile)	17	50	64
+Nosferatu (Grab)	15	16 	56
+Nosferatu (Attack)	23, 31, 39, 47, 55...	-	39 after grab break

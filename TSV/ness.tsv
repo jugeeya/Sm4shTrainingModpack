@@ -43,3 +43,25 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	3	4	20
+Jab 2	3	4	20
+Jab 3	6	9	30
+Dash Attack (Hit 1)	8	-	40
+Ftilt (Angled Up)	7	10	35
+Utilt	7	8	32
+Dtilt	3	4	14 (Dtilt: 6)
+Fsmash	21	22 	55
+Usmash	6	11	56
+Dsmash	10	15 	46
+Standing Grab	6	7	35
+Dash Grab	8	9	43
+Pivot Grab	10	11	41
+Nair	5	12	36
+Fair	8	18 	40
+Bair	10	11	36
+Uair	8	11	42
+Dair	20	21	60
+PK Trash (No Charge)	43	-	69
+PK Trash (Fully Charged)	149	-	175
+PK Fire	21	38	59
+PSI Magnet	18	-	30

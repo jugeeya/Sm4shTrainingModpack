@@ -481,6 +481,8 @@ yoshi
 	body
 		AttackLw3.acm
 		AttackS3.acm
+		AttackS3Hi.acm
+		AttackS3Lw.acm
 		AttackHi3.acm
 		AttackAirHi.acm
 	firebreath

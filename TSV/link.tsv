@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	7	8	28
+Jab 2	6	7	21
+Jab 3	6	10	37
+Dash Attack	20	23	57
+Ftilt	15	19	38
+Utilt	8	12	36
+Dtilt	11	12	29
+Fsmash (Hit 1)	15	16	52
+Fsmash (Hit 2)	12	13	68
+Usmash (Hit 1)	10	13	78
+Dsmash (Hit 1)	9	10	50
+Standing Grab	12	17	62
+Dash Grab	14	21	66
+Pivot Grab	15	22	67
+Nair	7	8	39
+Fair (Hit 1)	14	15	50
+Bair (Hit 1)	6	8	31
+Uair	11	13	60
+Dair (Early)	14	17	80
+Zair (Hit 1)	12	21	60
+Hero's Bow (No Charge)	18		47
+Hero's Bow (Full Charge)	54		83
+Gale Boomerang	27	35	46
+Spin Attack (No Charge, Early)	8	9	82
+Bomb	Bomb Generated: Frame 17	-	40

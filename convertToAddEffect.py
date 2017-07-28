@@ -26,7 +26,7 @@ def main():
     for i in lines:
         removed = removeWhitespaceBeforeAndAfter(i)
         # firstChar = removed[0] if len(removed) >= 1 else ''
-        if removed[:len("TRUE")] == "TRUE" or removed[:len("FALSE")] == "FALSE":
+        if removed[:len("TRUE")] == "TRUE" or removed[:len("FALSE")] == "FALSE" or removed[:len("Set_Loop")] == "Set_Loop":
             removed = removed + "{"
         if removed == "":
             removed = "}"

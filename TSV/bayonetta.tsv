@@ -43,3 +43,34 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	9	12	26
+Jab 2	9	11	31
+Jab 3	11	12	34
+Dash Attack	15	20	47
+Ftilt 1	12	-	32
+Ftilt 2	12	-	40
+Ftilt 3	14	15	43
+Utilt (Hit 1)	7	8	27
+Dtilt	7	9	27
+Fsmash	19	21 	68
+Usmash (Early)	18	19 	65
+Dsmash (Hit 1)	20	21	69
+Standing Grab	7	8	31
+Dash Grab	9	10	38
+Pivot Grab	10	11	38
+Nair	9	17	33
+Fair 1	7	9	27
+Fair 2	7	9	32
+Fair 3	12	15	40
+Bair	11	14	30
+Uair	9	18	30
+Dair	18	24	48
+Bullet Climax	17	44	71
+No Kick Heel Slide (Hit 1, Early)	15	19	72
+Heel Slide (Hit 1, Early)	15	19	78
+Heel Slide (Hit 1, Latest)	35	45	78
+After Burner Kick (Early)	7	9	32
+After Burner Kick (Down)	8	24	44
+Witch Twist (Grounded)	4	-	29
+Witch Twist (Aerial)	4	-	29
+Witch Time	Counters: 5	21 	50

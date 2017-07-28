@@ -43,3 +43,32 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	5	7	23
+Dash Attack	13	16	50
+Ftilt	8	10	32
+Utilt (Early)	6	-	39
+Dtilt	7	8	22
+Fsmash	14	15	55
+Usmash (Hit 1)	12 	-	59
+Dsmash (Hit 1)	6	7	63
+Standing Grab	7	8	30
+Dash Grab	8	9	37
+Pivot Grab	9	10	35
+Nair (Hit 1)	6	7	46
+Fair	10	12	30
+Bair	8	10	36
+Uair	5	12	42
+Dair	16	17	52
+Flare Blade (Uncharged)	23	26	45
+Flare Blade (Charged)	262	265	284
+Double Edge Dance	6	8	42
+Double Edge Dance 2 (Up)	7	10	39
+Double Edge Dance 2	9	10	39
+Double Edge Dance 3 (Up)	8	9	44
+Double Edge Dance 3	6	8	44
+Double Edge Dance 3 (Down)	8	10	44
+Double Edge Dance 4 (Up)	11	15	51
+Double Edge Dance 4	13	15	56
+Double Edge Dance 4 (Down, Hits 1-4)	13	32	72
+Counter	Counters: 8	27 	60
+Counter (Attack)	5	6 	37

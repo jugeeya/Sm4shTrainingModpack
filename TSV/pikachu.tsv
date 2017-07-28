@@ -43,3 +43,22 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	3	22
+Dash Attack	6	9	50
+Ftilt (Angled Up)	6	8	30
+Utilt	7	13	27
+Dtilt	7	8	19
+Fsmash (Early)	15	17	49
+Usmash (Early)	10	11	45
+Dsmash (Hits 1-5)	8	21	66
+Standing Grab	6	7	28
+Dash Grab	8	9	35
+Pivot Grab	9	10	33
+Nair	3	5	39
+Fair (Hits 1-4)	10	24	42
+Bair (Hits 1-7)	4	29	59
+Uair	4	6	27
+Dair	14	26	48
+Thunder Jolt (Air)	19	116	58
+Skull Bash	18	53	97
+Thunder (Contact)	34	36 	75

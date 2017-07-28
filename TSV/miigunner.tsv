@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	5	6	26
+Jab 2	4	5	26
+Jab 3 (Hit 1)	7	9	38
+Dash Attack	10	14	46
+Utilt	5	-	38
+Dtilt	8	10	41
+Fsmash	17	38 	78
+Usmash (Hit 1)	11	12	56
+Dsmash (Hit 1)	9	-	53
+Standing Grab	6	7	29
+Dash Grab	8	9	39
+Pivot Grab	9	10	35
+Nair	8	21	42
+Fair	10	13	56
+Bair	9	10	48
+Uair (Hit 1)	17	-	62
+Dair	20	-	55
+Neutral 1: Charge Blast (No Charge)	16?	-	39?
+Neutral 1: Charge Blast (Full Charge)	16?	-	39?
+Neutral 2: Laser Blaze	?	-	?
+Side 1: Flame Pilar (Shot)	21		60
+Side 2: Stealth Burst (No Charge)	10	16?	?
+Side 3: Mii Missile (Homing)	19?	-	62
+Side 3: Mii Missile (Super)	?	-	49
+Down 2: Bomb Drop	11		55

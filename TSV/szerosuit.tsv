@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	1	-	21
+Jab 2	2	3	26
+Jab 3	3	4	32
+Dash Attack	7	9	52
+Ftilt (Angled Up)	6	8	29
+Utilt (Hit 1)	3	4 	46
+Dtilt	8	9	36
+Fsmash (Hit 1)	13	15	62
+Usmash (Hit 1)	10	11	49
+Dsmash	20	24	42
+Standing Grab	16	25	69
+Dash Grab	16	25	72
+Pivot Grab	17	25	80
+Nair	10	11	52
+Fair (Hit 1)	6	7	47
+Bair	8	9	40
+Uair	6	12	34
+Dair	14	49	68
+Zair (Hit 1)	9	18	60
+Paralyzer (Uncharged)	21		49
+Paralyzer (Charged)	43		71
+Plasma Whip (Hit 1)	22	-	56
+Flip Kick	Intangible: 3	12	50

@@ -43,3 +43,24 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Rapid Jab Finisher	3	-	35
+Dash Attack	7	11	32
+Ftilt 1	6	-	26
+Ftilt 2	2	-	28
+Ftilt 3	2	-	31
+Utilt	8	10	35
+Dtilt	3	4	19
+Fsmash	24	-	42
+Usmash (Hit 1)	8	-	50
+Dsmash (Not Buffered, Hit 1)	5	-	39
+Dsmash (Buffered, Hit 1)	4	-	38
+Standing Grab	7	8	32
+Dash Grab	9	10	40
+Pivot Grab	9	10	38
+Nair	6	7	44
+Fair (Hits 1-2)	9, 12	-	46
+Bair (Hits 1-2)	7	14	52
+Uair	6	-	27
+Dair	4	-	28
+Dimensional Cape		-	64
+Dimensional Cape (Attack)	34	 	93

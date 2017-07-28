@@ -43,3 +43,35 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	6	7	19
+Jab 2	6	7	23
+Jab 3	7	11	39
+Dash Attack	9	11	43
+Ftilt	11	13	35
+Utilt	8	12	33
+Dtilt	5	6	20
+Fsmash	16	18	60
+Usmash (Hit 1)	11	12	60
+Dsmash (Hit 1)	7	8	54
+Standing Grab	6	7	29
+Dash Grab	8	9	36
+Pivot Grab	9	10	34
+Nair	11	24	49
+Fair (Hits 1-2)	11, 16	-	47
+Bair	8	9	38
+Uair	11	13	45
+Dair	14	37 	59
+Neutral 1: Gale Strike (Early)	23	39 	78
+Neutral 2: Shuriken of Light (Close)	16	22	50
+Neutral 3: Blade Flurry (No Charge, Hits 1-4)	17	30	85
+Neutral 3: Blade Flurry (Full Charge, Hits 1-4)	66	79	134
+Side 1: Airborne Assault (No Charge)	32		95
+Side 1: Airborne Assault (Full Charge)	63		136
+Side 2: Surging Slash (No Charge)	13		62
+Side 3: Chakram	18		53
+Up 3: Hero's Spin (No Charge, Early)	8	9	79
+Down 1: Blade Counter	Counters: 6	29	60
+Down 1: Blade Counter (Attack)	6	7 	50
+Down 2: Reversal Slash	12	14 	38
+Down 3: Power Thrust (Early, Ground)	14	16	62
+Down 3: Power Thrust (Early, Air)	16	18	66

@@ -43,3 +43,31 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	5	6	27
+Jab 2	5	6	30
+Jab 3	3	4	32
+Rapid Jab Finisher	5	-	40
+Dash Attack	7	9	39
+Ftilt	10	14	40
+Utilt (Hit 1)	6	-	43
+Dtilt	6	7	32
+Fsmash (Hit 1)	10	-	59
+Usmash (Hit 1)	6	-	52
+Dsmash (Hit 1)	5	6	41
+Standing Grab	6	7	30
+Dash Grab	8	9	37
+Pivot Grab	9	10	35
+Nair (Hit 1-7)	4, 7, 10, 13, 16, 19, 22	-	55
+Fair (Hits 1-2)	11	15	47
+Bair	10	12	41
+Uair (Hits 1-4)	12	22	50
+Dair	10	-	37
+Palutena's Bow (No Charge)	20	63	59
+Palutena's Bow (No Charge, Aerial)	22	65	43
+Palutena's Bow (Full Charge)	79	122	118
+Upperdash Arm (Ground)	Inert Detector: 16	35 	83
+Upperdash Arm (Ground, Attack)	2	4	50
+Upperdash Arm (Aerial)	Inert Detector: 19	35 	121
+Upperdash Arm (Aerial, Attack)	2	5	58
+Guardian Orbitars (Minimum Duration)	Shield Appears: 9	30? 	64
+Guardian Orbitars (Maximum Duration)	Shield Appears: 9	90? 	124

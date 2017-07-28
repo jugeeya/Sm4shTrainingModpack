@@ -43,3 +43,34 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Light Jab 1	2	3	16
+Medium Jab 1	9	10	33
+Jab 2	3	5	28
+Jab 3	8	10	36
+Dash Attack	7	9	41
+Light Ftilt	8	11 	28
+Medium Ftilt (Hit 1)	13	-	35
+Light Utilt	3	6	15
+Medium Utilt	7 	-	38
+Light Dtilt	2	3	16
+Medium Dtilt	7	8	29
+Fsmash	15	17	46
+Usmash	9	10	45
+Dsmash	5	6	42
+Standing Grab	6	7	30
+Dash Grab	8	9	37
+Pivot Grab	9	10	35
+Nair	4	6	28
+Fair	6	7	38
+Bair	8	9	42
+Uair (Hit 1)	6	-	36
+Dair	8	12	46
+Light Hadouken	13	70	58
+Light Tatsumaki Senpukyaku (Grounded)	10		64
+Medium Tatsumaki Senpukyaku (Grounded)			96
+Heavy Tatsumaki Senpukyaku (Grounded)		-	96
+Light Tatsumaki Senpukyaku (Aerial)	10		64
+Medium Tatsumaki Senpukyaku (Aerial)		-	96
+Heavy Tatsumaki Senpukyaku (Aerial)			96
+Focus Attack (No Charge)	31	32	76
+Focus Attack (Stage 3)	70	71 	115

@@ -43,3 +43,25 @@
 40	passiveBFAF
 1	25	jabresetUActive
 1	25	jabresetDActive
+Jab 1	4	6	26
+Jab 2	5	7	28
+Jab 3	6	9	34
+Rapid Jab Finisher	6	-	40
+Dash Attack	10	13	44
+Ftilt (All Angles)	8	11	32
+Utilt	8	12	34
+Dtilt	6	7	35
+Fsmash (Hits 1-2)	17	24	67
+Usmash (Hit 1)	12	13	58
+Dsmash (Hit 1)	12	13	59
+Standing Grab	8	9	29
+Dash Grab	10	11	36
+Pivot Grab	10	11	34
+Nair	6	8	56
+Fair (Early)	7	8	46
+Bair	7	8	42
+Uair (Hits 1-2)	6	13	40
+Dair (Hit 1)	14	-	60
+Trick Shot	16		46
+Clay Shooting (Pidgeon)	17		66
+Wild Gunman	Gunman Generated: 6, 5% HP	-	45

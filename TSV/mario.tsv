@@ -43,3 +43,25 @@
 41	passiveBFAF
 1	25	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	3	20
+Jab 2	2	3	22
+Jab 3	7	8	34
+Dash Attack	6	9	38
+Ftilt (All Angles)	5	6	31
+Utilt	5	11	30
+Dtilt	5	7	28
+Fsmash (Angled Up)	15	17	48
+Usmash	9	12 	40
+Dsmash (Hit 1)	5	6	44
+Standing Grab	6	7	29
+Dash Grab	8	9	36
+Pivot Grab	9	10	34
+Nair	3	5	46
+Fair (Early)	16	-	60
+Bair	6	7	34
+Uair	4	8	32
+Dair (Hits 1-5)	5, 7, 9, 11, 13	-	38
+Fireball	17	20	53
+Cape	12	14 	36
+F.L.U.D.D	Max Charge: Frame 98	-	99 (Shield Cancellable From: 20)
+F.L.U.D.D (Attack)	21		75

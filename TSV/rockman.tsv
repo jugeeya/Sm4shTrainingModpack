@@ -43,3 +43,32 @@
 40	passiveBFAF
 1	25	jabresetUActive
 1	25	jabresetDActive
+Jab 1	7	-	36
+Jab 2	19	-	48
+Jab 3	31	-	60
+Dash Attack (Hits 1-7)	8, 11, 14, 17, 20, 23, 26	-	61
+Ftilt 1 (Shot, Early)	7	9	34
+Ftilt 2 (Shot, Early)	19	21	46
+Ftilt 3 (Shot, Early)	31	33	58
+Utilt (Early)	6 	-	71
+Dtilt	5	8 	47
+Fsmash	19	40	70
+Fsmash (Full Charge)	79	106	130
+Usmash (Hit 1)	8	-	69
+Dsmash (Early)	17	-	79
+Standing Grab	6	7	31
+Dash Grab	8	9	38
+Pivot Grab	9	10	36
+Nair 1	7	9	34
+Nair 2	19	21	46
+Nair 3	31	33	58
+Fair	9	11	41
+Bair (Hit 1)	4	-	43
+Uair (Early)	11	17 	54
+Dair	23	24	65
+Metal Blade	16	64	43
+Metal Blade (Thrown Back)	18	66	45
+Crash Bomber (Bomb)	19	76	45
+Rush Coil	1 	-	41
+Leaf Shield	50	144 	54
+Leaf Shield (Thrown)	22	79 	56

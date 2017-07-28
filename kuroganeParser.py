@@ -1,4 +1,5 @@
 import sys
+import urllib.request, json
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
@@ -9,6 +10,28 @@ gameToKuro = {}
 for i in range(len(gameChars)):
     gameToKuro[gameChars[i]] = kuroChars[i]
 kuroName = ""
+
+kuroAPIChars = []
+for k in kuroChars:
+    currstr = k
+    spaceIndex = currstr.find("%20")
+    if currstr == "Game%20And%20Watch":
+        currstr = 'Mrgamewatch'
+    if currstr == "Dr.%20Mario":
+        currstr = "Drmario"
+    if currstr == "PAC-MAN":
+        currstr = "Pacman"
+    if currstr == "R.O.B":
+        currstr = "Rob"
+    while spaceIndex != -1:
+        currstr = currstr[:spaceIndex] + currstr[spaceIndex+3:spaceIndex+4].lower() + currstr[spaceIndex+4:]
+        spaceIndex = currstr.find("%20")
+
+    kuroAPIChars.append(currstr)
+
+gameToKuroAPI = {}
+for i in range(len(gameChars)):
+    gameToKuroAPI[gameChars[i]] = kuroAPIChars[i]
     
 ledgejumpActive=[]
 ledgejumpFAF=""
@@ -347,6 +370,23 @@ def main():
 
         print(jabresetUActive[0], jabresetUActive[1], "jabresetUActive", sep="\t")
         print(jabresetDActive[0], jabresetDActive[1], "jabresetDActive", sep="\t")
+
+        urlName = "http://api.kuroganehammer.com/api/characters/name/{}/moves".format(gameToKuroAPI[charName])
+        # print(urlName)
+        with urllib.request.urlopen(urlName) as url:
+            data = json.loads(url.read().decode())
+        for entry in data:
+            if entry['firstActionableFrame'] not in {'-', ''}:
+                activeFrames = entry['hitboxActive']
+                parenIndex = activeFrames.find('(')
+                if parenIndex != -1:
+                    activeFrames = activeFrames[:parenIndex]
+                activeFrames = activeFrames.split('-')
+                if len(activeFrames) > 1:
+                    print(entry['name'], activeFrames[0], activeFrames[-1], entry['firstActionableFrame'], sep="\t")
+                else:
+                    print(entry['name'], activeFrames[0], '-', entry['firstActionableFrame'], sep="\t")
+
 
 main()
 

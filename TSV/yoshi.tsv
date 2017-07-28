@@ -43,3 +43,23 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	3	4	18
+Jab 2	3	4	20
+Dash Attack	10	12	50
+Ftilt (Angled Up)	5	7	39
+Utilt	8	15	32
+Dtilt	8	10	24
+Fsmash (All Angles)	14 	-	53
+Usmash	11	13 	47
+Dsmash (Hit 1)	7	8	50
+Standing Grab	14	24	56
+Dash Grab	11	21	68
+Pivot Grab	10	20	65
+Nair (Early)	3	5	45
+Fair	16	20	44
+Bair (Hits 1-2)	11, 17	-	56
+Uair	5	6	39
+Dair (Hits 1-6)	16, 18, 20, 22, 24, 26	-	57
+Egg Lay	21	24	44
+Egg Throw (Contact)	15	59	54
+Yoshi Bomb (Stars)	3	12	40

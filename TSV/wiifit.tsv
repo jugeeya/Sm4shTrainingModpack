@@ -43,3 +43,28 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	24	jabresetDActive
+Jab 1	4	5 	26
+Jab 2	3	4	30
+Jab 3	6	7	40
+Dash Attack	7	13	43
+Ftilt	6	7	33
+Utilt	5	7	35
+Dtilt (Windbox)	7 	-	38
+Fsmash	16	19	62
+Usmash	14	15 	58
+Dsmash	18	21	57
+Standing Grab	6	7	29
+Dash Grab	9	10	38
+Pivot Grab	10	11	34
+Nair (Hit 1)	9	11	35
+Fair	9	10	46
+Bair	5	-	49
+Uair	6	10	40
+Dair	20	21	45
+Sun Salutation	21		57
+Header	16	17	41
+Header (No Input)	31	32	56
+Deep Breathing (Fastest)	Lasts ~590 Frames	-	31
+Deep Breathing (Slowest)	Lasts ~420 Frames	-	31
+Deep Breathing (Aerial)			16
+Deep Breathing (Failure)			49

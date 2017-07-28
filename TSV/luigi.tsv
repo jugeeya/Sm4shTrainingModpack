@@ -43,3 +43,26 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1	2	3	19
+Jab 2	3	4	19
+Jab 3	6	7	31
+Dash Attack (Hits 1-6)	4, 10, 16, 22, 29, 37	-	76
+Ftilt (All Angles)	5	7	33
+Utilt	5	10	31
+Dtilt	5	8	27
+Fsmash (High)	12	13	42
+Usmash	9	13 	40
+Dsmash (Hit 1)	6	7	38
+Down Taunt	45	-	70
+Standing Grab	6	7	29
+Dash Grab	8	9	36
+Pivot Grab	9	10	34
+Nair	3	5	46
+Fair	7	10	24
+Bair	6	7	46
+Uair	5	7	30
+Dair	10	-	29
+Fireball	17	45	44
+Green Missile (Misfire)	22	 	86
+Luigi Cyclone (Ground)	10	33 	90
+Luigi Cyclone (Aerial)	10	33 	90

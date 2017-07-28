@@ -43,3 +43,45 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
+Jab 1 (Rosalina)	8	10	23
+Jab 1 (Luma)	4	5	23
+Jab 2 (Rosalina)	6	8	25
+Jab 2 (Luma)	6	7	25
+Jab 3 (Rosalina)	9	11	36
+Jab 3 (Luma)	9	13	36
+Rapid Jab (Rosalina)	?	-	?
+Rapid Jab (Luma)	?	-	?
+Rapid Jab Finisher (Rosalina)	9	11	40
+Rapid Jab Finisher (Luma)	8	12	40
+Dash Attack (Hit 1, Rosalina)	6	9	48
+Dash Attack (Luma)	6	8	48
+Ftilt (Rosalina)	7	9	38
+Ftilt (Luma)	8	11	39
+Utilt (Rosalina)	9	17 	41
+Utilt (Early, Luma)	3 	-	31
+Dtilt (Rosalina)	5	8	33
+Dtilt (Luma)	8	13	32
+Fsmash (Rosalina)	16	18	52
+Fsmash (Luma)	17	18	52
+Usmash (Rosalina)	8	16 	48
+Usmash (Luma)	10	12	48
+Dsmash (Hit 1, Rosalina)	6	7	42
+Dsmash (Hit 1, Luma)	7	8	36
+Standing Grab	6	7	36
+Dash Grab	8	9	43
+Pivot Grab	9	10	42
+Nair (Rosalina)	9	34	66
+Nair (Hit 1, Luma)	3	6	57?
+Fair (Rosalina)	11	25 	76
+Fair (Luma)	11	14	58
+Bair (Rosalina)	9	11	55
+Bair (Luma)	10	15	55
+Uair (Early, Rosalina)	8	10	42
+Uair (Luma)	3	10	42
+Dair (Early, Rosalina)	17	-	50
+Dair (Luma)	8	12	42
+Luma Shot (No Charge)	10	25	44
+Luma Shot (Full Charge Release)	4	32 	38
+Luma Shot (Wand Wave)	8	15	38
+Star Bits	13	24	52 (Luma: 40)
+Gravitational Pull	Pulls on: 2	Forever	45 (Luma: 55)

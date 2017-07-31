@@ -11,8 +11,8 @@ kuroChars = "Bayonetta,Captain%20Falcon,Cloud,King%20Dedede,Diddy%20Kong,Donkey%
 
 counterChars = "gekkouga,ike,kamui,littlemac,lucario,lucina,marth,palutena,peach,roy,shulk".split(",")
 
-kuroMoves = "Medium Jab 1,Jab 2,Jab 3,Dash Attack,Ftilt,Ftilt,Ftilt,Light Ftilt,Medium Ftilt,Utilt,Light Utilt,Medium Utilt,Dtilt,Light Dtilt,Medium Dtilt,Fsmash,Usmash,Dsmash,Standing Grab,Dash Grab,Pivot Grab,Nair,Fair,Bair,Uair,Dair".split(",")
-gameMoves = "Attack11s,Attack12,Attack13,AttackDash,AttackS3,AttackS3Hi,AttackS3Lw,0x008C1CDD,0x07E1D8C4,AttackHi3,AttackHi3w,AttackHi3s,AttackLw3,AttackLw3w,AttackLw3s,AttackS4,AttackHi4,AttackLw4,Catch,CatchDash,CatchTurn,AttackAirN,AttackAirF,AttackAirB,AttackAirHi,AttackAirLw".split(",")
+kuroMoves = "Jab 1,Medium Jab 1,Jab 2,Jab 3,Dash Attack,Ftilt,Ftilt,Ftilt,Light Ftilt,Medium Ftilt,Ftilt 2,Ftilt 3,Utilt,Light Utilt,Medium Utilt,Dtilt,Light Dtilt,Medium Dtilt,Fsmash,Usmash,Dsmash,Standing Grab,Dash Grab,Pivot Grab,Nair,Fair,Fair 2,Fair 3,Bair,Uair,Dair".split(",")
+gameMoves = "Attack11,Attack11s,Attack12,Attack13,AttackDash,AttackS3,AttackS3Hi,AttackS3Lw,0x008C1CDD,0x07E1D8C4,0x063AA9C2,0x713D9954,AttackHi3,AttackHi3w,AttackHi3s,AttackLw3,AttackLw3w,AttackLw3s,AttackS4,AttackHi4,AttackLw4,Catch,CatchDash,CatchTurn,AttackAirN,AttackAirF,AttackAirF2,AttackAirF3,AttackAirB,AttackAirHi,AttackAirLw".split(",")
 
 gameMovesToKuro = {}
 for i in range(len(gameMoves)):
@@ -69,10 +69,787 @@ BLUE = ['0', '0', '255', '128']
 ORANGE = ['255', '165', '0', '128']
 MAGENTA = ['255', '0', '255', '128']
 
-
+blacklisted = False
 inLoop = False
 inCompare = 0
 FAF = 100000
+currentFrame = 0
+
+def moreHitboxesExist(remainingLines):
+    for i in remainingLines:
+        if i.find("Hitbox") != -1 or i.find("Grab") != -1:
+            return True
+    return False
+
+def getTSVLine(moveName, tsvLines):
+    for line in tsvLines:
+        for value in line.split("\t"):
+            if value[:len(moveName)] == moveName:
+                return line
+    return "Not Found"
+
+def didProcessEndlag(lines, index, basename, tsvLines):
+    global effectLines, FAF
+    if not moreHitboxesExist(lines[index + 1:]):
+        currMove = basename[:-4]
+        if currMove in gameMoves and len(tsvLines) >= 1:
+            kuroMove = gameMovesToKuro[currMove]
+            testMultiHitb2 = kuroMove + " 2"
+            testMultiHitb3 = kuroMove + " 3"
+            if kuroMove[-1] == "1":
+                testMultiHitb2 = kuroMove[:-1] + "2"
+                testMultiHitb3 = kuroMove[:-1] + "3"
+            if kuroMove[-1] == "2":
+                testMultiHitb3 = kuroMove[:-1] + "3"
+            if getTSVLine(testMultiHitb2, tsvLines) == "Not Found" and getTSVLine(testMultiHitb3, tsvLines) == "Not Found":
+                addEffect(asynchronousTimer.format(currentFrame))
+                addEffect(colorOverlay.format(*GREEN))
+                currTSVLine = getTSVLine(gameMovesToKuro[currMove], tsvLines)
+                FAFStr = currTSVLine.split('\t')[-1]
+                FAFStr = FAFStr.split(' ')[0]
+                FAF = int(FAFStr)
+                addEffect(asynchronousTimer.format(FAF))
+                addEffect(terminateOverlays)
+                if not inLoop and not inCompare:
+                    addEffect(scriptEnd)
+                if blacklisted:
+                    effectLines = "\t\t" + asynchronousTimer.format(currentFrame) + "\r\n"
+                    effectLines = effectLines + "\t\t" + colorOverlay.format(*GREEN) + "\r\n"
+                    effectLines = effectLines + "\t\t" + asynchronousTimer.format(FAF) + "\r\n"
+                    effectLines = effectLines + "\t\t" + terminateOverlays + "\r\n"
+                    effectLines = effectLines + "\t\t" + scriptEnd + "\r\n"
+                return True
+    if blacklisted:
+        effectLines = "\t\t" + scriptEnd + "\r\n"
+    return False
+
+def editLastTrue(value):
+    global effectLines, trueIndex
+    if value == 2:
+        removeLastEffectString()
+        removeLastEffectString()
+        removeLastEffectString()
+        trueIndex = trueIndex - 1
+    else:
+        i = effectLines.rfind("TRUE")
+        trueOnwards = effectLines[i:]
+        effectLines = effectLines[:i] + TRUEComp.format(hex(value)) + effectLines[i + trueOnwards.find(")")+2:]
+
+def falseExists():
+    for e in effectStringDict:
+        if e[:len("FALSE")] == "FALSE":
+            return True
+    return False
+
+def parseUntilLastTrue(trueNum):
+    trueVals[trueNum] = 0
+    allEffectLines = effectLines.split("\r\n")[:-1]
+    indices = []
+    for i in range(len(allEffectLines)):
+        allEffectLines[i] = removeBeginningWhitespace(allEffectLines[i])
+        if allEffectLines[i][:len("TRUE")] == "TRUE":
+            indices.append(i)
+    for q in range(indices[trueNum],len(allEffectLines)-1):
+        thisParamList = getParamList(allEffectLines[q])
+        if thisParamList[0] != "":
+            trueVals[trueNum] = trueVals[trueNum] + len(thisParamList) + 1
+        else:
+            trueVals[trueNum] = trueVals[trueNum] + len(thisParamList)
+    if falseExists():
+        trueVals[trueNum] = trueVals[trueNum] + 2
+
+def editLastFalse(value):
+    global effectLines
+    i = effectLines.rfind("FALSE")
+    falseOnwards = effectLines[i:]
+    effectLines = effectLines[:i] + FALSEComp.format(hex(value)) + effectLines[i + falseOnwards.find(")")+2:]
+
+def parseUntilLastFalse(falseNum):
+    falseVals[falseNum] = 0
+    allEffectLines = effectLines.split("\r\n")[:-1]
+    indices = []
+    for i in range(len(allEffectLines)):
+        allEffectLines[i] = removeBeginningWhitespace(allEffectLines[i])
+        if allEffectLines[i][:len("FALSE")] == "FALSE":
+            indices.append(i)
+    for q in range(indices[falseNum],len(allEffectLines)-1):
+        thisParamList = getParamList(allEffectLines[q])
+        if thisParamList[0] != "":
+            falseVals[falseNum] = falseVals[falseNum] + len(thisParamList) + 1
+        else:
+            falseVals[falseNum] = falseVals[falseNum] + len(thisParamList)
+        # print(allEffectLines[q], len(thisParamList), falseVals[falseNum])
+
+def float_to_hex(f):
+    return hex(struct.unpack('<I', struct.pack('<f', f))[0])
+
+def getHexFloat(value):
+    hexFloat = str(float_to_hex(value)).upper()
+    return "".join(c.lower() if (c == "X") else c for i, c in enumerate(hexFloat))
+
+def getParamList(line):
+    parameters = line[line.find("(") + 1:line.find(")")]
+    fullParamList = parameters.split(',')
+    paramList = [x[x.find("=") + 1:] for x in fullParamList]
+    return paramList
+
+def addEffect(effectString):
+    addEffectID(effectString, -1, -1)
+
+def markDeleted(hitboxID, hitboxOrGrabbox):
+    numReadded = 0
+    for e in effectStringDict:
+        currlist = effectStringDict[e]
+        if currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:
+            if currlist[0] != hitboxID:
+                # addEffectID(e, currlist[0], currlist[2])
+                addEffect(e)
+                numReadded = numReadded + 1
+    i = 0
+    for e in effectStringDict: # mark all except just added ones
+        if i == len(effectStringDict) - numReadded - 1:
+            break
+        currlist = effectStringDict[e]
+        if currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:
+            if currlist[0] == hitboxID:
+                currlist[1] = 1
+        i = i + 1
+
+def markAllDeleted(hitboxOrGrabbox):
+    for e in effectStringDict:
+        currlist = effectStringDict[e]
+        if currlist[2] == hitboxOrGrabbox:
+            effectStringDict[e][1] = 1
+
+def addEffectID(effectString, hitboxID, hitboxOrGrabbox):
+    global effectLines, effectStringDict
+    if hitboxID != -1:
+        for e in effectStringDict:
+            currlist = effectStringDict[e]
+            if hitboxID == currlist[0] and currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:  # equal ID, not deleted, hitbox/grabbox
+                addEffect(terminateGraphic13)
+                markAllDeleted(hitboxOrGrabbox)
+                break
+    if not blacklisted:
+        effectLines = effectLines + "\t\t"
+    tabs = inCompare
+    if inLoop:
+       tabs = tabs + 1
+    for q in range(tabs):
+        if not blacklisted:
+            effectLines = effectLines + "    "
+
+    if not blacklisted:
+        effectLines = effectLines + effectString + "\r\n"
+    effectStringDict[effectString] = [hitboxID, 0, hitboxOrGrabbox]
+
+def getLastEffectString():
+    allEffectLines = effectLines.split("\r\n")
+    return removeBeginningWhitespace(allEffectLines[-2:-1])[0]
+
+def removeBeginningWhitespace(string):
+    removed = ""
+    for q in range(len(string)):
+        if not string[q].isspace():
+            removed = string[q:]
+            break
+    return removed
+
+def removeLastEffectString():
+    global effectLines
+    tabIndex = effectLines.rfind("\t")
+    while (effectLines[tabIndex] == "\t"):
+        tabIndex = tabIndex - 1
+    effectLines = effectLines[:tabIndex+1]
+
+def removeLastEffect(effectString):
+    global effectLines
+    currstr = "\t\t" + effectString + "\r\n"
+    effectLines = effectLines[:-len(currstr)]
+
+def printOutput(lines):
+    inEffect = False
+    for i in lines:
+        if i == "\tEffect()\n\t{\r":
+            inEffect = True
+            print(effectLines, end="\t}\n\r\n")
+        if not inEffect:
+            if i != "\t\tTRUE(Unknown=0x2)\r":
+                print(i, end="\n")
+        else:
+            if i == "\t}\n\r":
+                inEffect = False
+
+def printBlacklistedOutput(lines):
+    inEffect = False
+    global effectLines
+    if effectLines == "\tEffect()\n\t{\r\n":
+        effectLines = effectLines + "\t}\n\r\n"
+    for i in lines:
+        if i == "\tEffect()\n\t{\r":
+            inEffect = True
+            # print(effectLines, end="\t}\n\r\n")
+        if not inEffect:
+            if i != "\t\tTRUE(Unknown=0x2)\r":
+                print(i, end="\n")
+        else:
+            if i == "\t\tScript_End()\r":
+                print(effectLines, end="")
+                inEffect = False
+            elif i == "\t}\n\r":
+                print(i)
+                inEffect = False
+            else:
+                print(i, end="\n")
+
+def getDamageRGB(damageStr, angleStr):
+    damage = float(damageStr)
+    angle = int(angleStr, 16)
+    if 240 <= angle <= 300:
+        red = getHexFloat(255)
+        green = getHexFloat(0)
+        blue = getHexFloat(230)
+    elif damage == 0:
+        red = getHexFloat(255)
+        green = getHexFloat(255)
+        blue = getHexFloat(255)
+    elif damage > 15:
+        red = getHexFloat(255)
+        green = getHexFloat(0)
+        blue = getHexFloat(0)
+    else:
+        red = getHexFloat(255)
+        green = getHexFloat(230 - (damage * 230 / 15))
+        blue = getHexFloat(0)
+
+    return red, green, blue
+
+def addDodgeEffects2(dodgeActive):
+    addEffect(asynchronousTimer.format(dodgeActive[0]))
+    addEffect(colorOverlay.format(*BLUE))
+    addEffect(asynchronousTimer.format(str(int(dodgeActive[1]) + 1)))
+    addEffect(terminateOverlays)
+    addEffect(scriptEnd)
+
+def addDodgeEffects(dodgeActive, dodgeFAF):
+    # starting frames
+    addEffect(colorOverlay.format(*GREEN))
+    # invuln
+    addEffect(asynchronousTimer.format(dodgeActive[0]))
+    addEffect(terminateOverlays)
+    addEffect(colorOverlay.format(*BLUE))
+    addEffect(asynchronousTimer.format(str(int(dodgeActive[1]) + 1)))
+    addEffect(terminateOverlays)
+    # lag
+    addEffect(colorOverlay.format(*GREEN))
+    addEffect(asynchronousTimer.format(dodgeFAF))
+    addEffect(terminateOverlays)
+    addEffect(scriptEnd)
+
+def addLagEffects(lagLength):
+    addEffect(asynchronousTimer.format("1"))
+    addEffect(colorOverlay.format(*GREEN))
+    addEffect(asynchronousTimer.format(str(int(lagLength) + 1)))
+    addEffect(terminateOverlays)
+    addEffect(scriptEnd)
+
+def main():
+    global effectLines, inLoop, inCompare, falseVals, trueVals, falseIndex, trueIndex, currentFrame, blacklisted
+    if len(sys.argv) < 2:
+        print("Needs one argument: .acm move file path, optional blacklisted second arg")
+        exit()
+    filename = sys.argv[1]
+    if len(sys.argv) == 3:
+        blacklistArg = sys.argv[2]
+        if blacklistArg == 'y':
+            blacklisted = True
+            effectLines = ""
+
+    with open(filename, newline="\r\n") as f:
+        lines = f.readlines()
+    lines = [x.strip('\n') for x in lines]
+
+    inMain = False
+    shouldExitLoop = False
+    gotoNum = 0
+    offsetBegin = 0
+    offsetEnd = 0
+    prevFrame = 0
+    inFalse = 0
+    inTrue = 0
+    processedEndlag = False
+
+    loopNum = 0
+    loopLines = 0
+
+    tsvLines = []
+
+    # tsvData found in TSV folder; read any file for example layout
+    charName = os.path.split(os.path.dirname(filename))[0][:-5]
+    if charName[-4:] == "body":
+        charName = charName[:-4]
+        tsvPath = "TSV/{}.tsv".format(charName)
+        if os.path.isfile(tsvPath):
+            with open(tsvPath) as tsv:
+                tsvLines = tsv.readlines()
+            tsvLines = [x.strip('\n') for x in tsvLines]
+
+    basename = os.path.basename(filename)
+
+    spotdodge = "EscapeN.acm"
+    froll = "EscapeF.acm"
+    broll = "EscapeB.acm"
+    airdodge = "EscapeAir.acm"
+    shielding = "Guard.acm"
+    shieldOn = "GuardOn.acm"
+    unshield = "GuardOff.acm"
+    shieldDamage = "GuardDamage.acm"
+    ledgecatch = "CliffCatch.acm"
+    groundedfootstoolPose = "StepPose.acm"
+    groundedfootstoolBack = "0xE0D78C1E.acm"
+    spinningAnim = "DamageFlyRoll.acm"
+    ledgegetup = "CliffClimbQuick.acm"
+    ledgeroll = "CliffEscapeQuick.acm"
+    ledgejump = "CliffJumpQuick1.acm"
+    ledgeattack = "CliffAttackQuick.acm"
+    jumpsquat = "JumpSquat.acm"
+    lightLanding = "LandingLight.acm"
+    hardLanding = "LandingHeavy.acm"
+    landingAirN = "LandingAirN.acm"
+    landingAirF = "LandingAirF.acm"
+    landingAirB = "LandingAirB.acm"
+    landingAirHi = "LandingAirHi.acm"
+    landingAirLw = "LandingAirLw.acm"
+    passive = "Passive.acm"
+    passiveF = "PassiveStandF.acm"
+    passiveB = "PassiveStandB.acm"
+    downStandU = "DownStandU.acm"
+    downStandD = "DownStandD.acm"
+    downForwardU = "DownForwardU.acm"
+    downForwardD = "DownForwardD.acm"
+    downBackU = "DownBackU.acm"
+    downBackD = "DownBackD.acm"
+    downBoundU = "DownBoundU.acm"
+    downBoundD = "DownBoundD.acm"
+    jabresetU = "DownDamageU3.acm"
+    jabresetD = "DownDamageD3.acm"
+
+    if didHandleEdgeCase(charName, basename):
+        str = "This conditional is a placeholder."
+    elif basename == unshield:
+        addLagEffects('7')
+    elif basename == shieldDamage:
+        addEffect(colorOverlay.format(*GREEN))
+        addEffect(scriptEnd)
+    elif basename == ledgecatch:
+        addLagEffects('2')
+    elif basename == groundedfootstoolPose:
+        addLagEffects('8')
+    elif basename == groundedfootstoolBack:
+        addLagEffects('20')
+    elif basename == spinningAnim:
+        addEffect(asynchronousTimer.format('1'))
+        addEffect(colorOverlay.format(*ORANGE))
+        addEffect(scriptEnd)
+    elif basename == spotdodge:
+        addDodgeEffects(tsvLines[0].split("\t")[0:2], tsvLines[1].split("\t")[0])
+    elif basename == froll:
+        addDodgeEffects(tsvLines[2].split("\t")[0:2], tsvLines[3].split("\t")[0])
+    elif basename == broll:
+        addDodgeEffects(tsvLines[4].split("\t")[0:2], tsvLines[5].split("\t")[0])
+    elif basename == airdodge:
+        addDodgeEffects(tsvLines[6].split("\t")[0:2], tsvLines[7].split("\t")[0])
+    elif basename == ledgejump:
+        addDodgeEffects2(tsvLines[8].split("\t")[0:2])
+    elif basename == ledgeroll:
+        addDodgeEffects(tsvLines[10].split("\t")[0:2], tsvLines[11].split("\t")[0])
+    elif basename == ledgegetup:
+        addDodgeEffects(tsvLines[12].split("\t")[0:2], tsvLines[13].split("\t")[0])
+    elif basename == jumpsquat:
+        addLagEffects(tsvLines[16].split("\t")[0])
+    elif basename == lightLanding:
+        addLagEffects(tsvLines[17].split("\t")[0])
+    elif basename == hardLanding:
+        addLagEffects(tsvLines[18].split("\t")[0])
+    elif basename == landingAirN:
+        addLagEffects(tsvLines[19].split("\t")[0])
+    elif basename == landingAirF:
+        addLagEffects(tsvLines[20].split("\t")[0])
+    elif basename == landingAirB and charName != "pikachu":
+        addLagEffects(tsvLines[21].split("\t")[0])
+    elif basename == landingAirHi:
+        addLagEffects(tsvLines[22].split("\t")[0])
+    elif basename == landingAirLw and charName != "pikachu":
+        addLagEffects(tsvLines[23].split("\t")[0])
+    elif basename == downStandU:
+        addDodgeEffects(tsvLines[25].split("\t")[0:2], tsvLines[26].split("\t")[0])
+    elif basename == downStandD:
+        addDodgeEffects(tsvLines[27].split("\t")[0:2], tsvLines[28].split("\t")[0])
+    elif basename == downForwardU:
+        addDodgeEffects(tsvLines[29].split("\t")[0:2], tsvLines[30].split("\t")[0])
+    elif basename == downForwardD:
+        addDodgeEffects(tsvLines[31].split("\t")[0:2], tsvLines[32].split("\t")[0])
+    elif basename == downBackU:
+        addDodgeEffects(tsvLines[33].split("\t")[0:2], tsvLines[34].split("\t")[0])
+    elif basename == downBackD:
+        addDodgeEffects(tsvLines[35].split("\t")[0:2], tsvLines[36].split("\t")[0])
+    elif basename == passive:
+        addDodgeEffects(tsvLines[37].split("\t")[0:2], tsvLines[38].split("\t")[0])
+    elif basename == passiveF:
+        addDodgeEffects(tsvLines[39].split("\t")[0:2], tsvLines[40].split("\t")[0])
+    elif basename == passiveB:
+        addDodgeEffects(tsvLines[41].split("\t")[0:2], tsvLines[42].split("\t")[0])
+    elif basename == downBoundU:
+        addEffect(downEffect1)
+        addEffect(downEffect2)
+        addLagEffects(tsvLines[43].split("\t")[1])
+    elif basename == downBoundD:
+        addEffect(downEffect1)
+        addEffect(downEffect2)
+        addLagEffects(tsvLines[44].split("\t")[1])
+    elif basename in {jabresetU, jabresetD}:
+        addEffect(asynchronousTimer.format("1"))
+        addEffect(colorOverlay.format(*GREEN))
+        addEffect(scriptEnd)
+    else:
+        if basename == ledgeattack:
+            addDodgeEffects2(tsvLines[14].split("\t")[0:2])
+            removeLastEffect(scriptEnd)
+        index = 0
+        while index < len(lines):
+            iorig = lines[index]
+            i = removeBeginningWhitespace(iorig)
+
+            # print(i, index)
+
+            if i == "Main()\n\t{\r":
+                inMain = True
+                if lines[index + 1] == "\t}\n\r":
+                    break
+            if shouldExitLoop:
+                break
+            if inMain:
+                paramList = getParamList(i)
+
+                endlooporcompare = "}"
+                if i[:len(endlooporcompare)] == endlooporcompare:
+                    if inCompare:
+                        inCompare = inCompare - 1
+                        addEffect(endLoopOrCompare)
+                    if inLoop:
+                        inLoop = False
+                        addEffect(endLoopOrCompare)
+                    if inFalse:
+                        parseUntilLastFalse(falseIndex - 1)
+                        editLastFalse(falseVals[falseIndex-1])
+                        inFalse = inFalse - 1
+                        # falseIndex = falseIndex - 1
+                    if inTrue:
+                        parseUntilLastTrue(trueIndex - 1)
+                        editLastTrue(trueVals[trueIndex-1])
+                        inTrue = inTrue - 1
+                        # trueIndex = trueIndex - 1
+
+                compare = "If_Compare"
+                compare2 = "If_Compare2"
+                if i[:len(compare2)] == compare2:
+                    addEffect(ifCompare2.format(paramList[0], paramList[1], paramList[2]))
+                elif i[:len(compare)] == compare:
+                    addEffect(ifCompare.format(paramList[0], paramList[1], paramList[2]))
+                ifBitIsSetStr = "If_Bit_is_Set"
+                if i[:len(ifBitIsSetStr)] == ifBitIsSetStr:
+                    addEffect(ifBitIsSet.format(paramList[0]))
+                isExistArticleStr = "IS_EXIST_ARTICLE"
+                if i[:len(isExistArticleStr)] == isExistArticleStr:
+                    addEffect(isExistArticle.format(paramList[0]))
+                someCompareStr = "unk_477705C2"
+                if i[:len(someCompareStr)] == someCompareStr:
+                    addEffect(someCompare.format(paramList[0], paramList[1], paramList[2]))
+                someCompareStr2 = "unk_2DA7E2B6"
+                if i[:len(someCompareStr2)] == someCompareStr2:
+                    addEffect(someCompare2.format(paramList[0], paramList[1], paramList[2]))
+
+                TRUEstr = "TRUE"
+                if i[:len(TRUEstr)] == TRUEstr:
+                    addEffect(TRUEComp.format(paramList[0]))
+                    inCompare = inCompare + 1
+                    trueIndex = trueIndex + 1
+                    inTrue = inTrue + 1
+                    trueVals.append(0)
+
+                FALSEstr = "FALSE"
+                if i[:len(FALSEstr)] == FALSEstr:
+                    addEffect(FALSEComp.format(paramList[0]))
+                    inCompare = inCompare + 1
+                    falseIndex = falseIndex + 1
+                    inFalse = inFalse + 1
+                    falseVals.append(0)
+
+                gotoStr = "Goto"
+                if i[:len(gotoStr)] == gotoStr:
+                    addEffect(goto.format(-gotoNum))
+                    gotoNum = 0
+
+                loop = "Set_Loop"
+                if i[:len(loop)] == loop:
+                    loopNum = int(paramList[0]) if paramList[0] != "-1" else 0
+                    addEffect(setLoop.format(loopNum))
+                    inLoop = True
+                elif inLoop:
+                    loopLines = loopLines + 1
+
+                looprest = "Loop_Rest()"
+                if i[:len(looprest)] == looprest:
+                    addEffect(looprest)
+
+                armor = "Set_Armor"
+                if i[:len(armor)] == armor:
+                    state = paramList[0]
+                    if state == "0x0":
+                        addEffect(terminateOverlays)
+                    else:
+                        addEffect(colorOverlay.format(*MAGENTA))
+
+                bodycoll = "Body_Collision"
+                if i[:len(bodycoll)] == bodycoll:
+                    state = paramList[0]
+                    if state == "0x0":
+                        addEffect(terminateOverlays)
+                    else:
+                        addEffect(colorOverlay.format(*BLUE))
+
+                detect = "Search_Collision"
+                if i[:len(detect)] == detect:
+                    bone = paramList[2]
+                    size = getHexFloat(float(paramList[3]) * 19 / 200)
+                    z = getHexFloat(float(paramList[4]))
+                    y = getHexFloat(float(paramList[5]))
+                    x = getHexFloat(float(paramList[6]))
+                    red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
+                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
+
+                subr = "Subroutine"
+                if i[:len(subr)] == subr:
+                    hashNum = paramList[0]
+                    addEffect(subroutine.format(hashNum))
+
+                extsubr = "External_Subroutine"
+                if i[:len(extsubr)] == extsubr:
+                    hashNum = paramList[0]
+                    addEffect(extsubroutine.format(hashNum))
+
+                waitloopclr = "WAIT_LOOP_CLR()"
+                if i[:len(waitloopclr)] == waitloopclr:
+                    addEffect(waitloopclr)
+
+                defensive = "Defensive_Collision"
+                if i[:len(defensive)] == defensive:
+                    addEffect(colorOverlay.format(*RED))
+
+                bitvarset = "Bit_Variable_Set"
+                if i[:len(bitvarset)] == bitvarset:
+                    var = paramList[0]
+                    specialLw = "SpecialLw"
+                    if var == "0x2100000E" and basename[:len(specialLw)] == specialLw and charName in counterChars:  # counter
+                        addEffect(colorOverlay.format(*RED))
+
+                bitvarclear = "Bit_Variable_Clear"
+                if i[:len(bitvarclear)] == bitvarclear:
+                    var = paramList[0]
+                    if var == "0x2100000E" and basename[:len(specialLw)] == specialLw and charName in counterChars:  # counter
+                        addEffect(terminateOverlays)
+
+                terminateDefensive = "Terminate_Defensive_Collision"
+                if i[:len(terminateDefensive)] == terminateDefensive:
+                    addEffect(terminateOverlays)
+
+                basicvarset = "Basic_Variable_Set"
+                if i[:len(basicvarset)] == basicvarset:
+                    if offsetBegin == 0 and paramList[1] == "0x1100000F":
+                        offsetBegin = int(paramList[0], 16)
+                        prevFrame = int(getParamList(getLastEffectString())[0])
+                        removeLastEffect(asynchronousTimer.format(prevFrame))
+                        addEffect(asynchronousTimer.format(prevFrame + offsetBegin))
+                    elif paramList[1] == "0x11000010":
+                        offsetEnd = int(paramList[0], 16)
+
+                asyncTimer = "Asynchronous_Timer"
+                if i[:len(asyncTimer)] == asyncTimer and not processedEndlag:
+                    if offsetEnd != 0:
+                        addEffect(asynchronousTimer.format(offsetEnd + prevFrame))
+                        addEffect(terminateGraphic13)
+                        addEffect(asynchronousTimer.format(offsetBegin + int(paramList[0])))
+                        prevFrame = int(paramList[0])
+                    else:
+                        addEffect(asynchronousTimer.format(paramList[0]))
+                    currentFrame = int(paramList[0])
+
+                syncTimer = "Synchronous_Timer"
+                if i[:len(syncTimer)] == syncTimer and not processedEndlag:
+                    addEffect(synchronousTimer.format(paramList[0]))
+                    currentFrame = currentFrame + int(paramList[0])
+
+                undoBone = "Undo_Bone_Collision"
+                if i[:len(undoBone)] == undoBone:
+                    addEffect(terminateGraphic31)
+
+                removeHitb = "Remove_All_Hitboxes"
+                enableAction = "Enable Action Status"
+                if i[:len(removeHitb)] == removeHitb or i[:len(enableAction)] == enableAction:
+                    addEffect(terminateGraphic13)
+                    markAllDeleted(0)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
+
+                terminateGrab = "Terminate_Grab_Collisions"
+                if i[:len(terminateGrab)] == terminateGrab:
+                    addEffect(terminateGraphic13)
+                    markAllDeleted(1)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
+
+                deleteGrab = "Delete_Catch_Collision"
+                if i[:len(deleteGrab)] == deleteGrab:
+                    addEffect(terminateGraphic13)
+                    markDeleted(paramList[0], 1)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
+
+                deleteHitb = "Delete_Hitbox"
+                if i[:len(deleteHitb)] == deleteHitb:
+                    addEffect(terminateGraphic13)
+                    markDeleted(paramList[0], 0)
+                    if didProcessEndlag(lines, index, basename, tsvLines):
+                        if not inLoop and not inCompare:
+                            break
+                        processedEndlag = True
+
+                boneIntangability = "Set_Bone_Intangability"
+                if i[:len(boneIntangability)] == boneIntangability:
+                    bone = paramList[0]
+                    addEffect(setBoneIntangability.format(bone))
+
+                if not blacklisted:
+                    hitb = "Hitbox"
+                    specialHitb = "Special_Hitbox"
+                    collateralHitb = "Collateral_Hitbox"
+                    if i[:len(hitb)] == hitb or i[:len(specialHitb)] == specialHitb or i[:len(collateralHitb)] == collateralHitb:
+                        bone = paramList[2]
+                        size = getHexFloat(float(paramList[8]) * 19 / 200)
+                        z = getHexFloat(float(paramList[9]))
+                        y = getHexFloat(float(paramList[10]))
+                        x = getHexFloat(float(paramList[11]))
+                        red, green, blue = getDamageRGB(paramList[3], paramList[4])
+                        # addEffect(normalOrSpecialHitbox.format(bone, z, y, x, size))
+                        addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 0)
+
+                    extendedHitb = "Extended_Hitbox"
+                    if i[:len(extendedHitb)] == extendedHitb:
+                        bone = paramList[2]
+                        size = getHexFloat(float(paramList[8]) * 19 / 200)
+                        zinit = float(paramList[9])
+                        yinit = float(paramList[10])
+                        xinit = float(paramList[11])
+                        zfinal = float(paramList[24])
+                        yfinal = float(paramList[25])
+                        xfinal = float(paramList[26])
+                        for j in range(0, 4):
+                            zcurr = getHexFloat(zinit + ((zfinal - zinit) / 3 * j))
+                            ycurr = getHexFloat(yinit + ((yfinal - yinit) / 3 * j))
+                            xcurr = getHexFloat(xinit + ((xfinal - xinit) / 3 * j))
+                            red, green, blue = getDamageRGB(paramList[3], paramList[4])
+                            # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
+                            if j == 0:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
+                            else:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
+
+                    extendedSpecialHitb = "Extended_Special_Hitbox"
+                    if i[:len(extendedSpecialHitb)] == extendedSpecialHitb:
+                        bone = paramList[2]
+                        size = getHexFloat(float(paramList[8]) * 19 / 200)
+                        zinit = float(paramList[9])
+                        yinit = float(paramList[10])
+                        xinit = float(paramList[11])
+                        zfinal = float(paramList[40])
+                        yfinal = float(paramList[41])
+                        xfinal = float(paramList[42])
+                        for j in range(0, 8):
+                            zcurr = getHexFloat(zinit + ((zfinal - zinit) / 7 * j))
+                            ycurr = getHexFloat(yinit + ((yfinal - yinit) / 7 * j))
+                            xcurr = getHexFloat(xinit + ((xfinal - xinit) / 7 * j))
+                            red, green, blue = getDamageRGB(paramList[3], paramList[4])
+                            # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
+                            if j == 0:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
+                            else:
+                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
+
+                grabcoll2 = "Grab_Collision2"
+                grabcoll = "Grab_Collision"
+                if i[:len(grabcoll2)] == grabcoll2:
+                    bone = paramList[1]
+                    size = getHexFloat(float(paramList[2]) * 19 / 200)
+                    z = getHexFloat(float(paramList[3]))
+                    y = getHexFloat(float(paramList[4]))
+                    x = getHexFloat(float(paramList[5]))
+                    red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
+                    # addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
+                    addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
+                elif i[:len(grabcoll)] == grabcoll:
+                    bone = paramList[1]
+                    size = getHexFloat(float(paramList[2]) * 19 / 200)
+                    z = getHexFloat(float(paramList[3]))
+                    y = getHexFloat(float(paramList[4]))
+                    x = getHexFloat(float(paramList[5]))
+                    addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
+
+                grabHitb = "Extended_Grab_Collision"
+                if i[:len(grabHitb)] == grabHitb:
+                    bone = paramList[1]
+                    size = getHexFloat(float(paramList[2]) * 19 / 200)
+                    zinit = float(paramList[3])
+                    yinit = float(paramList[4])
+                    xinit = float(paramList[5])
+                    zfinal = zinit  # float(paramList[8]) #zinit??
+                    yfinal = float(paramList[9])
+                    xfinal = float(paramList[10])
+                    for j in range(0, 3):
+                        zcurr = getHexFloat(zinit + ((zfinal - zinit) / 2 * j))
+                        ycurr = getHexFloat(yinit + ((yfinal - yinit) / 2 * j))
+                        xcurr = getHexFloat(xinit + ((xfinal - xinit) / 2 * j))
+                        if j == 0:
+                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), paramList[0], 1)
+                        else:
+                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), -1, 1)
+
+                if inLoop and i[:len(loop)] != loop:
+                    thisParamList = getParamList(getLastEffectString())
+                    if thisParamList[0] != "":
+                        gotoNum = gotoNum + len(thisParamList) + 1
+                    else:
+                        gotoNum = gotoNum + len(thisParamList)
+
+                scriptFin = "Script_End()"
+                if i[:len(scriptFin)] == scriptFin:
+                    if offsetBegin != 0:
+                        addEffect(asynchronousTimer.format(prevFrame + offsetEnd))
+                        addEffect(terminateGraphic13)
+                    addEffect(scriptEnd)
+                    inMain = False
+                    shouldExitLoop = True
+            index = index + 1
+
+    if blacklisted:
+        printBlacklistedOutput(lines)
+    else:
+        printOutput(lines)
 
 def didHandleEdgeCase(char, move):
     global inLoop, inCompare
@@ -1562,727 +2339,5 @@ def didHandleEdgeCase(char, move):
      sonic spindash (in FITX v2.0)
     '''
     return False
-
-def moreHitboxesExist(remainingLines):
-    for i in remainingLines:
-        if i.find("Hitbox") != -1 or i.find("Grab") != -1:
-            return True
-    return False
-
-def getTSVLine(moveName, tsvLines):
-    for line in tsvLines:
-        for value in line.split("\t"):
-            if value[:len(moveName)] == moveName:
-                return line
-
-def didProcessEndlag(lines, index, basename, tsvLines):
-    if not moreHitboxesExist(lines[index + 1:]):
-        currMove = basename[:-4]
-        if currMove in gameMoves and len(tsvLines) >= 1:
-            addEffect(colorOverlay.format(*GREEN))
-            currTSVLine = getTSVLine(gameMovesToKuro[currMove], tsvLines)
-            FAFStr = currTSVLine.split('\t')[-1]
-            FAFStr = FAFStr.split(' ')[0]
-            FAF = int(FAFStr)
-            addEffect(asynchronousTimer.format(FAF))
-            addEffect(terminateOverlays)
-            if not inLoop and not inCompare:
-                addEffect(scriptEnd)
-            return True
-    return False
-
-def editLastTrue(value):
-    global effectLines, trueIndex
-    if value == 2:
-        removeLastEffectString()
-        removeLastEffectString()
-        removeLastEffectString()
-        trueIndex = trueIndex - 1
-    else:
-        i = effectLines.rfind("TRUE")
-        trueOnwards = effectLines[i:]
-        effectLines = effectLines[:i] + TRUEComp.format(hex(value)) + effectLines[i + trueOnwards.find(")")+2:]
-
-def falseExists():
-    for e in effectStringDict:
-        if e[:len("FALSE")] == "FALSE":
-            return True
-    return False
-
-def parseUntilLastTrue(trueNum):
-    trueVals[trueNum] = 0
-    allEffectLines = effectLines.split("\r\n")[:-1]
-    indices = []
-    for i in range(len(allEffectLines)):
-        allEffectLines[i] = removeBeginningWhitespace(allEffectLines[i])
-        if allEffectLines[i][:len("TRUE")] == "TRUE":
-            indices.append(i)
-    for q in range(indices[trueNum],len(allEffectLines)-1):
-        thisParamList = getParamList(allEffectLines[q])
-        if thisParamList[0] != "":
-            trueVals[trueNum] = trueVals[trueNum] + len(thisParamList) + 1
-        else:
-            trueVals[trueNum] = trueVals[trueNum] + len(thisParamList)
-    if falseExists():
-        trueVals[trueNum] = trueVals[trueNum] + 2
-
-def editLastFalse(value):
-    global effectLines
-    i = effectLines.rfind("FALSE")
-    falseOnwards = effectLines[i:]
-    effectLines = effectLines[:i] + FALSEComp.format(hex(value)) + effectLines[i + falseOnwards.find(")")+2:]
-
-def parseUntilLastFalse(falseNum):
-    falseVals[falseNum] = 0
-    allEffectLines = effectLines.split("\r\n")[:-1]
-    indices = []
-    for i in range(len(allEffectLines)):
-        allEffectLines[i] = removeBeginningWhitespace(allEffectLines[i])
-        if allEffectLines[i][:len("FALSE")] == "FALSE":
-            indices.append(i)
-    for q in range(indices[falseNum],len(allEffectLines)-1):
-        thisParamList = getParamList(allEffectLines[q])
-        if thisParamList[0] != "":
-            falseVals[falseNum] = falseVals[falseNum] + len(thisParamList) + 1
-        else:
-            falseVals[falseNum] = falseVals[falseNum] + len(thisParamList)
-        # print(allEffectLines[q], len(thisParamList), falseVals[falseNum])
-
-def float_to_hex(f):
-    return hex(struct.unpack('<I', struct.pack('<f', f))[0])
-
-def getHexFloat(value):
-    hexFloat = str(float_to_hex(value)).upper()
-    return "".join(c.lower() if (c == "X") else c for i, c in enumerate(hexFloat))
-
-def getParamList(line):
-    parameters = line[line.find("(") + 1:line.find(")")]
-    fullParamList = parameters.split(',')
-    paramList = [x[x.find("=") + 1:] for x in fullParamList]
-    return paramList
-
-def addEffect(effectString):
-    addEffectID(effectString, -1, -1)
-
-def markDeleted(hitboxID, hitboxOrGrabbox):
-    numReadded = 0
-    for e in effectStringDict:
-        currlist = effectStringDict[e]
-        if currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:
-            if currlist[0] != hitboxID:
-                # addEffectID(e, currlist[0], currlist[2])
-                addEffect(e)
-                numReadded = numReadded + 1
-    i = 0
-    for e in effectStringDict: # mark all except just added ones
-        if i == len(effectStringDict) - numReadded - 1:
-            break
-        currlist = effectStringDict[e]
-        if currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:
-            if currlist[0] == hitboxID:
-                currlist[1] = 1
-        i = i + 1
-
-def markAllDeleted(hitboxOrGrabbox):
-    for e in effectStringDict:
-        currlist = effectStringDict[e]
-        if currlist[2] == hitboxOrGrabbox:
-            effectStringDict[e][1] = 1
-
-def addEffectID(effectString, hitboxID, hitboxOrGrabbox):
-    global effectLines, effectStringDict
-    if hitboxID != -1:
-        for e in effectStringDict:
-            currlist = effectStringDict[e]
-            if hitboxID == currlist[0] and currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:  # equal ID, not deleted, hitbox/grabbox
-                addEffect(terminateGraphic13)
-                markAllDeleted(hitboxOrGrabbox)
-                break
-    effectLines = effectLines + "\t\t"
-    tabs = inCompare
-    if inLoop:
-       tabs = tabs + 1
-    for q in range(tabs):
-        effectLines = effectLines + "    "
-    effectLines = effectLines + effectString + "\r\n"
-    effectStringDict[effectString] = [hitboxID, 0, hitboxOrGrabbox]
-
-def getLastEffectString():
-    allEffectLines = effectLines.split("\r\n")
-    return removeBeginningWhitespace(allEffectLines[-2:-1])[0]
-
-def removeBeginningWhitespace(string):
-    removed = ""
-    for q in range(len(string)):
-        if not string[q].isspace():
-            removed = string[q:]
-            break
-    return removed
-
-def removeLastEffectString():
-    global effectLines
-    tabIndex = effectLines.rfind("\t")
-    while (effectLines[tabIndex] == "\t"):
-        tabIndex = tabIndex - 1
-    effectLines = effectLines[:tabIndex+1]
-
-def removeLastEffect(effectString):
-    global effectLines
-    currstr = "\t\t" + effectString + "\r\n"
-    effectLines = effectLines[:-len(currstr)]
-
-def printOutput(lines):
-    inEffect = False
-    for i in lines:
-        if i == "\tEffect()\n\t{\r":
-            inEffect = True
-            print(effectLines, end="\t}\n\r\n")
-        if not inEffect:
-            if i != "\t\tTRUE(Unknown=0x2)\r":
-                print(i, end="\n")
-        else:
-            if i == "\t}\n\r":
-                inEffect = False
-
-def getDamageRGB(damageStr, angleStr):
-    damage = float(damageStr)
-    angle = int(angleStr, 16)
-    if 240 <= angle <= 300:
-        red = getHexFloat(255)
-        green = getHexFloat(0)
-        blue = getHexFloat(230)
-    elif damage == 0:
-        red = getHexFloat(255)
-        green = getHexFloat(255)
-        blue = getHexFloat(255)
-    elif damage > 15:
-        red = getHexFloat(255)
-        green = getHexFloat(0)
-        blue = getHexFloat(0)
-    else:
-        red = getHexFloat(255)
-        green = getHexFloat(230 - (damage * 230 / 15))
-        blue = getHexFloat(0)
-
-    return red, green, blue
-
-def addDodgeEffects2(dodgeActive):
-    addEffect(asynchronousTimer.format(dodgeActive[0]))
-    addEffect(colorOverlay.format(*BLUE))
-    addEffect(asynchronousTimer.format(str(int(dodgeActive[1]) + 1)))
-    addEffect(terminateOverlays)
-    addEffect(scriptEnd)
-
-def addDodgeEffects(dodgeActive, dodgeFAF):
-    # starting frames
-    addEffect(colorOverlay.format(*GREEN))
-    # invuln
-    addEffect(asynchronousTimer.format(dodgeActive[0]))
-    addEffect(terminateOverlays)
-    addEffect(colorOverlay.format(*BLUE))
-    addEffect(asynchronousTimer.format(str(int(dodgeActive[1]) + 1)))
-    addEffect(terminateOverlays)
-    # lag
-    addEffect(colorOverlay.format(*GREEN))
-    addEffect(asynchronousTimer.format(dodgeFAF))
-    addEffect(terminateOverlays)
-    addEffect(scriptEnd)
-
-def addLagEffects(lagLength):
-    addEffect(asynchronousTimer.format("1"))
-    addEffect(colorOverlay.format(*GREEN))
-    addEffect(asynchronousTimer.format(str(int(lagLength) + 1)))
-    addEffect(terminateOverlays)
-    addEffect(scriptEnd)
-
-def main():
-    if len(sys.argv) < 2:
-        print("Needs one argument: .acm move file path, optional blacklisted second arg")
-        exit()
-    filename = sys.argv[1]
-    blacklisted = False
-    if len(sys.argv) == 3:
-        blacklistArg = sys.argv[2]
-        if blacklistArg == 'y':
-            blacklisted = True
-
-    with open(filename, newline="\r\n") as f:
-        lines = f.readlines()
-    lines = [x.strip('\n') for x in lines]
-
-    global effectLines, inLoop, inCompare, falseVals, trueVals, falseIndex, trueIndex
-    inMain = False
-    shouldExitLoop = False
-    gotoNum = 0
-    offsetBegin = 0
-    offsetEnd = 0
-    prevFrame = 0
-    inFalse = 0
-    inTrue = 0
-    processedEndlag = False
-
-    loopNum = 0
-    loopLines = 0
-
-    tsvLines = []
-
-    # tsvData found in TSV folder; read any file for example layout
-    charName = os.path.split(os.path.dirname(filename))[0][:-5]
-    if charName[-4:] == "body":
-        charName = charName[:-4]
-        tsvPath = "TSV/{}.tsv".format(charName)
-        if os.path.isfile(tsvPath):
-            with open(tsvPath) as tsv:
-                tsvLines = tsv.readlines()
-            tsvLines = [x.strip('\n') for x in tsvLines]
-
-    basename = os.path.basename(filename)
-
-    spotdodge = "EscapeN.acm"
-    froll = "EscapeF.acm"
-    broll = "EscapeB.acm"
-    airdodge = "EscapeAir.acm"
-    shielding = "Guard.acm"
-    shieldOn = "GuardOn.acm"
-    unshield = "GuardOff.acm"
-    shieldDamage = "GuardDamage.acm"
-    ledgecatch = "CliffCatch.acm"
-    groundedfootstoolPose = "StepPose.acm"
-    groundedfootstoolBack = "0xE0D78C1E.acm"
-    spinningAnim = "DamageFlyRoll.acm"
-    ledgegetup = "CliffClimbQuick.acm"
-    ledgeroll = "CliffEscapeQuick.acm"
-    ledgejump = "CliffJumpQuick1.acm"
-    ledgeattack = "CliffAttackQuick.acm"
-    jumpsquat = "JumpSquat.acm"
-    lightLanding = "LandingLight.acm"
-    hardLanding = "LandingHeavy.acm"
-    landingAirN = "LandingAirN.acm"
-    landingAirF = "LandingAirF.acm"
-    landingAirB = "LandingAirB.acm"
-    landingAirHi = "LandingAirHi.acm"
-    landingAirLw = "LandingAirLw.acm"
-    passive = "Passive.acm"
-    passiveF = "PassiveStandF.acm"
-    passiveB = "PassiveStandB.acm"
-    downStandU = "DownStandU.acm"
-    downStandD = "DownStandD.acm"
-    downForwardU = "DownForwardU.acm"
-    downForwardD = "DownForwardD.acm"
-    downBackU = "DownBackU.acm"
-    downBackD = "DownBackD.acm"
-    downBoundU = "DownBoundU.acm"
-    downBoundD = "DownBoundD.acm"
-    jabresetU = "DownDamageU3.acm"
-    jabresetD = "DownDamageD3.acm"
-
-    if didHandleEdgeCase(charName, basename):
-        str = "This conditional is a placeholder."
-    elif basename == unshield:
-        addLagEffects('7')
-    elif basename == ledgecatch:
-        addLagEffects('2')
-    elif basename == groundedfootstoolPose:
-        addLagEffects('8')
-    elif basename == groundedfootstoolBack:
-        addLagEffects('20')
-    elif basename == spinningAnim:
-        addEffect(asynchronousTimer.format('1'))
-        addEffect(colorOverlay.format(*ORANGE))
-        addEffect(scriptEnd)
-    elif basename == spotdodge:
-        addDodgeEffects(tsvLines[0].split("\t")[0:2], tsvLines[1].split("\t")[0])
-    elif basename == froll:
-        addDodgeEffects(tsvLines[2].split("\t")[0:2], tsvLines[3].split("\t")[0])
-    elif basename == broll:
-        addDodgeEffects(tsvLines[4].split("\t")[0:2], tsvLines[5].split("\t")[0])
-    elif basename == airdodge:
-        addDodgeEffects(tsvLines[6].split("\t")[0:2], tsvLines[7].split("\t")[0])
-    elif basename == ledgejump:
-        addDodgeEffects2(tsvLines[8].split("\t")[0:2])
-    elif basename == ledgeroll:
-        addDodgeEffects(tsvLines[10].split("\t")[0:2], tsvLines[11].split("\t")[0])
-    elif basename == ledgegetup:
-        addDodgeEffects(tsvLines[12].split("\t")[0:2], tsvLines[13].split("\t")[0])
-    elif basename == jumpsquat:
-        addLagEffects(tsvLines[16].split("\t")[0])
-    elif basename == lightLanding:
-        addLagEffects(tsvLines[17].split("\t")[0])
-    elif basename == hardLanding:
-        addLagEffects(tsvLines[18].split("\t")[0])
-    elif basename == landingAirN:
-        addLagEffects(tsvLines[19].split("\t")[0])
-    elif basename == landingAirF:
-        addLagEffects(tsvLines[20].split("\t")[0])
-    elif basename == landingAirB and charName != "pikachu":
-        addLagEffects(tsvLines[21].split("\t")[0])
-    elif basename == landingAirHi:
-        addLagEffects(tsvLines[22].split("\t")[0])
-    elif basename == landingAirLw and charName != "pikachu":
-        addLagEffects(tsvLines[23].split("\t")[0])
-    elif basename == downStandU:
-        addDodgeEffects(tsvLines[25].split("\t")[0:2], tsvLines[26].split("\t")[0])
-    elif basename == downStandD:
-        addDodgeEffects(tsvLines[27].split("\t")[0:2], tsvLines[28].split("\t")[0])
-    elif basename == downForwardU:
-        addDodgeEffects(tsvLines[29].split("\t")[0:2], tsvLines[30].split("\t")[0])
-    elif basename == downForwardD:
-        addDodgeEffects(tsvLines[31].split("\t")[0:2], tsvLines[32].split("\t")[0])
-    elif basename == downBackU:
-        addDodgeEffects(tsvLines[33].split("\t")[0:2], tsvLines[34].split("\t")[0])
-    elif basename == downBackD:
-        addDodgeEffects(tsvLines[35].split("\t")[0:2], tsvLines[36].split("\t")[0])
-    elif basename == passive:
-        addDodgeEffects(tsvLines[37].split("\t")[0:2], tsvLines[38].split("\t")[0])
-    elif basename == passiveF:
-        addDodgeEffects(tsvLines[39].split("\t")[0:2], tsvLines[40].split("\t")[0])
-    elif basename == passiveB:
-        addDodgeEffects(tsvLines[41].split("\t")[0:2], tsvLines[42].split("\t")[0])
-    elif basename == downBoundU:
-        addEffect(downEffect1)
-        addEffect(downEffect2)
-        addLagEffects(tsvLines[43].split("\t")[1])
-    elif basename == downBoundD:
-        addEffect(downEffect1)
-        addEffect(downEffect2)
-        addLagEffects(tsvLines[44].split("\t")[1])
-    elif basename in {jabresetU, jabresetD}:
-        addEffect(asynchronousTimer.format("1"))
-        addEffect(colorOverlay.format(*GREEN))
-        addEffect(scriptEnd)
-    else:
-        if basename == ledgeattack:
-            addDodgeEffects2(tsvLines[14].split("\t")[0:2])
-            removeLastEffect(scriptEnd)
-        index = 0
-        while index < len(lines):
-            iorig = lines[index]
-            i = removeBeginningWhitespace(iorig)
-
-            # print(i, index)
-
-            if i == "Main()\n\t{\r":
-                inMain = True
-                if lines[index + 1] == "\t}\n\r":
-                    break
-            if shouldExitLoop:
-                break
-            if inMain:
-                paramList = getParamList(i)
-
-                endlooporcompare = "}"
-                if i[:len(endlooporcompare)] == endlooporcompare:
-                    if inCompare:
-                        inCompare = inCompare - 1
-                        addEffect(endLoopOrCompare)
-                    if inLoop:
-                        inLoop = False
-                        addEffect(endLoopOrCompare)
-                    if inFalse:
-                        parseUntilLastFalse(falseIndex - 1)
-                        editLastFalse(falseVals[falseIndex-1])
-                        inFalse = inFalse - 1
-                        # falseIndex = falseIndex - 1
-                    if inTrue:
-                        parseUntilLastTrue(trueIndex - 1)
-                        editLastTrue(trueVals[trueIndex-1])
-                        inTrue = inTrue - 1
-                        # trueIndex = trueIndex - 1
-
-                compare = "If_Compare"
-                compare2 = "If_Compare2"
-                if i[:len(compare2)] == compare2:
-                    addEffect(ifCompare2.format(paramList[0], paramList[1], paramList[2]))
-                elif i[:len(compare)] == compare:
-                    addEffect(ifCompare.format(paramList[0], paramList[1], paramList[2]))
-                ifBitIsSetStr = "If_Bit_is_Set"
-                if i[:len(ifBitIsSetStr)] == ifBitIsSetStr:
-                    addEffect(ifBitIsSet.format(paramList[0]))
-                isExistArticleStr = "IS_EXIST_ARTICLE"
-                if i[:len(isExistArticleStr)] == isExistArticleStr:
-                    addEffect(isExistArticle.format(paramList[0]))
-                someCompareStr = "unk_477705C2"
-                if i[:len(someCompareStr)] == someCompareStr:
-                    addEffect(someCompare.format(paramList[0], paramList[1], paramList[2]))
-                someCompareStr2 = "unk_2DA7E2B6"
-                if i[:len(someCompareStr2)] == someCompareStr2:
-                    addEffect(someCompare2.format(paramList[0], paramList[1], paramList[2]))
-
-                TRUEstr = "TRUE"
-                if i[:len(TRUEstr)] == TRUEstr:
-                    addEffect(TRUEComp.format(paramList[0]))
-                    inCompare = inCompare + 1
-                    trueIndex = trueIndex + 1
-                    inTrue = inTrue + 1
-                    trueVals.append(0)
-
-                FALSEstr = "FALSE"
-                if i[:len(FALSEstr)] == FALSEstr:
-                    addEffect(FALSEComp.format(paramList[0]))
-                    inCompare = inCompare + 1
-                    falseIndex = falseIndex + 1
-                    inFalse = inFalse + 1
-                    falseVals.append(0)
-
-                gotoStr = "Goto"
-                if i[:len(gotoStr)] == gotoStr:
-                    addEffect(goto.format(-gotoNum))
-                    gotoNum = 0
-
-                loop = "Set_Loop"
-                if i[:len(loop)] == loop:
-                    loopNum = int(paramList[0]) if paramList[0] != "-1" else 0
-                    addEffect(setLoop.format(loopNum))
-                    inLoop = True
-                elif inLoop:
-                    loopLines = loopLines + 1
-
-                looprest = "Loop_Rest()"
-                if i[:len(looprest)] == looprest:
-                    addEffect(looprest)
-
-                armor = "Set_Armor"
-                if i[:len(armor)] == armor:
-                    state = paramList[0]
-                    if state == "0x0":
-                        addEffect(terminateOverlays)
-                    else:
-                        addEffect(colorOverlay.format(*MAGENTA))
-
-                bodycoll = "Body_Collision"
-                if i[:len(bodycoll)] == bodycoll:
-                    state = paramList[0]
-                    if state == "0x0":
-                        addEffect(terminateOverlays)
-                    else:
-                        addEffect(colorOverlay.format(*BLUE))
-
-                detect = "Search_Collision"
-                if i[:len(detect)] == detect:
-                    bone = paramList[2]
-                    size = getHexFloat(float(paramList[3]) * 19 / 200)
-                    z = getHexFloat(float(paramList[4]))
-                    y = getHexFloat(float(paramList[5]))
-                    x = getHexFloat(float(paramList[6]))
-                    red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
-                    addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
-
-                subr = "Subroutine"
-                if i[:len(subr)] == subr:
-                    hashNum = paramList[0]
-                    addEffect(subroutine.format(hashNum))
-
-                extsubr = "External_Subroutine"
-                if i[:len(extsubr)] == extsubr:
-                    hashNum = paramList[0]
-                    addEffect(extsubroutine.format(hashNum))
-
-                waitloopclr = "WAIT_LOOP_CLR()"
-                if i[:len(waitloopclr)] == waitloopclr:
-                    addEffect(waitloopclr)
-
-                defensive = "Defensive_Collision"
-                if i[:len(defensive)] == defensive:
-                    addEffect(colorOverlay.format(*RED))
-
-                bitvarset = "Bit_Variable_Set"
-                if i[:len(bitvarset)] == bitvarset:
-                    var = paramList[0]
-                    specialLw = "SpecialLw"
-                    if var == "0x2100000E" and basename[:len(specialLw)] == specialLw and charName in counterChars:  # counter
-                        addEffect(colorOverlay.format(*RED))
-
-                bitvarclear = "Bit_Variable_Clear"
-                if i[:len(bitvarclear)] == bitvarclear:
-                    var = paramList[0]
-                    if var == "0x2100000E" and basename[:len(specialLw)] == specialLw and charName in counterChars:  # counter
-                        addEffect(terminateOverlays)
-
-                terminateDefensive = "Terminate_Defensive_Collision"
-                if i[:len(terminateDefensive)] == terminateDefensive:
-                    addEffect(terminateOverlays)
-
-                basicvarset = "Basic_Variable_Set"
-                if i[:len(basicvarset)] == basicvarset:
-                    if offsetBegin == 0 and paramList[1] == "0x1100000F":
-                        offsetBegin = int(paramList[0], 16)
-                        prevFrame = int(getParamList(getLastEffectString())[0])
-                        removeLastEffect(asynchronousTimer.format(prevFrame))
-                        addEffect(asynchronousTimer.format(prevFrame + offsetBegin))
-                    elif paramList[1] == "0x11000010":
-                        offsetEnd = int(paramList[0], 16)
-
-                asyncTimer = "Asynchronous_Timer"
-                if i[:len(asyncTimer)] == asyncTimer and not processedEndlag:
-                    if offsetEnd != 0:
-                        addEffect(asynchronousTimer.format(offsetEnd + prevFrame))
-                        addEffect(terminateGraphic13)
-                        addEffect(asynchronousTimer.format(offsetBegin + int(paramList[0])))
-                        prevFrame = int(paramList[0])
-                    else:
-                        addEffect(asynchronousTimer.format(paramList[0]))
-
-                syncTimer = "Synchronous_Timer"
-                if i[:len(syncTimer)] == syncTimer and not processedEndlag:
-                    addEffect(synchronousTimer.format(paramList[0]))
-
-                undoBone = "Undo_Bone_Collision"
-                if i[:len(undoBone)] == undoBone:
-                    addEffect(terminateGraphic31)
-
-                removeHitb = "Remove_All_Hitboxes"
-                enableAction = "Enable Action Status"
-                if i[:len(removeHitb)] == removeHitb or i[:len(enableAction)] == enableAction:
-                    addEffect(terminateGraphic13)
-                    markAllDeleted(0)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
-                        processedEndlag = True
-
-                terminateGrab = "Terminate_Grab_Collisions"
-                if i[:len(terminateGrab)] == terminateGrab:
-                    addEffect(terminateGraphic13)
-                    markAllDeleted(1)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
-                        processedEndlag = True
-
-                deleteGrab = "Delete_Catch_Collision"
-                if i[:len(deleteGrab)] == deleteGrab:
-                    addEffect(terminateGraphic13)
-                    markDeleted(paramList[0], 1)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
-                        processedEndlag = True
-
-                deleteHitb = "Delete_Hitbox"
-                if i[:len(deleteHitb)] == deleteHitb:
-                    addEffect(terminateGraphic13)
-                    markDeleted(paramList[0], 0)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
-                        processedEndlag = True
-
-                boneIntangability = "Set_Bone_Intangability"
-                if i[:len(boneIntangability)] == boneIntangability:
-                    bone = paramList[0]
-                    addEffect(setBoneIntangability.format(bone))
-
-                if not blacklisted:
-                    hitb = "Hitbox"
-                    specialHitb = "Special_Hitbox"
-                    collateralHitb = "Collateral_Hitbox"
-                    if i[:len(hitb)] == hitb or i[:len(specialHitb)] == specialHitb or i[:len(collateralHitb)] == collateralHitb:
-                        bone = paramList[2]
-                        size = getHexFloat(float(paramList[8]) * 19 / 200)
-                        z = getHexFloat(float(paramList[9]))
-                        y = getHexFloat(float(paramList[10]))
-                        x = getHexFloat(float(paramList[11]))
-                        red, green, blue = getDamageRGB(paramList[3], paramList[4])
-                        # addEffect(normalOrSpecialHitbox.format(bone, z, y, x, size))
-                        addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 0)
-
-                    extendedHitb = "Extended_Hitbox"
-                    if i[:len(extendedHitb)] == extendedHitb:
-                        bone = paramList[2]
-                        size = getHexFloat(float(paramList[8]) * 19 / 200)
-                        zinit = float(paramList[9])
-                        yinit = float(paramList[10])
-                        xinit = float(paramList[11])
-                        zfinal = float(paramList[24])
-                        yfinal = float(paramList[25])
-                        xfinal = float(paramList[26])
-                        for j in range(0, 4):
-                            zcurr = getHexFloat(zinit + ((zfinal - zinit) / 3 * j))
-                            ycurr = getHexFloat(yinit + ((yfinal - yinit) / 3 * j))
-                            xcurr = getHexFloat(xinit + ((xfinal - xinit) / 3 * j))
-                            red, green, blue = getDamageRGB(paramList[3], paramList[4])
-                            # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
-                            if j == 0:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
-                            else:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
-
-                    extendedSpecialHitb = "Extended_Special_Hitbox"
-                    if i[:len(extendedSpecialHitb)] == extendedSpecialHitb:
-                        bone = paramList[2]
-                        size = getHexFloat(float(paramList[8]) * 19 / 200)
-                        zinit = float(paramList[9])
-                        yinit = float(paramList[10])
-                        xinit = float(paramList[11])
-                        zfinal = float(paramList[40])
-                        yfinal = float(paramList[41])
-                        xfinal = float(paramList[42])
-                        for j in range(0, 8):
-                            zcurr = getHexFloat(zinit + ((zfinal - zinit) / 7 * j))
-                            ycurr = getHexFloat(yinit + ((yfinal - yinit) / 7 * j))
-                            xcurr = getHexFloat(xinit + ((xfinal - xinit) / 7 * j))
-                            red, green, blue = getDamageRGB(paramList[3], paramList[4])
-                            # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
-                            if j == 0:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
-                            else:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
-
-                grabcoll2 = "Grab_Collision2"
-                grabcoll = "Grab_Collision"
-                if i[:len(grabcoll2)] == grabcoll2:
-                    bone = paramList[1]
-                    size = getHexFloat(float(paramList[2]) * 19 / 200)
-                    z = getHexFloat(float(paramList[3]))
-                    y = getHexFloat(float(paramList[4]))
-                    x = getHexFloat(float(paramList[5]))
-                    red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
-                    # addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
-                    addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
-                elif i[:len(grabcoll)] == grabcoll:
-                    bone = paramList[1]
-                    size = getHexFloat(float(paramList[2]) * 19 / 200)
-                    z = getHexFloat(float(paramList[3]))
-                    y = getHexFloat(float(paramList[4]))
-                    x = getHexFloat(float(paramList[5]))
-                    addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
-
-                grabHitb = "Extended_Grab_Collision"
-                if i[:len(grabHitb)] == grabHitb:
-                    bone = paramList[1]
-                    size = getHexFloat(float(paramList[2]) * 19 / 200)
-                    zinit = float(paramList[3])
-                    yinit = float(paramList[4])
-                    xinit = float(paramList[5])
-                    zfinal = zinit  # float(paramList[8]) #zinit??
-                    yfinal = float(paramList[9])
-                    xfinal = float(paramList[10])
-                    for j in range(0, 3):
-                        zcurr = getHexFloat(zinit + ((zfinal - zinit) / 2 * j))
-                        ycurr = getHexFloat(yinit + ((yfinal - yinit) / 2 * j))
-                        xcurr = getHexFloat(xinit + ((xfinal - xinit) / 2 * j))
-                        if j == 0:
-                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), paramList[0], 1)
-                        else:
-                            addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), -1, 1)
-
-                if inLoop and i[:len(loop)] != loop:
-                    thisParamList = getParamList(getLastEffectString())
-                    if thisParamList[0] != "":
-                        gotoNum = gotoNum + len(thisParamList) + 1
-                    else:
-                        gotoNum = gotoNum + len(thisParamList)
-
-                scriptFin = "Script_End()"
-                if i[:len(scriptFin)] == scriptFin:
-                    if offsetBegin != 0:
-                        addEffect(asynchronousTimer.format(prevFrame + offsetEnd))
-                        addEffect(terminateGraphic13)
-                    addEffect(scriptEnd)
-                    inMain = False
-                    shouldExitLoop = True
-            index = index + 1
-
-    printOutput(lines)
 
 main()

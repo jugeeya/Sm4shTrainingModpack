@@ -12,6 +12,10 @@ First and foremost, a dump of the game is needed. More specifically, a folder MU
 
 Upon running this command, every fighter will be compiled based on the data in AllFighterData and the output (in the form of effect.bin files in the correct directory) will be placed in a new folder entitled AllFighterDataCompiled. This essentially contains the unpacked contents of data/fighter. From this output folder, the character folders can be dragged into Sm4shexplorer's data/fighter at which point the modpack can be packed.
 
+## addTrainingAllEffects.sh
+
+The same as the previous command, but produces training-mode-only output: the hitboxes will only be shown in Training Mode, and elsewhere the original effect.bin will be displayed. The output will be placed in a new folder entitled AllFighterDataCompiledTraining, again in the form of data/fighter.
+
 ## addMultCharProjct.sh
 
 addAllEffects.sh uses this to compile all the characters by calling it one character at a time. However, this script can also be used to add any number of specific characters (along with their weapons) by using them as arguments as such: 
@@ -20,6 +24,10 @@ addAllEffects.sh uses this to compile all the characters by calling it one chara
 # compile mario, bowser, and lucario to the AllFighterDataCompiled folder
 ./addMultCharProjct.sh mario koopa lucario
 ```
+
+## addTrainingMultCharProjct.sh
+
+Again, same as the previous but produces training-mode-only output.
 
 ## gameToEffectScript.py
 This is the core of all the work in these scripts. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this script will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. didHandleEdgeCase() is a special function that contains tons of lines of code for edge cases that cannot be handled by the script due to the acm files not containing enough information. 
@@ -53,6 +61,9 @@ Used to test compilations on single characters quickly, with an argument to only
 # done using argument "nothing"
 ./testCompile.sh peach body nothing
 ```
+
+## testTrainingCompile.sh
+Same as the previous, but produces training-mode-only output.
 
 ## convertToAddEffect.py
 Used in conjunction with testCompile.sh in order to get code that will work with gameToEffectScript.py's didHandleEdgeCase() function. Takes the effect.bin portion of a processed .acm file and outputs "addEffect()" lines that can be copy-pasted into the conditionals of the didHandleEdgeCase() function.

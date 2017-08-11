@@ -371,6 +371,7 @@ def main():
         print(jabresetUActive[0], jabresetUActive[1], "jabresetUActive", sep="\t")
         print(jabresetDActive[0], jabresetDActive[1], "jabresetDActive", sep="\t")
 
+        '''
         urlName = "http://api.kuroganehammer.com/api/characters/name/{}/moves".format(gameToKuroAPI[charName])
         # print(urlName)
         with urllib.request.urlopen(urlName) as url:
@@ -386,6 +387,40 @@ def main():
                     print(entry['name'], activeFrames[0], activeFrames[-1], entry['firstActionableFrame'], sep="\t")
                 else:
                     print(entry['name'], activeFrames[0], '-', entry['firstActionableFrame'], sep="\t")
+                    
+        '''
+        urlName = "https://raw.githubusercontent.com/rubendal/Sm4sh-Calculator/gh-pages/Params/{}/param.json".format(charName)
+        # print(urlName)
+        with urllib.request.urlopen(urlName) as url:
+            data = json.loads(url.read().decode())
+
+        urlName = "https://raw.githubusercontent.com/rubendal/Sm4sh-Calculator/gh-pages/Scripts/{}/scripts.json".format(
+            charName)
+        # print(urlName)
+        with urllib.request.urlopen(urlName) as url:
+            data2 = json.loads(url.read().decode())
+
+        for group in data:
+            if group['group'] == 1:
+                print("PARAMS SECTION")
+                print("GROUP MOVES, FORMAT: FAF invStart invEnd")
+                for entry in group['entries']:
+                    print(entry['entry'],end="\t")
+                    values = entry['values']
+                    for file in data2:
+                        if file['id'] == entry['entry']:
+                            print(file['name'],sep="\t",end="\t")
+                    print(values[2]['value'], values[3]['value'], values[4]['value'], sep="\t", end="\n")
+            if group['group'] == 5:
+                print("BONES SECTION")
+                print("GROUP HURTBOXES, FORMAT: X Y Z X2 Y2 Z2 Size Bone Part? Zone")
+                for entry in group['entries']:
+                    print(entry['entry'],end="\t")
+                    values = entry['values']
+                    print(values[0]['value'], values[1]['value'], values[2]['value'], values[3]['value'], values[4]['value'], values[5]['value'], values[6]['value'], values[7]['value'], values[8]['value'], values[9]['value'], sep="\t", end="\n")
+
+
+
 
 
 main()

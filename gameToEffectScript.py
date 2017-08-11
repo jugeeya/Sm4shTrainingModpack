@@ -18,10 +18,19 @@ gameMovesToKuro = {}
 for i in range(len(gameMoves)):
     gameMovesToKuro[gameMoves[i]] = kuroMoves[i]
 
+graphicMoves = "Attack11.acm,Attack12.acm,AttackDash.acm,AttackLw3.acm,AttackS3.acm,AttackHi3.acm,AttackLw4.acm,AttackS4.acm,AttackHi4.acm,AttackAirLw.acm,AttackAirB.acm,AttackAirN.acm,AttackAirF.acm,AttackAirHi.acm,Catch.acm,CatchDash.acm,CatchTurn.acm".split(',')
+graphicMovesDict = {}
+for i in range(len(graphicMoves)):
+    graphicMovesDict[graphicMoves[i]] = i
+
+
 # game code lines
 asynchronousTimer = "Asynchronous_Timer(Frames={})"
 synchronousTimer = "Synchronous_Timer(Frames={})"
 setBoneIntangability = "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)"
+setHurtbox = "Graphic_Effect6(Graphic=0x1000031, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
+setHurtboxIntang = "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)"
+setHurtboxTest = "Graphic_Effect6(Graphic={}, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 normalOrSpecialHitbox = "Graphic_Effect6(Graphic=0x1000013, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 extendedHitbox = "Graphic_Effect6(Graphic=0x1000013, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 normalOrSpecialHitboxNew = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown={}, unknown={}, unknown={})"
@@ -46,6 +55,7 @@ TRUEComp = "TRUE(Unknown={}){{"
 FALSEComp = "FALSE(Unknown={}){{"
 bitVariableSet = "Bit_Variable_Set(Variable={})"
 bitVariableClear = "Bit_Variable_Clear(Variable={})"
+basicVariableSet = "Basic_Variable_Set(Value={}, Variable={})"
 goto = "Goto(Unknown={})"
 endLoopOrCompare = "}"
 scriptEnd = "Script_End()"
@@ -58,6 +68,10 @@ effectLines = "\tEffect()\n\t{\r\n"
 # effectString: [hitboxID, isDeleted, hitboxOrGrabbox]
 #                ID,        [-1,0,1]    [-1,0,1]
 effectStringDict = OrderedDict()
+mainList = []
+myLines = []
+origEffectLines = ""
+origIndex = 0
 
 falseVals = []
 falseIndex = 0
@@ -70,14 +84,46 @@ ORANGE = ['255', '165', '0', '128']
 MAGENTA = ['255', '0', '255', '128']
 
 blacklisted = False
+trainingOnly = False
 inLoop = False
 inCompare = 0
-FAF = 100000
+FAF = 10000
+invStart = 10000
+invEnd = 10000
+# bones: boneNum : attrList [X, ...}
+hurtboxes = {}
 currentFrame = 0
+
+def isInt(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+def parseForEffect(lines):
+    global origEffectLines
+    inEffect = False
+    for l in lines:
+        if l.startswith("\t}"):
+            inEffect = False
+        if l.startswith("\tEffect()"):
+            inEffect = True
+        elif inEffect:
+            if not l.startswith("\t\tScript_End()") and not l == "\t\tTRUE(Unknown=0x2)\r":
+                origEffectLines = origEffectLines + "\t" + l + "\r\n"
 
 def moreHitboxesExist(remainingLines):
     for i in remainingLines:
         if i.find("Hitbox") != -1 or i.find("Grab") != -1:
+            return True
+    return False
+
+def moreTimersExist(remainingLines):
+    for i in remainingLines:
+        if i.find('}') != -1:
+            return False
+        if i.find("Synchronous_Timer") != -1 or i.find("Asynchronous_Timer") != -1:
             return True
     return False
 
@@ -92,36 +138,66 @@ def didProcessEndlag(lines, index, basename, tsvLines):
     global effectLines, FAF
     if not moreHitboxesExist(lines[index + 1:]):
         currMove = basename[:-4]
-        if currMove in gameMoves and len(tsvLines) >= 1:
-            kuroMove = gameMovesToKuro[currMove]
-            testMultiHitb2 = kuroMove + " 2"
-            testMultiHitb3 = kuroMove + " 3"
-            if kuroMove[-1] == "1":
-                testMultiHitb2 = kuroMove[:-1] + "2"
-                testMultiHitb3 = kuroMove[:-1] + "3"
-            if kuroMove[-1] == "2":
-                testMultiHitb3 = kuroMove[:-1] + "3"
-            if getTSVLine(testMultiHitb2, tsvLines) == "Not Found" and getTSVLine(testMultiHitb3, tsvLines) == "Not Found":
-                addEffect(asynchronousTimer.format(currentFrame))
-                addEffect(colorOverlay.format(*GREEN))
-                currTSVLine = getTSVLine(gameMovesToKuro[currMove], tsvLines)
-                FAFStr = currTSVLine.split('\t')[-1]
-                FAFStr = FAFStr.split(' ')[0]
-                FAF = int(FAFStr)
-                addEffect(asynchronousTimer.format(FAF))
-                addEffect(terminateOverlays)
-                if not inLoop and not inCompare:
-                    addEffect(scriptEnd)
-                if blacklisted:
-                    effectLines = "\t\t" + asynchronousTimer.format(currentFrame) + "\r\n"
-                    effectLines = effectLines + "\t\t" + colorOverlay.format(*GREEN) + "\r\n"
-                    effectLines = effectLines + "\t\t" + asynchronousTimer.format(FAF) + "\r\n"
-                    effectLines = effectLines + "\t\t" + terminateOverlays + "\r\n"
-                    effectLines = effectLines + "\t\t" + scriptEnd + "\r\n"
-                return True
-    if blacklisted:
-        effectLines = "\t\t" + scriptEnd + "\r\n"
+        if FAF != 10000:
+            addEffect(colorOverlay.format(*GREEN))
+            return True
+    #if blacklisted:
+    #    effectLines = "\t\t" + scriptEnd + "\r\n"
     return False
+
+def addHurtboxes():
+    for hurtb in hurtboxes:
+        h = hurtboxes[hurtb]
+        xinit = float(h[0])
+        yinit = float(h[1])
+        zinit = float(h[2])
+        xfinal = float(h[3])
+        yfinal = float(h[4])
+        zfinal = float(h[5])
+        size = getHexFloat(float(h[6])) #* 19 / 200
+        bone = hex(int(h[7]))
+        for j in range(0, 4):
+            zcurr = getHexFloat(zinit + ((zfinal - zinit) / 3 * j))
+            ycurr = getHexFloat(yinit + ((yfinal - yinit) / 3 * j))
+            xcurr = getHexFloat(xinit + ((xfinal - xinit) / 3 * j))
+            addEffect(setHurtbox.format(bone, xcurr, ycurr, zcurr, size))
+
+def addHurtboxIntangibility(givenBone):
+    for hurtb in hurtboxes:
+        h = hurtboxes[hurtb]
+        xinit = float(h[0])
+        yinit = float(h[1])
+        zinit = float(h[2])
+        xfinal = float(h[3])
+        yfinal = float(h[4])
+        zfinal = float(h[5])
+        size = getHexFloat(float(h[6])) #* 19 / 200
+        bone = hex(int(h[7]))
+        if bone == hex(int(givenBone,16)):
+            for j in range(0, 4):
+                zcurr = getHexFloat(zinit + ((zfinal - zinit) / 3 * j))
+                ycurr = getHexFloat(yinit + ((yfinal - yinit) / 3 * j))
+                xcurr = getHexFloat(xinit + ((xfinal - xinit) / 3 * j))
+                addEffect(setHurtboxIntang.format(bone, xcurr, ycurr, zcurr, size))
+
+def addHurtboxesTest(graphicMoveNum, offset):
+    for hurtb in hurtboxes:
+        h = hurtboxes[hurtb]
+        xinit = float(h[0])
+        yinit = float(h[1])
+        zinit = float(h[2])
+        xfinal = float(h[3])
+        yfinal = float(h[4])
+        zfinal = float(h[5])
+        size = float(h[6]) #* 19 / 200
+        bone = hex(int(h[7]))
+        graphicNum = hex(graphicMoveNum + 16777216 + offset)
+        if bone == hex(16):
+            for j in range(0, 4):
+                zcurr = zinit + ((zfinal - zinit) / 3 * j)
+                ycurr = yinit + ((yfinal - yinit) / 3 * j)
+                xcurr = xinit + ((xfinal - xinit) / 3 * j)
+                addEffect(setHurtboxTest.format("{}".format(graphicNum), bone, xcurr, ycurr, zcurr, size))
 
 def editLastTrue(value):
     global effectLines, trueIndex
@@ -193,6 +269,81 @@ def getParamList(line):
     paramList = [x[x.find("=") + 1:] for x in fullParamList]
     return paramList
 
+def addListToMain(index):
+    global myLines, origIndex
+    origIndex = index
+    for h in mainList:
+        inserted = "\t\t" + h
+        index = index + 1
+        myLines.insert(index, inserted)
+    return
+
+def addToMainList(line,index):
+    global mainList
+    lineFound = False
+    for h in mainList:
+        if h == line:
+            lineFound = True
+    if removeFromMainList(getParamList(line)[0]):
+        mainList.append(line)
+        if not lineFound:
+            addListToMain(index)
+    else:
+        mainList.append(line)
+
+def addMovedToMainList(line,index):
+    global mainList
+    newLine = ""
+    for h in mainList:
+        if getParamList(h)[0] == getParamList(line)[0]:
+            newLine = h
+            removeFromMainList(getParamList(h)[0])
+    boneIndex = newLine.find("Bone=")
+    commaIndex = newLine[boneIndex:].find(",")
+    newBone = getParamList(line)[1]
+    newBoneStr = "Bone={}".format(newBone)
+    newLine = newLine[:boneIndex] + newBoneStr + newLine[boneIndex+commaIndex:]
+    xIndex = newLine.find("X=")
+    commaIndex = newLine[xIndex:].find(",")
+    newX = float(getParamList(line)[2])
+    newXStr = "X={}".format(newX)
+    newLine = newLine[:xIndex] + newXStr + newLine[xIndex + commaIndex:]
+    yIndex = newLine.find("Y=")
+    commaIndex = newLine[yIndex:].find(",")
+    newY = float(getParamList(line)[3])
+    newYStr = "Y={}".format(newY)
+    newLine = newLine[:yIndex] + newYStr + newLine[yIndex + commaIndex:]
+    zIndex = newLine.find("Z=")
+    commaIndex = newLine[zIndex:].find(",")
+    newZ = float(getParamList(line)[4])
+    newZStr = "Z={}".format(newZ)
+    newLine = newLine[:zIndex] + newZStr + newLine[zIndex + commaIndex:]
+    mainList.append(newLine)
+
+def addChangedToMainList(line,index):
+    global mainList
+    newLine = ""
+    sizeIndex = 0
+    commaIndex = 0
+    for h in mainList:
+        if getParamList(h)[0] == getParamList(line)[0]:
+            newLine = h
+            removeFromMainList(getParamList(h)[0])
+    sizeIndex = newLine.find("Size=")
+    commaIndex = newLine[sizeIndex:].find(",")
+    newSize = float(getParamList(line)[1]) * 19 / 200
+    newSizeStr = "Size={}".format(newSize)
+    newLine = newLine[:sizeIndex] + newSizeStr + newLine[sizeIndex+commaIndex:]
+    mainList.append(newLine)
+
+def removeFromMainList(hitboxID):
+    global mainList
+    for h in mainList:
+        if getParamList(h)[0] == hitboxID:
+            mainList.remove(h)
+            return True
+    return False
+
 def addEffect(effectString):
     addEffectID(effectString, -1, -1)
 
@@ -228,19 +379,19 @@ def addEffectID(effectString, hitboxID, hitboxOrGrabbox):
             currlist = effectStringDict[e]
             if hitboxID == currlist[0] and currlist[1] == 0 and currlist[2] == hitboxOrGrabbox:  # equal ID, not deleted, hitbox/grabbox
                 addEffect(terminateGraphic13)
-                markAllDeleted(hitboxOrGrabbox)
+                #markAllDeleted(hitboxOrGrabbox)
+                #markDeleted(hitboxID, hitboxOrGrabbox)
                 break
-    if not blacklisted:
-        effectLines = effectLines + "\t\t"
+    # if effectString == terminateGraphic13:
+    #    addHurtboxes()
+    effectLines = effectLines + "\t\t"
     tabs = inCompare
     if inLoop:
        tabs = tabs + 1
     for q in range(tabs):
-        if not blacklisted:
-            effectLines = effectLines + "    "
+        effectLines = effectLines + "    "
 
-    if not blacklisted:
-        effectLines = effectLines + effectString + "\r\n"
+    effectLines = effectLines + effectString + "\r\n"
     effectStringDict[effectString] = [hitboxID, 0, hitboxOrGrabbox]
 
 def getLastEffectString():
@@ -273,6 +424,22 @@ def printOutput(lines):
         if i == "\tEffect()\n\t{\r":
             inEffect = True
             print(effectLines, end="\t}\n\r\n")
+        if not inEffect:
+            if i != "\t\tTRUE(Unknown=0x2)\r":
+                print(i, end="\n")
+        else:
+            if i == "\t}\n\r":
+                inEffect = False
+
+def printTrainingOutput(lines):
+    inEffect = False
+    for i in lines:
+        if i == "\tEffect()\n\t{\r":
+            inEffect = True
+            if blacklisted:
+                print("\tEffect()\n\t{\r")
+            print(effectLines, end="")
+            print(origEffectLines, end="\n\t\t}\r\n\t\tScript_End()\r\n\t}\n\r\n")
         if not inEffect:
             if i != "\t\tTRUE(Unknown=0x2)\r":
                 print(i, end="\n")
@@ -354,20 +521,43 @@ def addLagEffects(lagLength):
     addEffect(scriptEnd)
 
 def main():
-    global effectLines, inLoop, inCompare, falseVals, trueVals, falseIndex, trueIndex, currentFrame, blacklisted
+    global effectLines, inLoop, inCompare, falseVals, trueVals, falseIndex, trueIndex
+    global currentFrame, blacklisted, trainingOnly, FAF, invStart, invEnd, myLines, mainList, origEffectLines
     if len(sys.argv) < 2:
         print("Needs one argument: .acm move file path, optional blacklisted second arg")
         exit()
     filename = sys.argv[1]
     if len(sys.argv) == 3:
         blacklistArg = sys.argv[2]
-        if blacklistArg == 'y':
+        if blacklistArg.find('y') != -1:
             blacklisted = True
             effectLines = ""
+        if blacklistArg.find('t') != -1:
+            trainingOnly = True
+            charName = os.path.split(os.path.dirname(filename))[0][:-5]
+            if charName[-4:] == "body":
+                charName = charName[:-4]
+            ourBasicVariable = ""
+            if charName in {"yoshi", "wario", "rockman", "pit", "reflet", "kirby", "lizardon", "lucario", "pitb", "gekkouga", "robot", "murabito", "wiifit", "sonic", "mewtwo", "cloud", "miigunner", "littlemac", "pacman", "pikmin", "pikachu"}:
+                ourBasicVariable = "0x100000AC"
+            elif charName == "bayonetta":
+                ourBasicVariable = "0x1000008A"
+            else:
+                ourBasicVariable = "0x10000086"
+            if os.path.basename(filename) in {"EntryR.acm", "EntryL.acm"}:
+                addEffect(basicVariableSet.format("0x1", ourBasicVariable))
+            addEffect(someCompare.format(ourBasicVariable, "0x0", "0x0"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = 1
+
 
     with open(filename, newline="\r\n") as f:
         lines = f.readlines()
     lines = [x.strip('\n') for x in lines]
+    if trainingOnly:
+        parseForEffect(lines)
+    for l in lines:
+        myLines.append(l)
 
     inMain = False
     shouldExitLoop = False
@@ -382,6 +572,8 @@ def main():
     loopNum = 0
     loopLines = 0
 
+    basename = os.path.basename(filename)
+
     tsvLines = []
 
     # tsvData found in TSV folder; read any file for example layout
@@ -393,8 +585,30 @@ def main():
             with open(tsvPath) as tsv:
                 tsvLines = tsv.readlines()
             tsvLines = [x.strip('\n') for x in tsvLines]
+            paramsIndex = tsvLines.index("PARAMS SECTION")
+            hurtboxesIndex = tsvLines.index("BONES SECTION")
+            for p in range(paramsIndex+2,hurtboxesIndex):
+                currFile = tsvLines[p].split('\t')
+                if currFile[1] == basename[:-4]:
+                    FAFIndex = 2
+                    while not isInt(currFile[FAFIndex]):
+                        FAFIndex = FAFIndex + 1
+                    invStartIndex = FAFIndex + 1
+                    invEndIndex = invStartIndex + 1
+                    FAF = int(currFile[FAFIndex]) if int(currFile[FAFIndex]) != 0 else FAF
+                    invStart = int(currFile[invStartIndex]) if int(currFile[invStartIndex]) != 0 else invStart
+                    invEnd = int(currFile[invEndIndex]) if int(currFile[invEndIndex]) != 0 else invEnd
+                    if (charName in counterChars and basename == "SpecialLw.acm") or charName == "peach" and basename == "SpecialN.acm":
+                        invStart = 10000
+                        invEnd = 10000
 
-    basename = os.path.basename(filename)
+            for h in range(hurtboxesIndex+2,len(tsvLines)):
+                currVals = tsvLines[h].split("\t")
+                currHurtboxList = []
+                for index in range(len(currVals)):
+                    if index > 0:
+                        currHurtboxList.append(currVals[index])
+                hurtboxes[currVals[0]] = currHurtboxList
 
     spotdodge = "EscapeN.acm"
     froll = "EscapeF.acm"
@@ -408,6 +622,7 @@ def main():
     groundedfootstoolPose = "StepPose.acm"
     groundedfootstoolBack = "0xE0D78C1E.acm"
     spinningAnim = "DamageFlyRoll.acm"
+    tumble = "DamageFall.acm"
     ledgegetup = "CliffClimbQuick.acm"
     ledgeroll = "CliffEscapeQuick.acm"
     ledgejump = "CliffJumpQuick1.acm"
@@ -434,6 +649,8 @@ def main():
     jabresetU = "DownDamageU3.acm"
     jabresetD = "DownDamageD3.acm"
 
+    # addHurtboxes()
+
     if didHandleEdgeCase(charName, basename):
         str = "This conditional is a placeholder."
     elif basename == unshield:
@@ -451,18 +668,8 @@ def main():
         addEffect(asynchronousTimer.format('1'))
         addEffect(colorOverlay.format(*ORANGE))
         addEffect(scriptEnd)
-    elif basename == spotdodge:
-        addDodgeEffects(tsvLines[0].split("\t")[0:2], tsvLines[1].split("\t")[0])
-    elif basename == froll:
-        addDodgeEffects(tsvLines[2].split("\t")[0:2], tsvLines[3].split("\t")[0])
-    elif basename == broll:
-        addDodgeEffects(tsvLines[4].split("\t")[0:2], tsvLines[5].split("\t")[0])
-    elif basename == airdodge:
-        addDodgeEffects(tsvLines[6].split("\t")[0:2], tsvLines[7].split("\t")[0])
-    elif basename == ledgejump:
-        addDodgeEffects2(tsvLines[8].split("\t")[0:2])
-    elif basename == ledgeroll:
-        addDodgeEffects(tsvLines[10].split("\t")[0:2], tsvLines[11].split("\t")[0])
+    elif basename == tumble:
+        addEffect(scriptEnd)
     elif basename == ledgegetup:
         addDodgeEffects(tsvLines[12].split("\t")[0:2], tsvLines[13].split("\t")[0])
     elif basename == jumpsquat:
@@ -475,30 +682,12 @@ def main():
         addLagEffects(tsvLines[19].split("\t")[0])
     elif basename == landingAirF:
         addLagEffects(tsvLines[20].split("\t")[0])
-    elif basename == landingAirB and charName != "pikachu":
+    elif basename == landingAirB:
         addLagEffects(tsvLines[21].split("\t")[0])
     elif basename == landingAirHi:
         addLagEffects(tsvLines[22].split("\t")[0])
-    elif basename == landingAirLw and charName != "pikachu":
+    elif basename == landingAirLw:
         addLagEffects(tsvLines[23].split("\t")[0])
-    elif basename == downStandU:
-        addDodgeEffects(tsvLines[25].split("\t")[0:2], tsvLines[26].split("\t")[0])
-    elif basename == downStandD:
-        addDodgeEffects(tsvLines[27].split("\t")[0:2], tsvLines[28].split("\t")[0])
-    elif basename == downForwardU:
-        addDodgeEffects(tsvLines[29].split("\t")[0:2], tsvLines[30].split("\t")[0])
-    elif basename == downForwardD:
-        addDodgeEffects(tsvLines[31].split("\t")[0:2], tsvLines[32].split("\t")[0])
-    elif basename == downBackU:
-        addDodgeEffects(tsvLines[33].split("\t")[0:2], tsvLines[34].split("\t")[0])
-    elif basename == downBackD:
-        addDodgeEffects(tsvLines[35].split("\t")[0:2], tsvLines[36].split("\t")[0])
-    elif basename == passive:
-        addDodgeEffects(tsvLines[37].split("\t")[0:2], tsvLines[38].split("\t")[0])
-    elif basename == passiveF:
-        addDodgeEffects(tsvLines[39].split("\t")[0:2], tsvLines[40].split("\t")[0])
-    elif basename == passiveB:
-        addDodgeEffects(tsvLines[41].split("\t")[0:2], tsvLines[42].split("\t")[0])
     elif basename == downBoundU:
         addEffect(downEffect1)
         addEffect(downEffect2)
@@ -516,15 +705,15 @@ def main():
             addDodgeEffects2(tsvLines[14].split("\t")[0:2])
             removeLastEffect(scriptEnd)
         index = 0
-        while index < len(lines):
-            iorig = lines[index]
+        while index < len(myLines):
+            iorig = myLines[index]
             i = removeBeginningWhitespace(iorig)
 
-            # print(i, index)
+            # print(i)
 
             if i == "Main()\n\t{\r":
                 inMain = True
-                if lines[index + 1] == "\t}\n\r":
+                if myLines[index + 1] == "\t}\n\r":
                     break
             if shouldExitLoop:
                 break
@@ -532,10 +721,13 @@ def main():
                 paramList = getParamList(i)
 
                 endlooporcompare = "}"
-                if i[:len(endlooporcompare)] == endlooporcompare:
+                if i.startswith(endlooporcompare):
                     if inCompare:
-                        inCompare = inCompare - 1
-                        addEffect(endLoopOrCompare)
+                        if inCompare == 1 and trainingOnly:
+                            str = "Another placeholder."
+                        else:
+                            inCompare = inCompare - 1
+                            addEffect(endLoopOrCompare)
                     if inLoop:
                         inLoop = False
                         addEffect(endLoopOrCompare)
@@ -552,25 +744,25 @@ def main():
 
                 compare = "If_Compare"
                 compare2 = "If_Compare2"
-                if i[:len(compare2)] == compare2:
+                if i.startswith(compare2):
                     addEffect(ifCompare2.format(paramList[0], paramList[1], paramList[2]))
-                elif i[:len(compare)] == compare:
+                elif i.startswith(compare):
                     addEffect(ifCompare.format(paramList[0], paramList[1], paramList[2]))
                 ifBitIsSetStr = "If_Bit_is_Set"
-                if i[:len(ifBitIsSetStr)] == ifBitIsSetStr:
+                if i.startswith(ifBitIsSetStr):
                     addEffect(ifBitIsSet.format(paramList[0]))
                 isExistArticleStr = "IS_EXIST_ARTICLE"
-                if i[:len(isExistArticleStr)] == isExistArticleStr:
+                if i.startswith(isExistArticleStr):
                     addEffect(isExistArticle.format(paramList[0]))
                 someCompareStr = "unk_477705C2"
-                if i[:len(someCompareStr)] == someCompareStr:
+                if i.startswith(someCompareStr):
                     addEffect(someCompare.format(paramList[0], paramList[1], paramList[2]))
                 someCompareStr2 = "unk_2DA7E2B6"
-                if i[:len(someCompareStr2)] == someCompareStr2:
+                if i.startswith(someCompareStr2):
                     addEffect(someCompare2.format(paramList[0], paramList[1], paramList[2]))
 
                 TRUEstr = "TRUE"
-                if i[:len(TRUEstr)] == TRUEstr:
+                if i.startswith(TRUEstr):
                     addEffect(TRUEComp.format(paramList[0]))
                     inCompare = inCompare + 1
                     trueIndex = trueIndex + 1
@@ -578,7 +770,7 @@ def main():
                     trueVals.append(0)
 
                 FALSEstr = "FALSE"
-                if i[:len(FALSEstr)] == FALSEstr:
+                if i.startswith(FALSEstr):
                     addEffect(FALSEComp.format(paramList[0]))
                     inCompare = inCompare + 1
                     falseIndex = falseIndex + 1
@@ -586,12 +778,12 @@ def main():
                     falseVals.append(0)
 
                 gotoStr = "Goto"
-                if i[:len(gotoStr)] == gotoStr:
+                if i.startswith(gotoStr):
                     addEffect(goto.format(-gotoNum))
                     gotoNum = 0
 
                 loop = "Set_Loop"
-                if i[:len(loop)] == loop:
+                if i.startswith(loop):
                     loopNum = int(paramList[0]) if paramList[0] != "-1" else 0
                     addEffect(setLoop.format(loopNum))
                     inLoop = True
@@ -599,11 +791,11 @@ def main():
                     loopLines = loopLines + 1
 
                 looprest = "Loop_Rest()"
-                if i[:len(looprest)] == looprest:
+                if i.startswith(looprest):
                     addEffect(looprest)
 
                 armor = "Set_Armor"
-                if i[:len(armor)] == armor:
+                if i.startswith(armor):
                     state = paramList[0]
                     if state == "0x0":
                         addEffect(terminateOverlays)
@@ -611,7 +803,7 @@ def main():
                         addEffect(colorOverlay.format(*MAGENTA))
 
                 bodycoll = "Body_Collision"
-                if i[:len(bodycoll)] == bodycoll:
+                if i.startswith(bodycoll):
                     state = paramList[0]
                     if state == "0x0":
                         addEffect(terminateOverlays)
@@ -619,7 +811,7 @@ def main():
                         addEffect(colorOverlay.format(*BLUE))
 
                 detect = "Search_Collision"
-                if i[:len(detect)] == detect:
+                if i.startswith(detect):
                     bone = paramList[2]
                     size = getHexFloat(float(paramList[3]) * 19 / 200)
                     z = getHexFloat(float(paramList[4]))
@@ -629,42 +821,46 @@ def main():
                     addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
 
                 subr = "Subroutine"
-                if i[:len(subr)] == subr:
+                if i.startswith(subr):
                     hashNum = paramList[0]
                     addEffect(subroutine.format(hashNum))
 
                 extsubr = "External_Subroutine"
-                if i[:len(extsubr)] == extsubr:
+                if i.startswith(extsubr):
                     hashNum = paramList[0]
                     addEffect(extsubroutine.format(hashNum))
 
                 waitloopclr = "WAIT_LOOP_CLR()"
-                if i[:len(waitloopclr)] == waitloopclr:
+                if i.startswith(waitloopclr):
                     addEffect(waitloopclr)
 
                 defensive = "Defensive_Collision"
-                if i[:len(defensive)] == defensive:
+                if i.startswith(defensive):
                     addEffect(colorOverlay.format(*RED))
 
                 bitvarset = "Bit_Variable_Set"
-                if i[:len(bitvarset)] == bitvarset:
+                if i.startswith(bitvarset):
                     var = paramList[0]
                     specialLw = "SpecialLw"
                     if var == "0x2100000E" and basename[:len(specialLw)] == specialLw and charName in counterChars:  # counter
                         addEffect(colorOverlay.format(*RED))
 
                 bitvarclear = "Bit_Variable_Clear"
-                if i[:len(bitvarclear)] == bitvarclear:
+                if i.startswith(bitvarclear):
                     var = paramList[0]
                     if var == "0x2100000E" and basename[:len(specialLw)] == specialLw and charName in counterChars:  # counter
                         addEffect(terminateOverlays)
+                        if didProcessEndlag(myLines, index, basename, tsvLines):
+                            processedEndlag = True
 
                 terminateDefensive = "Terminate_Defensive_Collision"
-                if i[:len(terminateDefensive)] == terminateDefensive:
+                if i.startswith(terminateDefensive):
                     addEffect(terminateOverlays)
+                    if didProcessEndlag(myLines, index, basename, tsvLines):
+                        processedEndlag = True
 
                 basicvarset = "Basic_Variable_Set"
-                if i[:len(basicvarset)] == basicvarset:
+                if i.startswith(basicvarset):
                     if offsetBegin == 0 and paramList[1] == "0x1100000F":
                         offsetBegin = int(paramList[0], 16)
                         prevFrame = int(getParamList(getLastEffectString())[0])
@@ -674,7 +870,23 @@ def main():
                         offsetEnd = int(paramList[0], 16)
 
                 asyncTimer = "Asynchronous_Timer"
-                if i[:len(asyncTimer)] == asyncTimer and not processedEndlag:
+                syncTimer = "Synchronous_Timer"
+                if i.startswith(asyncTimer) and not processedEndlag:
+                    currentFrame = int(paramList[0])
+                    if currentFrame > FAF:
+                        addEffect(asynchronousTimer.format(FAF))
+                        addEffect(terminateOverlays)
+                        FAF = 10000
+                    if currentFrame > invStart:
+                        addEffect(asynchronousTimer.format(invStart))
+                        addEffect(colorOverlay.format(*BLUE))
+                        invStart = 10000
+                    if currentFrame > invEnd:
+                        addEffect(asynchronousTimer.format(invEnd))
+                        addEffect(terminateOverlays)
+                        invEnd = 10000
+                        if not moreHitboxesExist(myLines[index:]):
+                            addEffect(colorOverlay.format(*GREEN))
                     if offsetEnd != 0:
                         addEffect(asynchronousTimer.format(offsetEnd + prevFrame))
                         addEffect(terminateGraphic13)
@@ -682,64 +894,109 @@ def main():
                         prevFrame = int(paramList[0])
                     else:
                         addEffect(asynchronousTimer.format(paramList[0]))
-                    currentFrame = int(paramList[0])
-
-                syncTimer = "Synchronous_Timer"
-                if i[:len(syncTimer)] == syncTimer and not processedEndlag:
-                    addEffect(synchronousTimer.format(paramList[0]))
+                    if currentFrame == FAF:
+                        addEffect(terminateOverlays)
+                        FAF = 10000
+                    if currentFrame == invStart:
+                        addEffect(colorOverlay.format(*BLUE))
+                        invStart = 10000
+                    if currentFrame == invEnd:
+                        addEffect(terminateOverlays)
+                        invEnd = 10000
+                        if not moreHitboxesExist(myLines[index:]):
+                            addEffect(colorOverlay.format(*GREEN))
+                elif i.startswith(syncTimer) and not processedEndlag:
                     currentFrame = currentFrame + int(paramList[0])
+                    frameToAdd = int(paramList[0])
+                    if currentFrame > FAF:
+                        addEffect(asynchronousTimer.format(FAF))
+                        addEffect(terminateOverlays)
+                        frameToAdd = currentFrame - FAF
+                        FAF = 10000
+                    if currentFrame > invStart:
+                        addEffect(asynchronousTimer.format(invStart))
+                        addEffect(colorOverlay.format(*BLUE))
+                        frameToAdd = currentFrame - invStart
+                        invStart = 10000
+                    if currentFrame > invEnd:
+                        addEffect(asynchronousTimer.format(invEnd))
+                        addEffect(terminateOverlays)
+                        frameToAdd = currentFrame - invEnd
+                        invEnd = 10000
+                        if not moreHitboxesExist(myLines[index:]):
+                            addEffect(colorOverlay.format(*GREEN))
+                    addEffect(synchronousTimer.format(frameToAdd))
+                    if currentFrame == FAF:
+                        addEffect(terminateOverlays)
+                        FAF = 10000
+                    if currentFrame == invStart:
+                        addEffect(colorOverlay.format(*BLUE))
+                        invStart = 10000
+                    if currentFrame == invEnd:
+                        addEffect(terminateOverlays)
+                        invEnd = 10000
+                        if not moreHitboxesExist(myLines[index:]):
+                            addEffect(colorOverlay.format(*GREEN))
 
                 undoBone = "Undo_Bone_Collision"
-                if i[:len(undoBone)] == undoBone:
+                if i.startswith(undoBone):
                     addEffect(terminateGraphic31)
 
                 removeHitb = "Remove_All_Hitboxes"
                 enableAction = "Enable Action Status"
-                if i[:len(removeHitb)] == removeHitb or i[:len(enableAction)] == enableAction:
+                if i.startswith(enableAction) or i.startswith(removeHitb):
                     addEffect(terminateGraphic13)
                     markAllDeleted(0)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
+                    if didProcessEndlag(myLines, index, basename, tsvLines):
                         processedEndlag = True
 
                 terminateGrab = "Terminate_Grab_Collisions"
-                if i[:len(terminateGrab)] == terminateGrab:
+                if i.startswith(terminateGrab):
                     addEffect(terminateGraphic13)
                     markAllDeleted(1)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
+                    if didProcessEndlag(myLines, index, basename, tsvLines):
                         processedEndlag = True
 
                 deleteGrab = "Delete_Catch_Collision"
-                if i[:len(deleteGrab)] == deleteGrab:
+                if i.startswith(deleteGrab):
                     addEffect(terminateGraphic13)
                     markDeleted(paramList[0], 1)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
+                    if didProcessEndlag(myLines, index, basename, tsvLines):
                         processedEndlag = True
 
                 deleteHitb = "Delete_Hitbox"
-                if i[:len(deleteHitb)] == deleteHitb:
+                if i.startswith(deleteHitb):
                     addEffect(terminateGraphic13)
                     markDeleted(paramList[0], 0)
-                    if didProcessEndlag(lines, index, basename, tsvLines):
-                        if not inLoop and not inCompare:
-                            break
+                    if index != origIndex + len(mainList):
+                        removeFromMainList(paramList[0])
+                        addListToMain(index)
+                    if didProcessEndlag(myLines, index, basename, tsvLines):
                         processedEndlag = True
 
                 boneIntangability = "Set_Bone_Intangability"
-                if i[:len(boneIntangability)] == boneIntangability:
+                if i.startswith(boneIntangability):
                     bone = paramList[0]
-                    addEffect(setBoneIntangability.format(bone))
+                    addHurtboxIntangibility(bone)
 
                 if not blacklisted:
+                    moveHitb = "Move_Hitbox"
+                    if i.startswith(moveHitb):
+                        addMovedToMainList(i,index)
+                        addEffect(terminateGraphic13)
+                        addListToMain(index)
+
+                    changeHitb = "Change_Hitbox_Size"
+                    if i.startswith(changeHitb):
+                        addChangedToMainList(i,index)
+                        addEffect(terminateGraphic13)
+                        addListToMain(index)
+
                     hitb = "Hitbox"
                     specialHitb = "Special_Hitbox"
                     collateralHitb = "Collateral_Hitbox"
-                    if i[:len(hitb)] == hitb or i[:len(specialHitb)] == specialHitb or i[:len(collateralHitb)] == collateralHitb:
+                    if i.startswith(hitb) or i.startswith(specialHitb) or i.startswith(collateralHitb):
+                        addToMainList(i,index)
                         bone = paramList[2]
                         size = getHexFloat(float(paramList[8]) * 19 / 200)
                         z = getHexFloat(float(paramList[9]))
@@ -747,10 +1004,12 @@ def main():
                         x = getHexFloat(float(paramList[11]))
                         red, green, blue = getDamageRGB(paramList[3], paramList[4])
                         # addEffect(normalOrSpecialHitbox.format(bone, z, y, x, size))
-                        addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 0)
+                        #addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 0)
+                        addEffect(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue))
 
                     extendedHitb = "Extended_Hitbox"
-                    if i[:len(extendedHitb)] == extendedHitb:
+                    if i.startswith(extendedHitb):
+                        addToMainList(i,index)
                         bone = paramList[2]
                         size = getHexFloat(float(paramList[8]) * 19 / 200)
                         zinit = float(paramList[9])
@@ -765,13 +1024,15 @@ def main():
                             xcurr = getHexFloat(xinit + ((xfinal - xinit) / 3 * j))
                             red, green, blue = getDamageRGB(paramList[3], paramList[4])
                             # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
-                            if j == 0:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
-                            else:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
+                            addEffect(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue))
+                            #if j == 0:
+                            #    addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
+                            #else:
+                            #    addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
 
                     extendedSpecialHitb = "Extended_Special_Hitbox"
-                    if i[:len(extendedSpecialHitb)] == extendedSpecialHitb:
+                    if i.startswith(extendedSpecialHitb):
+                        addToMainList(i,index)
                         bone = paramList[2]
                         size = getHexFloat(float(paramList[8]) * 19 / 200)
                         zinit = float(paramList[9])
@@ -786,14 +1047,15 @@ def main():
                             xcurr = getHexFloat(xinit + ((xfinal - xinit) / 7 * j))
                             red, green, blue = getDamageRGB(paramList[3], paramList[4])
                             # addEffect(extendedHitbox.format(bone, zcurr, ycurr, xcurr, size))
-                            if j == 0:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
-                            else:
-                                addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
+                            addEffect(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue))
+                            #if j == 0:
+                            #    addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), paramList[0], 0)
+                            #else:
+                            #    addEffectID(extendedHitboxNew.format(bone, zcurr, ycurr, xcurr, size, red, green, blue), -1, 0)
 
                 grabcoll2 = "Grab_Collision2"
                 grabcoll = "Grab_Collision"
-                if i[:len(grabcoll2)] == grabcoll2:
+                if i.startswith(grabcoll2):
                     bone = paramList[1]
                     size = getHexFloat(float(paramList[2]) * 19 / 200)
                     z = getHexFloat(float(paramList[3]))
@@ -802,7 +1064,7 @@ def main():
                     red, green, blue = getHexFloat(0), getHexFloat(255), getHexFloat(255)
                     # addEffectID(normalOrSpecialHitboxNew.format(bone, z, y, x, size, red, green, blue), paramList[0], 1)
                     addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
-                elif i[:len(grabcoll)] == grabcoll:
+                elif i.startswith(grabcoll):
                     bone = paramList[1]
                     size = getHexFloat(float(paramList[2]) * 19 / 200)
                     z = getHexFloat(float(paramList[3]))
@@ -811,7 +1073,7 @@ def main():
                     addEffectID(grabHitbox.format(bone, z, y, x, size), paramList[0], 1)
 
                 grabHitb = "Extended_Grab_Collision"
-                if i[:len(grabHitb)] == grabHitb:
+                if i.startswith(grabHitb):
                     bone = paramList[1]
                     size = getHexFloat(float(paramList[2]) * 19 / 200)
                     zinit = float(paramList[3])
@@ -829,7 +1091,7 @@ def main():
                         else:
                             addEffectID(grabHitbox.format(bone, zcurr, ycurr, xcurr, size), -1, 1)
 
-                if inLoop and i[:len(loop)] != loop:
+                if inLoop and not i.startswith(loop):
                     thisParamList = getParamList(getLastEffectString())
                     if thisParamList[0] != "":
                         gotoNum = gotoNum + len(thisParamList) + 1
@@ -837,22 +1099,126 @@ def main():
                         gotoNum = gotoNum + len(thisParamList)
 
                 scriptFin = "Script_End()"
-                if i[:len(scriptFin)] == scriptFin:
+                if i.startswith(scriptFin):
+                    if currentFrame < invStart and invStart != 10000:
+                        addEffect(asynchronousTimer.format(invStart))
+                        currentFrame = invStart
+                        addEffect(terminateOverlays)
+                        invStart = 10000
+                    if currentFrame < invEnd and invEnd != 10000:
+                        addEffect(asynchronousTimer.format(invEnd))
+                        currentFrame = invEnd
+                        addEffect(terminateOverlays)
+                        addEffect(colorOverlay.format(*GREEN))
+                        invEnd = 10000
+                    if currentFrame < FAF and FAF != 10000:
+                        addEffect(asynchronousTimer.format(FAF))
+                        currentFrame = FAF
+                        addEffect(terminateOverlays)
+                        FAF = 10000
                     if offsetBegin != 0:
                         addEffect(asynchronousTimer.format(prevFrame + offsetEnd))
                         addEffect(terminateGraphic13)
-                    addEffect(scriptEnd)
+                    if not trainingOnly:
+                        addEffect(scriptEnd)
                     inMain = False
                     shouldExitLoop = True
             index = index + 1
 
-    if blacklisted:
+        if currentFrame < invStart and invStart != 10000:
+            addEffect(asynchronousTimer.format(invStart))
+            currentFrame = invStart
+            addEffect(colorOverlay.format(*BLUE))
+        if currentFrame < invEnd and invEnd != 10000:
+            addEffect(asynchronousTimer.format(invEnd))
+            currentFrame = invEnd
+            addEffect(terminateOverlays)
+            addEffect(colorOverlay.format(*GREEN))
+        if currentFrame < FAF and FAF != 10000:
+            addEffect(asynchronousTimer.format(FAF))
+            currentFrame = FAF
+            addEffect(terminateOverlays)
+            FAF = 10000
+
+    if trainingOnly:
+        inCompare = 0
+        addEffect("}")
+        addEffect(FALSEComp.format("0x10"))
+        printTrainingOutput(lines)
+    elif blacklisted:
         printBlacklistedOutput(lines)
     else:
         printOutput(lines)
 
 def didHandleEdgeCase(char, move):
     global inLoop, inCompare
+    if char == "peach":
+
+        '''
+        if move[-4:] == ".acm":
+            addEffect(someCompare.format("0x1000003E", "0x5", "0x0"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = True
+            addEffect(colorOverlay.format(*GREEN))
+            inCompare = False
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = True
+            addEffect(colorOverlay.format(*RED))
+            inCompare = False
+            addEffect("}")
+            addEffect(scriptEnd)
+            return True
+        '''
+        '''
+        if move[-4:] == ".acm":
+            addEffect(someCompare.format("0x10000032", "0x2", "0x0"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect(colorOverlay.format(*GREEN))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+            addEffect(someCompare.format("0x10000032", "0x2", "0x5"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect(colorOverlay.format(*BLUE))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+            addEffect(someCompare.format("0x10000032", "0x2", "0xA"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect(colorOverlay.format(*ORANGE))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+            addEffect(someCompare.format("0x10000032", "0x2", "0xF"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect(colorOverlay.format(*RED))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+            addEffect(someCompare.format("0x10000032", "0x2", "0x14"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect(colorOverlay.format(*MAGENTA))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            while inCompare:
+                addEffect("}")
+                inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(scriptEnd)
+            return True
+        '''
+
     if char == "cloud":
         if move == "0xF37FC0B3.acm":  # SpecialHiFall
             addEffect(asynchronousTimer.format('1'))
@@ -1016,6 +1382,7 @@ def didHandleEdgeCase(char, move):
             addEffect("Asynchronous_Timer(Frames=40)")
             addEffect("Script_End()")
             return True
+    '''
     if char == "kamui":
         if move in {"AttackS4.acm", "AttackS4Hi.acm", "AttackS4Lw.acm"}:
             addEffect(scriptEnd)
@@ -1088,7 +1455,7 @@ def didHandleEdgeCase(char, move):
             addEffect("	Goto(Unknown=-62)")
             addEffect("}")
             addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
-            addEffect("Set_Loop(Iterations=2){")
+            addEffect("Set_Loop(Iterations=3){")
             addEffect(
                 "	EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x40B00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4356AAAB, unknown=0x0)")
             addEffect(
@@ -1108,6 +1475,7 @@ def didHandleEdgeCase(char, move):
             addEffect("Asynchronous_Timer(Frames=39)")
             addEffect("Script_End()")
             return True
+    '''
     if char == "pitb":
         if move == "dude":
             return True
@@ -1966,6 +2334,45 @@ def didHandleEdgeCase(char, move):
             addEffect("Script_End()")
             return True
     if char == "rockman":
+        '''
+        if move in {"AppealLwL.acm", "AppealLwR.acm"}:
+            addEffect(someCompare.format("0x10000083", "0x0", "0x0"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect("Basic_Variable_Add(Value=0x1, Variable=0x10000083)")
+            addEffect(colorOverlay.format(*BLUE))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+            addEffect(someCompare.format("0x10000083", "0x0", "0x1"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect("Basic_Variable_Add(Value=0x1, Variable=0x10000083)")
+            addEffect(colorOverlay.format(*RED))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+            addEffect(someCompare.format("0x10000083", "0x0", "0x2"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect("Basic_Variable_Set(Value=0x0, Variable=0x10000083)")
+            addEffect(colorOverlay.format(*GREEN))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect("Basic_Variable_Set(Value=0x0, Variable=0x10000083)")
+            addEffect(colorOverlay.format(*BLUE))
+            inCompare = inCompare - 1
+            while inCompare:
+                addEffect("}")
+                inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(scriptEnd)
+            return True
+        '''
         if move == "AttackHi3.acm":
             addEffect(asynchronousTimer.format('5'))
             addEffect(colorOverlay.format(*BLUE))
@@ -1994,6 +2401,7 @@ def didHandleEdgeCase(char, move):
             addEffect(asynchronousTimer.format('10'))
             addEffect(terminateOverlays)
             return True
+    '''
     if char == "roy":
         if move == "SpecialHi.acm":
             addEffect("Asynchronous_Timer(Frames=4)")
@@ -2118,6 +2526,7 @@ def didHandleEdgeCase(char, move):
             addEffect("Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)")
             addEffect("Script_End()")
             return True
+    '''
     if char == "samus":
         if move == "SpecialHi.acm":
             addEffect(asynchronousTimer.format('3'))
@@ -2330,6 +2739,8 @@ def didHandleEdgeCase(char, move):
             addEffect("Asynchronous_Timer(Frames=43)")
             addEffect("Script_End()")
             return True
+
+
     ''' 
     TODO:
      pitb

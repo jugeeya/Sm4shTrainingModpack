@@ -1,3 +1,28 @@
+#MOVES THAT SHOULD NOT BE PROCESSED
+Wait1.acm
+Wait2.acm
+Wait3.acm
+Wait4.acm
+Wait5.acm
+WaitItem.acm
+Dash.acm
+Run.acm
+RunBrakeL.acm
+RunBrakeR.acm
+RunFallL.acm
+RunFallR.acm
+WalkBrakeL.acm
+WalkBrakeR.acm
+WalkFallL.acm
+WalkFallR.acm
+WalkFast.acm
+WalkMiddle.acm
+WalkSlow.acm
+Turn.acm
+TurnRun.acm
+TurnRunBrake.acm
+Fuwafuwa.acm
+#CHARACTER MOVES
 bayonetta
 	body
 	bat

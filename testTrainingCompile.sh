@@ -23,10 +23,10 @@ then
 	    if [ $(python3 stretchChecker.py $1 $2 $fbasename) == "blacklisted" ]
 	    then
 		echo "Processing blacklisted file $f for $1..."
-		python3 gameToEffectScript.py $f y > $1bodyOutput/animcmd/$(basename $f)
+		python3 gameToEffectScript.py $f ty > $1bodyOutput/animcmd/$(basename $f)
 	    else
 		echo "Processing file $f for $1..."
-		python3 gameToEffectScript.py $f > $1bodyOutput/animcmd/$(basename $f)
+		python3 gameToEffectScript.py $f t > $1bodyOutput/animcmd/$(basename $f)
 	    fi
 	done
     fi
@@ -47,7 +47,7 @@ else
 	do
 	    fbasename=$(basename $f)
 	    echo "Processing file $(basename $f)..."
-	    python3 gameToEffectScript.py $f > $1weapon$2Output/animcmd/$(basename $f)
+	    python3 gameToEffectScript.py $f t > $1weapon$2Output/animcmd/$(basename $f)
 	done
     fi
     mv $1weapon$2Input/fighter.mlist $1weapon$2Output/fighter.mlist

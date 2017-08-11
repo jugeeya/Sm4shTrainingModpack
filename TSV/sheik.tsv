@@ -43,25 +43,657 @@
 41	passiveBFAF
 1	26	jabresetUActive
 1	26	jabresetDActive
-Jab 1	2	3	18
-Jab 2	2	4	18
-Rapid Jab Finisher	5	6	53
-Dash Attack	5	6	41
-Ftilt	5	8	25
-Utilt (Hit 1)	5	8	36
-Dtilt	5	6	30
-Fsmash (Hit 1)	12	-	51
-Usmash (Hit 1)	11 	-	53
-Dsmash (Hit 1)	11	12	55
-Standing Grab	6	7	28
-Dash Grab	8	9	35
-Pivot Grab	9	10	33
-Nair	3	6	50
-Fair	5	7	35
-Bair	4	6	38
-Uair	4	15 	44
-Dair	15	18	55
-Needle Storm (6 Needles, Thrown On)	11, 14, 17, 20, 23, 26	-	54
-Needle Storm (1-5 Needles, Thrown On)	5, 7, 9, 11, 13	-	48
-Burst Grenade (Thrown)	15		81
-Burst Grenade (Detonation)	28	48	40
+PARAMS SECTION
+GROUP MOVES, FORMAT: FAF invStart invEnd
+0	Wait1	weapon/fusin/0x7197611C	weapon/needle/0xEF3E3778	0	0	0
+1	Wait2	weapon/fusin/0x1917DF1F	weapon/needle/0x15225DE3	0	0	0
+2	Wait3	weapon/fusin/0x6E10EF89	weapon/needle/0x62256D75	0	0	0
+3	0	0	0
+4	0	0	0
+5	WaitItem	0	0	0
+6	0	0	0
+7	0	0	0
+8	weapon/needle/0x5E09839C	0	0	0
+9	weapon/needle/0x83DDEB9D	0	0	0
+10	WalkSlow	weapon/needle/0xF4DADB0B	0	0	0
+11	WalkMiddle	0	0	0
+12	WalkFast	weapon/needle/0xA7B30616	0	0	0
+13	weapon/needle/0x023F43AE	0	0	0
+14	weapon/needle/0x75387338	0	0	0
+15	0	0	0
+16	Turn	12	0	0
+17	Dash	22	0	0
+18	Run	0	0	0
+19	20	0	0
+20	RunBrakeR	20	0	0
+21	RunBrakeL	20	0	0
+22	TurnRun	0	0	0
+23	TurnRunBrake	1	0	0
+24	0	0	0
+25	0x126E356F	0	0	0
+26	0x293C68F7	0	0	0
+27	0x9B6B7EF6	0	0	0
+28	0x7CA86B39	0	0	0
+29	0x2CF0167A	0	0	0
+30	0x6B3FB011	0	0	0
+31	0	0	0
+32	0	0	0
+33	0	0	0
+34	0	0	0
+35	0	0	0
+36	0	0	0
+37	0	0	0
+38	0	0	0
+39	0	0	0
+40	0	0	0
+41	0	0	0
+42	0	0	0
+43	0	0	0
+44	0	0	0
+45	LandingFallSpecial	0	0	0
+46	0	0	0
+47	0	0	0
+48	0	0	0
+49	0	0	0
+50	0	0	0
+51	Squat	8	0	0
+52	0xD50DF6D7	0	0	0
+53	0xD50DF6D7(2)	0	0	0
+54	SquatWaitItem	0	0	0
+55	SquatF	0	0	0
+56	SquatB	0	0	0
+57	SquatRv	8	0	0
+58	LandingLight	0	0	0
+59	LandingHeavy	0	0	0
+60	StepJump	0	0	0
+61	StepPose	0	0	0
+62	0xAD2064E4	0	0	0
+63	0	0	0
+64	0xE0D78C1E	21	0	0
+65	0	0	0
+66	0	0	0
+67	0	0	0
+68	0	0	0
+69	0	0	0
+70	0	0	0
+71	GuardOn	0	0	0
+72	0	0	0
+73	GuardOff	0	0	0
+74	GuardDamage	0	0	0
+75	EscapeN	25	2	16
+76	EscapeF	28	4	16
+77	EscapeB	28	4	16
+78	EscapeAir	31	2	26
+79	Rebound	0	0	0
+80	Attack11	18	0	0
+81	Attack12	18	0	0
+82	0	0	0
+83	Attack100Start	0	0	0
+84	Attack100	0	0	0
+85	0x8427B6B7	0	0	0
+86	AttackDash	41	0	0
+87	0	0	0
+88	AttackS3	25	0	0
+89	0	0	0
+90	0	0	0
+91	0	0	0
+92	AttackHi3	36	0	0
+93	AttackLw3	30	0	0
+94	0	0	0
+95	AttackS4	51	0	0
+96	0	0	0
+97	0	0	0
+98	0x022F7B09	0	0	0
+99	AttackHi4	53	0	0
+100	0x9E61202C	0	0	0
+101	AttackLw4	55	0	0
+102	0	0	0
+103	0x53F267D4	0	0	0
+104	AttackAirN	50	0	0
+105	AttackAirF	35	0	0
+106	AttackAirB	38	0	0
+107	AttackAirHi	44	0	0
+108	AttackAirLw	55	0	0
+109	LandingAirN	0	0	0
+110	LandingAirF	0	0	0
+111	LandingAirB	0	0	0
+112	LandingAirHi	0	0	0
+113	LandingAirLw	0	0	0
+114	Catch	28	0	0
+115	CatchDash	35	0	0
+116	CatchTurn	33	0	0
+117	CatchWait	0	0	0
+118	CatchAttack	0	0	0
+119	CatchCut	30	0	0
+120	ThrowF	40	0	0
+121	ThrowB	36	0	0
+122	ThrowHi	50	0	0
+123	ThrowLw	54	0	0
+124	0	0	0
+125	0	0	0
+126	0	0	0
+127	0	0	0
+128	0	0	0
+129	0	0	0
+130	0	0	0
+131	0	0	0
+132	0	0	0
+133	0	0	0
+134	0	0	0
+135	0	0	0
+136	CapturePulledHi	0	0	0
+137	CaptureWaitHi	0	0	0
+138	CaptureDamageHi	0	0	0
+139	CapturePulledLw	0	0	0
+140	CaptureWaitLw	0	0	0
+141	CaptureDamageLw	0	0	0
+142	CaptureCut	30	0	0
+143	CaptureJump	40	0	0
+144	0	0	0
+145	0	0	0
+146	0	0	0
+147	0	0	0
+148	0	0	0
+149	0	0	0
+150	0	0	0
+151	0	0	0
+152	0	0	0
+153	0	0	0
+154	0	0	0
+155	0	0	0
+156	0	0	0
+157	0	0	0
+158	0	0	0
+159	0	0	0
+160	0	0	0
+161	0	0	0
+162	0	0	0
+163	0	0	0
+164	0	0	0
+165	0	0	0
+166	0	0	0
+167	0	0	0
+168	0	0	0
+169	0	0	0
+170	0	0	0
+171	0	0	0
+172	0	0	0
+173	0	0	0
+174	0	0	0
+175	0	0	0
+176	0	0	0
+177	0	0	0
+178	0	0	0
+179	0	0	0
+180	0	0	0
+181	0	0	0
+182	0	0	0
+183	0	0	0
+184	0	0	0
+185	0	0	0
+186	0	0	0
+187	0	0	0
+188	0	0	0
+189	0	0	0
+190	0	0	0
+191	0	0	0
+192	0	0	0
+193	0	0	0
+194	0	0	0
+195	DamageHi1	0	0	0
+196	DamageHi2	0	0	0
+197	DamageHi3	0	0	0
+198	DamageN1	0	0	0
+199	DamageN2	0	0	0
+200	DamageN3	0	0	0
+201	DamageLw1	0	0	0
+202	DamageLw2	0	0	0
+203	DamageLw3	0	0	0
+204	0	0	0
+205	0	0	0
+206	0	0	0
+207	DamageFlyHi	0	0	0
+208	DamageFlyN	0	0	0
+209	DamageFlyLw	0	0	0
+210	DamageFlyTop	0	0	0
+211	DamageFlyRoll	0	0	0
+212	0	0	0
+213	DownBoundU	0	0	0
+214	DownWaitU	0	0	0
+215	DownDamageU	0	0	0
+216	DownDamageU3	0	0	0
+217	DownEatU	0	0	0
+218	DownStandU	30	1	23
+219	DownAttackU	46	1	24
+220	DownForwardU	36	1	20
+221	DownBackU	36	1	23
+222	0xE42E1C1E	0	0	0
+223	DownBoundD	0	0	0
+224	DownWaitD	0	0	0
+225	DownDamageD	0	0	0
+226	DownDamageD3	0	0	0
+227	DownEatD	0	0	0
+228	DownStandD	30	1	23
+229	DownAttackD	46	1	23
+230	DownForwardD	36	1	20
+231	DownBackD	36	1	20
+232	0	0	0
+233	Passive	0	1	21
+234	PassiveStandF	41	1	21
+235	PassiveStandB	41	1	21
+236	PassiveWall	0	0	0
+237	PassiveWallJump	0	0	0
+238	PassiveCeil	0	1	18
+239	0x60A83C48	0	0	0
+240	0x18D732AC	0	0	0
+241	FuraFura	0	0	0
+242	0x46CCF353	0	0	0
+243	FuraFuraStartU	0	0	0
+244	FuraFuraStartD	0	0	0
+245	FuraFuraEnd	34	0	0
+246	FuraSleepStart	0	0	0
+247	FuraSleepLoop	0	0	0
+248	FuraSleepEnd	0	0	0
+249	0	0	0
+250	CameraHit	0	0	0
+251	0	0	0
+252	Ottotto	0	0	0
+253	0	0	0
+254	WallDamage	0	0	0
+255	StopWall	0	0	0
+256	0xEC167B20	0	0	0
+257	StopCeil	0	0	0
+258	0	0	0
+259	CliffCatch	0	0	0
+260	0	0	0
+261	CliffClimbQuick	35	1	34
+262	CliffAttackQuick	55	1	19
+263	CliffEscapeQuick	50	1	34
+264	CliffJumpQuick1	0	1	13
+265	CliffJumpQuick2	0	0	0
+266	SlipDown	0	1	6
+267	Slip	0	1	6
+268	SlipWait	0	0	0
+269	SlipStand	22	1	17
+270	SlipAttack	50	1	8
+271	SlipEscapeF	29	1	10
+272	SlipEscapeB	29	1	10
+273	0xD9C96745	0	0	0
+274	0x67A3293A	0	0	0
+275	0xBE21762F	9	0	0
+276	0x004B3850	11	0	0
+277	0x9E895D8D	0	0	0
+278	0x99E49994	25	0	0
+279	0xEB786D3F	24	0	0
+280	0x751B9558	20	0	0
+281	0x60216DF8	0	0	0
+282	0x044DA8FC	25	0	0
+283	0x453B4E68	24	0	0
+284	0x9673D96B	20	0	0
+285	0x29BAE301	38	0	0
+286	0xC2C13B23	0	0	0
+287	0xEED45ECD	0	0	0
+288	0xE9B99AD4	25	0	0
+289	0x9DD471AC	24	0	0
+290	0x03B789CB	20	0	0
+291	0x168D716B	0	0	0
+292	0x72E1B46F	25	0	0
+293	0x2C4B208A	24	0	0
+294	0xFF03B789	20	0	0
+295	0x61C011E8	0	0	0
+296	0x73D99A1C	0	0	0
+297	0	0	0
+298	0	0	0
+299	0x4F90F5D2	40	0	0
+300	0x48FD31CB	40	0	0
+301	0x107D38F2	30	0	0
+302	0x8E1EC095	30	0	0
+303	0x9B243835	40	0	0
+304	0xFF48FD31	40	0	0
+305	0xA015F530	30	0	0
+306	0x735D6233	30	0	0
+307	0xB3C54BD8	26	0	0
+308	0x5DCB2AF4	38	0	0
+309	0xC3AFBF57	52	0	0
+310	0	0	0
+311	0xACE0B01D	0	0	0
+312	0x76E58000	45	0	0
+313	0x29BB09D8	26	0	0
+314	0xC7B568F4	38	0	0
+315	0x59D1FD57	0	0	0
+316	0x0317F126	45	0	0
+317	0x5DC621E5	26	0	0
+318	0xB3C840C9	38	0	0
+319	0x2DACD56A	52	0	0
+320	0	0	0
+321	0x877E422B	0	0	0
+322	0x5C4D24BA	45	0	0
+323	0xDC894F60	26	0	0
+324	0x32872E4C	38	0	0
+325	0xACE3BBEF	52	0	0
+326	0	0	0
+327	0xF2EE0274	0	0	0
+328	0xA6AEE778	45	0	0
+329	0x297B19D2	26	0	0
+330	0xC77578FE	38	0	0
+331	0x5911ED5D	52	0	0
+332	0	0	0
+333	0xC6F953CB	0	0	0
+334	0xDF26A411	45	0	0
+335	0x22D587C4	26	0	0
+336	0xCCDBE6E8	38	0	0
+337	0x52BF734B	52	0	0
+338	0	0	0
+339	0xE350869D	0	0	0
+340	0x192152A3	45	0	0
+341	0	0	0
+342	0	0	0
+343	0	0	0
+344	0	0	0
+345	0	0	0
+346	0	0	0
+347	0xD05DF2AC	0	0	0
+348	0x5F52B259	0	0	0
+349	0	0	0
+350	0x8CC0DF20	0	0	0
+351	0xF027D6D5	0	0	0
+352	0	0	0
+353	0xD3FBE249	0	0	0
+354	0x7545EA13	0	0	0
+355	0xC178CC56	0	0	0
+356	0xDC50F681	0	0	0
+357	0xD4035195	0	0	0
+358	0xB82B3F79	0	0	0
+359	0x25244E99	0	0	0
+360	0x249C3144	0	0	0
+361	0xDB3D3298	0	0	0
+362	0xD36E958C	0	0	0
+363	0xBF46FB60	0	0	0
+364	0x22498A80	0	0	0
+365	0x23F1F55D	0	0	0
+366	0x1B0CA743	0	0	0
+367	0x46AFEB5B	0	0	0
+368	0x0C660475	0	0	0
+369	0x7499EF77	25	0	0
+370	0x36783DB2	0	0	0
+371	0x14B86FF8	0	0	0
+372	0xCD6A5C9C	0	0	0
+373	0xEC3F3A62	0	0	0
+374	0xF34D0716	0	0	0
+375	0x2CC6900C	0	0	0
+376	0x0CC803A3	0	0	0
+377	0	0	0
+378	0x69C96CF6	0	0	0
+379	0x9A0BF052	0	0	0
+380	0x51C12B1A	0	0	0
+381	0	0	0
+382	0	0	0
+383	0xBC64B03D	0	0	0
+384	0x7EFCFF98	0	0	0
+385	0	0	0
+386	0xF402ADA3	0	0	0
+387	0x2B893AB9	0	0	0
+388	0x06690ABA	0	0	0
+389	0x85E5AC84	0	0	0
+390	0	0	0
+391	0	0	0
+392	0	0	0
+393	0	0	0
+394	0x5C5E5525	0	0	0
+395	0x8C604812	25	0	0
+396	0xB4589A21	0	0	0
+397	0x9C471F60	25	0	0
+398	0xB8CEF01C	0	0	0
+399	0	0	0
+400	0	0	0
+401	0x1C9FD162	0	0	0
+402	0xE51EC543	0	0	0
+403	0x4509EDDD	30	0	0
+404	0xFC4453A7	0	0	0
+405	0x05C54786	0	0	0
+406	0x4B6236D7	30	0	0
+407	0x97CBA40F	0	0	0
+408	0xC1188718	0	0	0
+409	ItemGrassPull	0	0	0
+410	0	0	0
+411	0	0	0
+412	SwimRise	0	0	0
+413	SwimUp	0	0	0
+414	SwimUpDamage	0	0	0
+415	Swim	0	0	0
+416	SwimF	0	0	0
+417	20	0	0
+418	SwimTurn	20	0	0
+419	SwimDrown	0	0	0
+420	SwimDrownOut	0	0	0
+421	EntryR	0	0	0
+422	EntryL	0	0	0
+423	AppealHiR	100	0	0
+424	AppealHiL	100	0	0
+425	AppealSR	100	0	0
+426	AppealSL	100	0	0
+427	AppealLwR	90	0	0
+428	AppealLwL	90	0	0
+429	Win1	0	0	0
+430	0	0	0
+431	Win2	0	0	0
+432	0	0	0
+433	Win3	0	0	0
+434	0	0	0
+435	0	0	0
+436	0	0	0
+437	LadderUp	0	0	0
+438	LadderDown	0	0	0
+439	0	0	0
+440	0	0	0
+441	0	0	0
+442	0	0	0
+443	0	0	0
+444	0	0	0
+445	0	0	0
+446	0	0	0
+447	0	0	0
+448	0	0	0
+449	0	0	0
+450	0	0	0
+451	0	0	0
+452	0	0	0
+453	0	0	0
+454	0	0	0
+455	0	0	0
+456	0	0	0
+457	0	0	0
+458	0	0	0
+459	0	0	0
+460	0	0	0
+461	0	0	0
+462	0	0	0
+463	0	0	0
+464	0	0	0
+465	0	0	0
+466	0	0	0
+467	0	0	0
+468	0	0	0
+469	0	0	0
+470	0	0	0
+471	0	0	0
+472	0	0	0
+473	0	0	0
+474	0	0	0
+475	0	0	0
+476	0	0	0
+477	0	0	0
+478	0	0	0
+479	0	0	0
+480	0	0	0
+481	0	0	0
+482	0	0	0
+483	0	0	0
+484	0	0	0
+485	0	0	0
+486	0	0	0
+487	0	0	0
+488	0	0	0
+489	0	0	0
+490	0	0	0
+491	0	0	0
+492	0	0	0
+493	0	0	0
+494	0	0	0
+495	0	0	0
+496	0	0	0
+497	0	0	0
+498	0	0	0
+499	0	0	0
+500	0	0	0
+501	0	0	0
+502	0	0	0
+503	0	0	0
+504	0	0	0
+505	0	0	0
+506	0	0	0
+507	0	0	0
+508	0	0	0
+509	0	0	0
+510	0	0	0
+511	0	0	0
+512	0	0	0
+513	0	0	0
+514	0	0	0
+515	0	0	0
+516	0	0	0
+517	0	0	0
+518	0	0	0
+519	0	0	0
+520	0	0	0
+521	0	0	0
+522	0	0	0
+523	0	0	0
+524	0	0	0
+525	0	0	0
+526	0	0	0
+527	0	0	0
+528	0	0	0
+529	SpecialNStart	0	0	0
+530	SpecialNStart_C2	0	0	0
+531	SpecialNStart_C3	0	0	0
+532	0	0	0
+533	SpecialNLoop	0	0	0
+534	SpecialNLoop_C2	0	0	0
+535	SpecialNLoop_C3	0	0	0
+536	0	0	0
+537	SpecialNEnd	47	0	0
+538	SpecialNEnd_C2	47	0	0
+539	SpecialNEnd_C3	47	0	0
+540	47	0	0
+541	SpecialNCancel	8	0	0
+542	SpecialNCancel_C2	8	0	0
+543	SpecialNCancel_C3	8	0	0
+544	8	0	0
+545	SpecialAirNStart	0	0	0
+546	SpecialAirNStart_C2	0	0	0
+547	SpecialAirNStart_C3	0	0	0
+548	0	0	0
+549	SpecialAirNLoop	0	0	0
+550	SpecialAirNLoop_C2	0	0	0
+551	SpecialAirNLoop_C3	0	0	0
+552	0	0	0
+553	SpecialAirNEnd	47	0	0
+554	SpecialAirNEnd_C2	47	0	0
+555	SpecialAirNEnd_C3	47	0	0
+556	47	0	0
+557	SpecialAirNCancel	8	0	0
+558	SpecialAirNCancel_C2	8	0	0
+559	SpecialAirNCancel_C3	8	0	0
+560	8	0	0
+561	SpecialS	0	0	0
+562	SpecialS_C2	0	0	0
+563	SpecialS_C3	0	0	0
+564	0	0	0
+565	SpecialSHold	0	0	0
+566	SpecialSHold_C2	0	0	0
+567	SpecialSHold_C3	0	0	0
+568	0	0	0
+569	SpecialSFire	40	0	0
+570	SpecialSFire_C2	36	0	0
+571	SpecialSFire_C3	40	0	0
+572	40	0	0
+573	30	0	0
+574	30	0	0
+575	30	0	0
+576	30	0	0
+577	SpecialAirS	0	0	0
+578	SpecialAirS_C2	0	0	0
+579	SpecialAirS_C3	0	0	0
+580	0	0	0
+581	SpecialAirSHold	0	0	0
+582	SpecialAirSHold_C2	0	0	0
+583	SpecialAirSHold_C3	0	0	0
+584	0	0	0
+585	SpecialAirSFire	0	0	0
+586	SpecialAirSFire_C2	0	0	0
+587	SpecialAirSFire_C3	0	0	0
+588	0	0	0
+589	SpecialAirSEnd	0	0	0
+590	SpecialAirSEnd_C2	0	0	0
+591	SpecialAirSEnd_C3	0	0	0
+592	0	0	0
+593	SpecialHiStart	0	19	37
+594	SpecialHiStart_C2	0	30	37
+595	SpecialHiStart_C3	0	24	37
+596	0	19	37
+597	SpecialHi	41	0	0
+598	SpecialHi_C2	41	0	0
+599	SpecialHi_C3	41	0	0
+600	41	0	0
+601	SpecialAirHiStart	0	19	37
+602	SpecialAirHiStart_C2	0	30	37
+603	SpecialAirHiStart_C3	0	24	37
+604	0	19	37
+605	SpecialAirHi	0	0	0
+606	SpecialAirHi_C2	0	0	0
+607	SpecialAirHi_C3	0	0	0
+608	0	0	0
+609	SpecialLw	0	3	5
+610	SpecialLw_C2	0	3	5
+611	SpecialLw_C3	0	3	7
+612	0	3	5
+613	SpecialAirLw	0	3	5
+614	SpecialAirLw_C2	0	3	5
+615	SpecialAirLw_C3	0	3	7
+616	0	3	5
+617	SpecialLwLanding	22	0	0
+618	SpecialLwLanding_C2	24	0	0
+619	SpecialLwLanding_C3	22	0	0
+620	22	0	0
+621	SpecialLwAttack	30	0	0
+622	SpecialLwAttack_C2	30	0	0
+623	SpecialLwAttack_C3	30	0	0
+624	30	0	0
+625	SpecialLwAttackLanding	36	0	0
+626	SpecialLwAttackLanding_C2	36	0	0
+627	SpecialLwAttackLanding_C3	36	0	0
+628	36	0	0
+629	SpecialLwReturn	0	0	0
+630	SpecialLwReturn_C2	0	0	0
+631	SpecialLwReturn_C3	0	0	0
+632	0	0	0
+633	SpecialLwReturnLanding	20	0	0
+634	SpecialLwReturnLanding_C2	20	0	0
+635	SpecialLwReturnLanding_C3	20	0	0
+636	20	0	0
+637	Final	0	1	0
+638	FinalAir	0	1	0
+BONES SECTION
+GROUP HURTBOXES, FORMAT: X Y Z X2 Y2 Z2 Size Bone Part? Zone
+0	0.0	0.0	-0.5	0.0	0.0	0.5	1.7	3	0	1
+1	0.5	0.0	0.0	1.5	0.0	0.0	2.3	13	0	1
+2	0.0	0.0	0.0	0.9	0.0	0.0	2.0	19	0	2
+3	0.0	0.0	0.0	2.0	0.0	0.0	1.3	21	0	1
+4	0.0	0.0	0.0	2.0	0.0	0.0	1.3	15	0	1
+5	0.0	0.0	0.0	2.9	0.0	0.0	1.2	22	1	1
+6	0.0	0.0	0.0	2.9	0.0	0.0	1.2	16	1	1
+7	0.0	0.0	0.0	3.8	0.0	0.0	1.6	8	3	0
+8	0.0	0.0	0.0	3.8	0.0	0.0	1.6	4	3	0
+9	0.0	0.0	0.0	4.5	0.0	0.0	1.4	9	3	0
+10	0.0	0.0	0.0	4.5	0.0	0.0	1.4	5	3	0

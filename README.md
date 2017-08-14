@@ -44,9 +44,10 @@ Again, same as the previous but produces training-mode-only output in the corres
 
 ## Where processing occurs
 #### *processFile(filePath, isBlacklisted=False, isTrainingOnly=False)*
-This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. didHandleEdgeCase() is a special function that contains tons of lines of code for edge cases that cannot be handled by the script due to the acm files not containing enough information.
+This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. *didHandleEdgeCase()* is a special function that contains tons of lines of code for edge cases that cannot be handled by the script due to the acm files not containing enough information.
 
 ```
+# in Python3
 # returns a string containing a normal move's new .acm file given its directory is correctly formatted
 processFile("marthbodyInput/animcmd/AttackAirF.acm")
 # returns a string containing a blacklisted move's new .acm file given its directory is correctly formatted
@@ -61,7 +62,7 @@ Returns one of three strings:
 * "noprocess", the move should simply be placed in the output directory as given
 
 ## createTSV.py
-This script creates a tsv file for them in the folder TSV/ for all characters in AllFighterData. Necessary for addMultCharProjct.sh. The current commit's TSV files will always be up-to-date, so this need only be called if parseChar() is changed.
+This script creates a tsv file for them in the folder TSV/ for all characters in AllFighterData. Necessary for peformCompilation.py. The current commit's TSV files will always be up-to-date, so this need only be called if *parseChar()* is changed.
 
 #### *parseChar(charName)*
 Parses www.kuroganehammer.com through HTML parsing and then by using FrannDotExe's API https://github.com/Frannsoft/FrannHammer to create one character's TSV file of data. 
@@ -71,6 +72,9 @@ Used to test compilations on single characters quickly, with an argument to only
 
 ```
 # called as such: python3 performCompilation.py test charName "body"/weaponName moveNamesRegex
+# compile all of Little Mac's moves
+python3 performCompilation.py test littlemac body *.acm
+
 # compile all of Ike's normals
 python3 performCompilation.py test ike body Attack*.acm
 
@@ -89,7 +93,10 @@ python3 performCompilation.py test peach body nothing
 Same as the previous, but produces training-mode-only output.
 
 ## convertToAddEffect.py
-Used in conjunction with test compilations in order to get code that will work with gameToEffectScript.py's didHandleEdgeCase() function. Takes the effect.bin portion of a processed .acm file and outputs "addEffect()" lines that can be copy-pasted into the conditionals of the didHandleEdgeCase() function.
+```
+python3 convertToAddEffect.py rockmanbodyOutput/animcmd/SpecialHi.acm > megaManUpBEdgeCaseCode.txt
+```
+Used in conjunction with test compilations in order to get code that will work with performCompilation.py's *didHandleEdgeCase()* function. Takes the effect.bin portion of a processed .acm file and outputs *addEffect()* lines that can be copy-pasted into the conditionals of the didHandleEdgeCase() function.
 
 ## FITC, FITD, and SALT
 These are included because the current version of FITX is crucial to the performance of the scripts, as some bugs greatly affect a good few characters. 

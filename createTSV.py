@@ -1,4 +1,6 @@
 import sys
+import os
+import shutil
 import urllib.request, json
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -232,12 +234,7 @@ def getJabresetData():
             if (tableNum == 2 and notEveryoneElse2 == False):
                 jabresetDActive = ['1', '26']
                         
-def main():
-        if (len(sys.argv) != 2):
-            print("Needs one argument: gameChar name")
-            exit()
-        charName = sys.argv[1]
-
+def parseChar(charName):
         global kuroName
         kuroName = gameToKuro[charName]
 
@@ -419,9 +416,18 @@ def main():
                     values = entry['values']
                     print(values[0]['value'], values[1]['value'], values[2]['value'], values[3]['value'], values[4]['value'], values[5]['value'], values[6]['value'], values[7]['value'], values[8]['value'], values[9]['value'], sep="\t", end="\n")
 
-
-
-
+def main():
+    fighterDirectories = os.listdir("AllFighterData/")
+    shutil.rmtree("TSV/")
+    os.mkdir("TSV")
+    for char in fighterDirectories:
+        stdout = sys.stdout
+        currentTSV = char + ".tsv"
+        print("Processing for TSV/{}...".format(currentTSV))
+        sys.stdout = open("TSV/{}".format(currentTSV), 'w')
+        parseChar(char)
+        sys.stdout.close()
+        sys.stdout = stdout
 
 main()
 

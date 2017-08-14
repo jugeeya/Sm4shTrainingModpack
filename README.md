@@ -84,7 +84,7 @@ python3 performCompilation.py test peach body nothing
 
 ## Testing training compilation
 ```
-# called as such: python3 performCompilation.py training test charName "body"/weaponName moveNamesRegex
+# called as such: python3 performCompilation.py testTraining charName "body"/weaponName moveNamesRegex
 ```
 Same as the previous, but produces training-mode-only output.
 

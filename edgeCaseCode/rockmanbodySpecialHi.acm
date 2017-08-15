@@ -1,0 +1,31 @@
+MoveDef SpecialHi
+{
+	Main()
+	{
+		Asynchronous_Timer(Frames=11)
+		Allow/Disallow_Ledgegrab(State=0x2)
+		Script_End()
+	}
+
+	Effect()
+	{
+		Asynchronous_Timer(Frames=6)
+		Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)
+		Asynchronous_Timer(Frames=10)
+		Terminate_Overlays()
+	}
+
+	Sound()
+	{
+		Asynchronous_Timer(Frames=1)
+		Sound_Effect(SFX=0x23D002D)
+		Script_End()
+	}
+
+	Expression()
+	{
+		Rumble(unknown=0xD, unknown=0x0)
+		Script_End()
+	}
+
+}

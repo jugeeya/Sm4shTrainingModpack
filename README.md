@@ -7,7 +7,19 @@ This is the combination of scripts that I use to create the Hitbox Visualization
 ## Requirements
 
 First and foremost, a dump of the game is needed. More specifically, a folder MUST be placed in this directory entitled "AllFighterData" which includes the 58 character folders found in data/fighter of the game dump. It is from this folder that all the scripts find the game's data.
+The whole workspace should look like:
 
+```
+-this_repository/
+    -AllFighterData/
+        -bayonetta/
+        ...
+        -zelda/
+    -blacklist/
+    -TSV/
+    -edgeCaseCode/
+    -all_other_python_scripts_and_FITX_exes
+```
 ## Compiling all characters game-wide
 
 ```
@@ -44,7 +56,7 @@ Again, same as the previous but produces training-mode-only output in the corres
 
 ## Where processing occurs
 #### *processFile(filePath, isBlacklisted=False, isTrainingOnly=False)*
-This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. didHandleEdgeCase() is a special function that contains tons of lines of code for edge cases that cannot be handled by the script due to the acm files not containing enough information.
+This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. didHandleEdgeCase() is a special function that checks the edgeCaseCode/ folder for specific .acm files that cannot be handled by the script due to the acm files not containing enough information.
 
 ```
 # returns a string containing a normal move's new .acm file given its directory is correctly formatted
@@ -67,29 +79,32 @@ This script creates a tsv file for them in the folder TSV/ for all characters in
 Parses www.kuroganehammer.com through HTML parsing and then by using FrannDotExe's API https://github.com/Frannsoft/FrannHammer to create one character's TSV file of data. 
 
 ## Testing compilation and viewing output scripts
-Used to test compilations on single characters quickly, with an argument to only compile specific moves (using regex). Very useful for finding out which moves are causing a problem. The raw decompiled files will be in ($charName)bodyInput/animcmd/, the midpoint files that are processed by gameToEffectScript.py are in ($charName)bodyOutput/animcmd/, and the output .bin files given by FITC are in ($charName)bodyCompiled.
+Used to test compilations on single characters quickly, with an argument to only compile specific moves (using regex). Very useful for finding out which moves are causing a problem. The raw decompiled files will be in ($charName)("body"/$weaponName)Input/animcmd/, the midpoint files that are processed by *parseChar()* are in ($charName)("body"/$weaponName)Output/animcmd/, and the output .bin files given by FITC are in ($charName)("body"/$weaponName)Compiled.
 
 ```
-# called as such: python3 performCompilation.py test charName "body"/weaponName moveNamesRegex
+# python3 performCompilation.py test charName "body"/weaponName moveNamesRegex
 # compile all of Ike's normals
 python3 performCompilation.py test ike body Attack*.acm
+# outputs ikebodyInput/, ikebodyOutput/, and ikebodyCompiled/
 
 # compile all of Duck Hunt's can's specials
 python3 performCompilation.py test duckhunt can Special*.acm
+# outputs duckhuntcanInput/, duckhuntcanOutput/, and duckhuntcanCompiled/
 
 # can also be used to test raw decompilation and compilation for FITX, or to simply get the files to read/edit
 # done using argument "nothing"
 python3 performCompilation.py test peach body nothing
+# outputs peachbodyInput/, peachbodyOutput/, and peachbodyCompiled/
 ```
 
 ## Testing training compilation
 ```
-# called as such: python3 performCompilation.py testTraining charName "body"/weaponName moveNamesRegex
+# python3 performCompilation.py testTraining charName "body"/weaponName moveNamesRegex
 ```
 Same as the previous, but produces training-mode-only output.
 
-## convertToAddEffect.py
-Used in conjunction with test compilations in order to get code that will work with gameToEffectScript.py's didHandleEdgeCase() function. Takes the effect.bin portion of a processed .acm file and outputs "addEffect()" lines that can be copy-pasted into the conditionals of the didHandleEdgeCase() function.
+## handleEdgeCaseCode.py
+Used in conjunction with test compilations in order to place an edited script into the edgeCaseCode/ folder for the *didHandleEdgeCase()* function.
 
 ## FITC, FITD, and SALT
 These are included because the current version of FITX is crucial to the performance of the scripts, as some bugs greatly affect a good few characters. 

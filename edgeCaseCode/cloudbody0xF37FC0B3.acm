@@ -1,0 +1,39 @@
+MoveDef 0xF37FC0B3
+{
+	Main()
+	{
+		Allow/Disallow_Ledgegrab(State=0x0)
+		Bit_Variable_Clear(Variable=0x21000015)
+		Synchronous_Timer(Frames=10)
+		Allow/Disallow_Ledgegrab(State=0x1)
+		Synchronous_Timer(Frames=10)
+		Allow/Disallow_Ledgegrab(State=0x2)
+		Script_End()
+	}
+
+	Effect()
+	{
+		Asynchronous_Timer(Frames=1)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x41000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x40D55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x40AAAAAB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40000000, unknown=0x40800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3E428F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40933333, unknown=0x41100000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x408EEEEF, unknown=0x40D55555, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x408AAAAB, unknown=0x408AAAAB, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40866666, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437E0000, unknown=0x0, unknown=0x437E0000)
+		Script_End()
+	}
+
+	Sound()
+	{
+	}
+
+	Expression()
+	{
+		Item_Visibility(State=0x0)
+		Model_Changer(ChangerID=0x0, ChangerState=0x1)
+		Script_End()
+	}
+
+}

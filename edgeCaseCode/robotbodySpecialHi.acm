@@ -1,0 +1,37 @@
+MoveDef SpecialHi
+{
+	Main()
+	{
+		Asynchronous_Timer(Frames=5)
+		Bit_Variable_Set(Variable=0x2100001D)
+		Script_End()
+	}
+
+	Effect()
+	{
+		Asynchronous_Timer(Frames=2)
+		Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)
+		Asynchronous_Timer(Frames=5)
+		Terminate_Overlays()
+		Script_End()
+	}
+
+	Sound()
+	{
+		Asynchronous_Timer(Frames=2)
+		Sound_Effect(SFX=0x250048)
+		Script_End()
+	}
+
+	Expression()
+	{
+		Asynchronous_Timer(Frames=5)
+		Set_Loop(Iterations=-1){
+		    Rumble(unknown=0x10, unknown=0x0)
+		    Synchronous_Timer(Frames=8)
+		    Goto(Unknown=-5)
+		}
+		Script_End()
+	}
+
+}

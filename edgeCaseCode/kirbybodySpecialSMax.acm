@@ -1,0 +1,64 @@
+MoveDef SpecialSMax
+{
+	Main()
+	{
+		Asynchronous_Timer(Frames=5)
+		Set_Armor(State=0x1, Threshold=0)
+		Asynchronous_Timer(Frames=11)
+		Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=35, Angle=0x169, KBG=0x4E, WBKB=0x0, BKB=0x3C, Size=5.8, X=0, Y=4.2, Z=11.5, Effect=0x5, Trip=0, Hitlag=1.5, SDI=1, Clang=0x0, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x2, SFX=0x8, Ground/Air=0x3, Direct/Indirect=0x1, Type=0xB)
+		Hitbox(ID=0x1, Part=0x0, Bone=0x0, Damage=35, Angle=0x169, KBG=0x4E, WBKB=0x0, BKB=0x3C, Size=3.9, X=0, Y=4.2, Z=5.5, Effect=0x5, Trip=0, Hitlag=1.5, SDI=1, Clang=0x0, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x2, SFX=0x8, Ground/Air=0x3, Direct/Indirect=0x1, Type=0xB)
+		Synchronous_Timer(Frames=1)
+		Remove_All_Hitboxes()
+		Synchronous_Timer(Frames=1)
+		Remove_All_Hitboxes()
+		Synchronous_Timer(Frames=1)
+		Set_Armor(State=0x0, Threshold=0)
+		Asynchronous_Timer(Frames=56)
+		Remove_Article(Article=0x15)
+		Script_End()
+	}
+
+	Effect()
+	{
+		Asynchronous_Timer(Frames=2)
+		Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)
+		Asynchronous_Timer(Frames=5)
+		Color_Overlay(Red=255, Green=0, Blue=255, Alpha=128)
+		Asynchronous_Timer(Frames=11)
+		Terminate_Overlays()
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40866666, unknown=0x41380000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F0D0E56, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40866666, unknown=0x40B00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EBDB22D, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)
+		Synchronous_Timer(Frames=1)
+		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+		Synchronous_Timer(Frames=1)
+		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+		Synchronous_Timer(Frames=1)
+		Terminate_Overlays()
+		Asynchronous_Timer(Frames=56)
+		Script_End()
+	}
+
+	Sound()
+	{
+		Asynchronous_Timer(Frames=2)
+		Sound_Effect(SFX=0x3F002C)
+		Synchronous_Timer(Frames=4)
+		Sound_Effect(SFX=0xA0066)
+		Script_End()
+	}
+
+	Expression()
+	{
+		Asynchronous_Timer(Frames=1)
+		Item_Visibility(State=0x0)
+		Slope_Full(unknown=0x1, unknown=0xA)
+		Asynchronous_Timer(Frames=6)
+		Rumble(unknown=0x13, unknown=0x0)
+		Asynchronous_Timer(Frames=10)
+		Screen_Shake(unknown=0x4)
+		Asynchronous_Timer(Frames=16)
+		Slope_Full(unknown=0x6, unknown=0x5)
+		Script_End()
+	}
+
+}

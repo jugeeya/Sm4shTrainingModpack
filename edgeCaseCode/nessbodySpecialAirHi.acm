@@ -1,0 +1,53 @@
+MoveDef SpecialAirHi
+{
+	Main()
+	{
+		Asynchronous_Timer(Frames=1)
+		Hitbox(ID=0x0, Part=0x0, Bone=0x2, Damage=25, Angle=0x169, KBG=0x50, WBKB=0x0, BKB=0x53, Size=7, X=0, Y=0.5, Z=0, Effect=0x3, Trip=0, Hitlag=1, SDI=1, Clang=0x1, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFX=0x2, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x10)
+		Set_Loop(Iterations=5){
+		    Synchronous_Timer(Frames=2)
+		    Goto(Unknown=-2)
+		}
+		Hitbox(ID=0x0, Part=0x0, Bone=0x2, Damage=21, Angle=0x169, KBG=0x46, WBKB=0x0, BKB=0x2D, Size=4.8, X=0, Y=0.5, Z=0, Effect=0x3, Trip=0, Hitlag=1, SDI=1, Clang=0x1, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x2, SFX=0x7, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x10)
+		Bit_Variable_Set(Variable=0x2100000F)
+		Asynchronous_Timer(Frames=33)
+		Remove_All_Hitboxes()
+		Bit_Variable_Set(Variable=0x21000010)
+		Script_End()
+	}
+
+	Effect()
+	{
+		Asynchronous_Timer(Frames=1)
+		Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x3F000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F2A3D71, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)
+		Set_Loop(Iterations=5){
+			Synchronous_Timer(Frames=2)
+			Goto(Unknown=-2)
+		}
+		Terminate_Overlays()
+		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x2, unknown=0x0, unknown=0x3F000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EE978D5, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)
+		Asynchronous_Timer(Frames=33)
+		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+		Script_End()
+	}
+
+	Sound()
+	{
+		Asynchronous_Timer(Frames=1)
+		Sound_Effect(SFX=0x50)
+		Synchronous_Timer(Frames=1)
+		Sound_Effect(SFX=0x3A0004)
+		Script_End()
+	}
+
+	Expression()
+	{
+		SLOPE(unknown=0x1)
+		Screen_Shake(unknown=0x4)
+		Rumble(unknown=0x13, unknown=0x0)
+		Script_End()
+	}
+
+}

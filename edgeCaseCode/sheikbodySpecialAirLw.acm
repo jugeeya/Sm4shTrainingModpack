@@ -1,0 +1,31 @@
+MoveDef SpecialAirLw
+{
+	Main()
+	{
+		Asynchronous_Timer(Frames=3)
+		Bit_Variable_Set(Variable=0x2100000E)
+		Asynchronous_Timer(Frames=15)
+		Allow/Disallow_Ledgegrab(State=0x1)
+		Script_End()
+	}
+
+	Effect()
+	{
+		Asynchronous_Timer(Frames=3)
+		Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)
+		Asynchronous_Timer(Frames=5)
+		Terminate_Overlays()
+		Script_End()
+	}
+
+	Sound()
+	{
+		Subroutine(Hash=0x85C513B2)
+		Script_End()
+	}
+
+	Expression()
+	{
+	}
+
+}

@@ -1,0 +1,43 @@
+MoveDef LandingAirLw
+{
+	Main()
+	{
+		Asynchronous_Timer(Frames=1)
+		Extended_Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=4, Angle=0x169, KBG=0x64, WBKB=0x0, BKB=0x32, Size=4, X=0, Y=4, Z=-6, Effect=0x3, Trip=0, Hitlag=1, SDI=1, Clang=0x1, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x7, Ground/Air=0x1, Direct/Indirect=0x1, Type=0x1, X2=0, Y2=4, Z2=6)
+		Synchronous_Timer(Frames=2)
+		Remove_All_Hitboxes()
+		Script_End()
+	}
+
+	Effect()
+	{
+		Asynchronous_Timer(Frames=1)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0xC0C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0xC0000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x40000000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x40800000, unknown=0x40C00000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x4328AAAB, unknown=0x0)
+		Synchronous_Timer(Frames=2)
+		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+		Color_Overlay(Red=0, Green=255, Blue=0, Alpha=128)
+		Asynchronous_Timer(Frames=41)
+		Terminate_Overlays()
+		Script_End()
+	}
+
+	Sound()
+	{
+		Asynchronous_Timer(Frames=1)
+		Stop_Sound_Effect(SFX=0xC0067)
+		Sound_Effect(SFX=0xC0068)
+		Script_End()
+	}
+
+	Expression()
+	{
+		Asynchronous_Timer(Frames=2)
+		Rumble(unknown=0xC, unknown=0x0)
+		Screen_Shake(unknown=0x3)
+		Script_End()
+	}
+
+}

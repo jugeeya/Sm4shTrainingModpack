@@ -1,0 +1,146 @@
+MoveDef SpecialHi
+{
+	Main()
+	{
+		Set_Bone_Intangability(Bone=0x16, Mode=0x2)
+		Set_Bone_Intangability(Bone=0x15, Mode=0x2)
+		Asynchronous_Timer(Frames=6)
+		Bit_Variable_Set(Variable=0x2100000F)
+		Bit_Variable_Set(Variable=0x21000010)
+		unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)
+		TRUE(Unknown=0x2E){
+		    Special_Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=13, Angle=0x50, KBG=0x3A, WBKB=0x0, BKB=0x50, Size=4.6, X=0, Y=10, Z=7.6, Effect=0x0, Trip=0, Hitlag=2, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x3, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		}
+		FALSE(Unknown=0x32){
+		    unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)
+		    TRUE(Unknown=0x2E){
+		        Special_Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=14, Angle=0x50, KBG=0x40, WBKB=0x0, BKB=0x50, Size=4.6, X=0, Y=10, Z=7.6, Effect=0x0, Trip=0, Hitlag=2, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x3, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		    }
+		    FALSE(Unknown=0x2C){
+		        Special_Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=15, Angle=0x50, KBG=0x45, WBKB=0x0, BKB=0x50, Size=4.6, X=0, Y=10, Z=7.6, Effect=0x0, Trip=0, Hitlag=2, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x3, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		    }
+		}
+		Synchronous_Timer(Frames=1)
+		unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)
+		TRUE(Unknown=0x2E){
+		    Special_Hitbox(ID=0x0, Part=0x0, Bone=0x17, Damage=12, Angle=0x50, KBG=0x40, WBKB=0x0, BKB=0x50, Size=4, X=0, Y=0, Z=0, Effect=0x0, Trip=0, Hitlag=1.8, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x3, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		}
+		FALSE(Unknown=0x32){
+		    unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)
+		    TRUE(Unknown=0x2E){
+		        Special_Hitbox(ID=0x0, Part=0x0, Bone=0x17, Damage=12, Angle=0x50, KBG=0x40, WBKB=0x0, BKB=0x50, Size=4, X=0, Y=0, Z=0, Effect=0x0, Trip=0, Hitlag=1.8, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x3, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		    }
+		    FALSE(Unknown=0x2C){
+		        Special_Hitbox(ID=0x0, Part=0x0, Bone=0x17, Damage=12, Angle=0x50, KBG=0x40, WBKB=0x0, BKB=0x50, Size=4, X=0, Y=0, Z=0, Effect=0x0, Trip=0, Hitlag=1.8, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x3, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		    }
+		}
+		Asynchronous_Timer(Frames=9)
+		Bit_Variable_Set(Variable=0x21000011)
+		unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)
+		TRUE(Unknown=0x2E){
+		    Special_Hitbox(ID=0x0, Part=0x0, Bone=0x16, Damage=7, Angle=0x46, KBG=0x5A, WBKB=0x0, BKB=0x3C, Size=5, X=4, Y=-0.4, Z=0, Effect=0x0, Trip=0, Hitlag=1.8, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x0, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		}
+		FALSE(Unknown=0x32){
+		    unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)
+		    TRUE(Unknown=0x2E){
+		        Special_Hitbox(ID=0x0, Part=0x0, Bone=0x16, Damage=7, Angle=0x46, KBG=0x5A, WBKB=0x0, BKB=0x3C, Size=5.5, X=4, Y=-0.4, Z=0, Effect=0x0, Trip=0, Hitlag=1.8, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x0, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		    }
+		    FALSE(Unknown=0x2C){
+		        Special_Hitbox(ID=0x0, Part=0x0, Bone=0x16, Damage=7, Angle=0x46, KBG=0x5A, WBKB=0x0, BKB=0x3C, Size=6, X=4, Y=-0.4, Z=0, Effect=0x0, Trip=0, Hitlag=1.8, SDI=1, Clang=0x0, Rebound=0x0, ShieldDamage=0x0, SFXLevel=0x2, SFXType=0x35, Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4, Action=0x3F, Unknown=0x0, Unknown=0xF, Unknown=0x0, Blockability=0x1, Reflectable=0x0, Absorbable=0x0, Rehit=0x0, IgnoreInvuln=0x0, Unknown=0x0, FacingRestrict=0x0, Unknown=0x0, TeamDamage=0x0, DisableHitlag=0x0, NoGFX=0x0, Flinchless=0x0, StretchToggle=0x0)
+		    }
+		}
+		Asynchronous_Timer(Frames=15)
+		Allow/Disallow_Ledgegrab(State=0x2)
+		Undo_Bone_Collision(State=0x0)
+		Asynchronous_Timer(Frames=20)
+		Remove_All_Hitboxes()
+		Script_End()
+	}
+
+	Effect()
+	{
+		EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x16, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)
+		EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown=0x15, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3FC00000, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)
+		Asynchronous_Timer(Frames=3)
+		Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)
+		Asynchronous_Timer(Frames=6)
+		Terminate_Overlays()
+		unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)
+		TRUE(Unknown=0x10){
+			EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x41F55555, unknown=0x0)
+		}
+		FALSE(Unknown=0x1a){
+			unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)
+			TRUE(Unknown=0x16){
+				Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+				EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x41755555, unknown=0x0)
+			}
+			FALSE(Unknown=0x14){
+				Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+				EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x0, unknown=0x0, unknown=0x41200000, unknown=0x40F33333, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EDFBE77, unknown=0x1, unknown=0x437F0000, unknown=0x0, unknown=0x0)
+			}
+		}
+		Synchronous_Timer(Frames=1)
+		unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)
+		TRUE(Unknown=0x16){
+			Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+			EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)
+		}
+		FALSE(Unknown=0x1a){
+			unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)
+			TRUE(Unknown=0x16){
+				Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+				EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)
+			}
+			FALSE(Unknown=0x14){
+				Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+				EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x17, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EC28F5C, unknown=0x1, unknown=0x437F0000, unknown=0x42380000, unknown=0x0)
+			}
+		}
+		Asynchronous_Timer(Frames=9)
+		unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x2)
+		TRUE(Unknown=0x16){
+			Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+			EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3EF33333, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)
+		}
+		FALSE(Unknown=0x1a){
+			unk_477705C2(unknown=0x11000002, unknown=0x0, unknown=0x1)
+			TRUE(Unknown=0x16){
+				Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+				EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F05C28F, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)
+			}
+			FALSE(Unknown=0x14){
+				Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+				EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown=0x16, unknown=0x40800000, unknown=0xBECCCCCD, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F11EB85, unknown=0x1, unknown=0x437F0000, unknown=0x42F55555, unknown=0x0)
+			}
+		}
+		Asynchronous_Timer(Frames=15)
+		Terminate_Graphic_Effect(Graphic=0x1000031, unknown=0x1, unknown=0x1)
+		Asynchronous_Timer(Frames=20)
+		Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)
+		Script_End()
+	}
+
+	Sound()
+	{
+		Asynchronous_Timer(Frames=5)
+		Sound_Effect(SFX=0xC050035)
+		Asynchronous_Timer(Frames=6)
+		Sound_Effect(SFX=0xC09000B)
+		Script_End()
+	}
+
+	Expression()
+	{
+		Aesthetic_Wind_Effect(unknown=0x0, unknown=1, unknown=70, unknown=8, unknown=0.8, unknown=0, unknown=7, unknown=32, unknown=14, unknown=0x50)
+		Item_Visibility(State=0x0)
+		Asynchronous_Timer(Frames=4)
+		Rumble(unknown=0x12, unknown=0x0)
+		Asynchronous_Timer(Frames=9)
+		Terminate_Wind_Effect(unknown=0x0)
+		Asynchronous_Timer(Frames=10)
+		Aesthetic_Wind_Effect(unknown=0x0, unknown=1, unknown=90, unknown=8, unknown=0.4, unknown=0, unknown=2, unknown=16, unknown=36, unknown=0x50)
+		Script_End()
+	}
+
+}

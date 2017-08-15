@@ -56,11 +56,8 @@ Again, same as the previous but produces training-mode-only output in the corres
 
 ## Where processing occurs
 #### *processFile(filePath, isBlacklisted=False, isTrainingOnly=False)*
-<<<<<<< HEAD
-This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. didHandleEdgeCase() is a special function that checks the edgeCaseCode/ folder for specific .acm files that cannot be handled by the script due to the acm files not containing enough information.
-=======
-This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. *didHandleEdgeCase()* is a special function that contains tons of lines of code for edge cases that cannot be handled by the script due to the acm files not containing enough information.
->>>>>>> 956fca14c6507e614ed329647affeaefea624e17
+This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. *didHandleEdgeCase()* is a special function that checks the edgeCaseCode/ folder for specific .acm files that cannot be handled by the script due to the acm files not containing enough information.
+
 
 ```
 # in Python3
@@ -87,7 +84,6 @@ Parses www.kuroganehammer.com through HTML parsing and then by using FrannDotExe
 Used to test compilations on single characters quickly, with an argument to only compile specific moves (using regex). Very useful for finding out which moves are causing a problem. The raw decompiled files will be in ($charName)("body"/$weaponName)Input/animcmd/, the midpoint files that are processed by *parseChar()* are in ($charName)("body"/$weaponName)Output/animcmd/, and the output .bin files given by FITC are in ($charName)("body"/$weaponName)Compiled.
 
 ```
-<<<<<<< HEAD
 # python3 performCompilation.py test charName "body"/weaponName moveNamesRegex
 =======
 # called as such: python3 performCompilation.py test charName "body"/weaponName moveNamesRegex
@@ -115,16 +111,9 @@ python3 performCompilation.py test peach body nothing
 ```
 Same as the previous, but produces training-mode-only output.
 
-<<<<<<< HEAD
 ## handleEdgeCaseCode.py
 Used in conjunction with test compilations in order to place an edited script into the edgeCaseCode/ folder for the *didHandleEdgeCase()* function.
-=======
-## convertToAddEffect.py
-```
-python3 convertToAddEffect.py rockmanbodyOutput/animcmd/SpecialHi.acm > megaManUpBEdgeCaseCode.txt
-```
-Used in conjunction with test compilations in order to get code that will work with performCompilation.py's *didHandleEdgeCase()* function. Takes the effect.bin portion of a processed .acm file and outputs *addEffect()* lines that can be copy-pasted into the conditionals of the didHandleEdgeCase() function.
->>>>>>> 956fca14c6507e614ed329647affeaefea624e17
+
 
 ## FITC, FITD, and SALT
 These are included because the current version of FITX is crucial to the performance of the scripts, as some bugs greatly affect a good few characters. 

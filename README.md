@@ -6,7 +6,9 @@ This is the combination of scripts that I use to create the Hitbox Visualization
 
 ## Requirements
 
-First and foremost, a dump of the game is needed. More specifically, a folder MUST be placed in this directory entitled "AllFighterData" which includes the 58 character folders found in data/fighter of the game dump. It is from this folder that all the scripts find the game's data.
+First and foremost, a dump of the game is needed. More specifically, a folder MUST be placed in this directory entitled "AllFighterData" which includes the 58 character folders found in data/fighter of the game dump. An easy way to get this would be to open Sm4shexplorer and to right-click and extract the data/fighter folder, after which you can find the folders in [your_sm4sh_explorer_folder]/extract/data/fighter/. Be sure to only have the 58 playable non-final smash characters. 
+
+It is from this folder that all the scripts find the game's data.
 The whole workspace should look like:
 
 ```
@@ -28,6 +30,8 @@ python3 performCompilation.py all
 
 Upon running this command, every fighter will be compiled based on the data in AllFighterData and the output (in the form of effect.bin files in the correct directory) will be placed in a new folder entitled AllFighterDataCompiled. This essentially contains the unpacked contents of data/fighter. From this output folder, the character folders can be dragged into Sm4shexplorer's data/fighter at which point the modpack can be packed.
 
+*Please note that this command currently does not compile all characters due to a bug in FITX that causes decompilation errors for 'koopajr' and 'reflet'. Therefore, to actually compile all characters, run the command above and once it finishes, also call ```python3 performCompilation.py koopajr reflet```. During this compilation, simply click "Close the program" on the FITD errors that occur. This simply means that some moves for these two characters are not processed.*
+
 ## Compiling all characters training-mode-only
 
 ```
@@ -35,6 +39,8 @@ python3 performCompilation.py training all
 ```
 
 The same as the previous command, but produces training-mode-only output: the hitboxes will only be shown in Training Mode, and elsewhere the original effect.bin will be displayed. The output will be placed in a new folder entitled AllFighterDataCompiledTraining, again in the form of data/fighter.
+
+*The note from above for non-training-mode-only applies here as well. Simply call ```python3 performCompilation.py training koopajr reflet``` instead.* 
 
 ## Compiling any number of characters game-wide
 
@@ -56,15 +62,19 @@ Again, same as the previous but produces training-mode-only output in the corres
 
 ## Where processing occurs
 #### *processFile(filePath, isBlacklisted=False, isTrainingOnly=False)*
-This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. *didHandleEdgeCase()* is a special function that checks the edgeCaseCode/ folder for specific .acm files that cannot be handled by the script due to the acm files not containing enough information.
+This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. *didHandleEdgeCase()* is a special function that checks the edgeCaseCode/ folder for specific .acm files that cannot be handled by the script due to the acm files not containing enough information.  
+
+#### Testing a single file
+To call this function and inspect how it processes single files, it can be called as shown below:
 
 
 ```
-# in Python3
-# returns a string containing a normal move's new .acm file given its directory is correctly formatted
-processFile("marthbodyInput/animcmd/AttackAirF.acm")
-# returns a string containing a blacklisted move's new .acm file given its directory is correctly formatted
-processFile("yoshibodyInput/animcmd/AttackLw3.acm", isBlacklisted=True)
+# python3 performCompilation.py acmFilePath isBlacklistedAndOrTrainingOnly
+# the isBlacklistedAndOrTrainingOnly argument can be 'b', 't', or 'tb' for blacklisted, training-mode-only, or both, respectively
+# prints normal move's new .acm file given its directory is correctly formatted
+python3 performCompilation.py marthbodyInput/animcmd/AttackAirF.acm
+# prints a blacklisted move's new .acm file given its directory is correctly formatted
+python3 performCompilation.py yoshibodyInput/animcmd/AttackLw3.acm b
 ```
 
 #### *stretchChecker(char, bodyOrWeapon, move)* 
@@ -74,7 +84,7 @@ Returns one of three strings:
 * "blacklisted", the move should be processed without adding hitbox effects
 * "noprocess", the move should simply be placed in the output directory as given
 
-## createTSV.py
+## *createTSV.py*
 This script creates a tsv file for them in the folder TSV/ for all characters in AllFighterData. Necessary for peformCompilation.py. The current commit's TSV files will always be up-to-date, so this need only be called if *parseChar()* is changed.
 
 #### *parseChar(charName)*
@@ -111,7 +121,7 @@ python3 performCompilation.py test peach body nothing
 ```
 Same as the previous, but produces training-mode-only output.
 
-## handleEdgeCaseCode.py
+## *handleEdgeCaseCode.py*
 Used in conjunction with test compilations in order to place an edited script into the edgeCaseCode/ folder for the *didHandleEdgeCase()* function.
 
 

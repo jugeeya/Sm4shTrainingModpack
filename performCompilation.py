@@ -169,6 +169,7 @@ def getParamList(line):
 def addListToMain(index):
     global myLines, origIndex
     origIndex = index
+    addEffect(terminateGraphic13)
     for h in mainList:
         inserted = "\t\t" + h
         index = index + 1
@@ -402,7 +403,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
         if charName in {"yoshi", "wario", "rockman", "pit", "reflet", "kirby", "lizardon", "lucario", "pitb", "gekkouga", "robot", "murabito", "wiifit", "sonic", "mewtwo", "cloud", "miigunner", "littlemac", "pacman", "pikmin", "pikachu"}:
             ourBasicVariable = "0x100000AC"
         elif charName == "bayonetta":
-            ourBasicVariable = "0x1000008A"
+            ourBasicVariable = "0x0000008A"
         else:
             ourBasicVariable = "0x10000086"
         if os.path.basename(filename) in {"EntryR.acm", "EntryL.acm"}:
@@ -482,6 +483,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
     groundedfootstoolBack = "0xE0D78C1E.acm"
     spinningAnim = "DamageFlyRoll.acm"
     tumble = "DamageFall.acm"
+    specialFall = "FallSpecial.acm"
     ledgegetup = "CliffClimbQuick.acm"
     ledgeroll = "CliffEscapeQuick.acm"
     ledgejump = "CliffJumpQuick1.acm"
@@ -532,6 +534,8 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
         addEffect(scriptEnd)
     elif basename == tumble:
         addEffect(scriptEnd)
+    elif basename == specialFall:
+        addEffect(colorOverlay.format(*GREEN))
     elif basename == spotdodge:
         addDodgeEffects(tsvLines[0].split("\t")[0:2], tsvLines[1].split("\t")[0])
     elif basename == froll:
@@ -631,7 +635,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
                     addEffect(ifBitIsSet.format(paramList[0]))
                 if i.startswith("IS_EXIST_ARTICLE"):
                     addEffect(isExistArticle.format(paramList[0]))
-                if i.startswith("unk_4577705C2"):
+                if i.startswith("unk_477705C2"):
                     addEffect(someCompare.format(paramList[0], paramList[1], paramList[2]))
                 if i.startswith("unk_2DA7E2B6"):
                     addEffect(someCompare2.format(paramList[0], paramList[1], paramList[2]))
@@ -983,12 +987,12 @@ def didHandleEdgeCase(filename):
         content = [x.strip('\n') for x in content]
         inEffect = False
         for line in content:
-            line = removeBeginningWhitespace(line)
-            if line.startswith("Effect()"):
+            #line = removeBeginningWhitespace(line)
+            if line.startswith("\tEffect()"):
                 inEffect = True
-            elif inEffect and not line.startswith("{") and not line.startswith("}"):
-                addEffect(line)
-            elif line.startswith("}"):
+            elif inEffect and not line.startswith("\t{") and not line.startswith("\t}"):
+                addEffect(line[1:])
+            elif line.startswith("\t}"):
                 inEffect = False
         return True
 
@@ -1210,20 +1214,22 @@ def main():
             subprocess.run(shlex.split("./FITC.exe -o {} {}/fighter.mlist".format(compiledDir, outputDir)))
             shutil.rmtree(inputDir, ignore_errors=True)
             shutil.rmtree(outputDir, ignore_errors=True)
-            print("Moving from folder {}...".format(os.path.basename(compiledDir)))
+            print("Moving to folder {}...".format(compiledDir))
             if bodyOrWeapon == "body":
                 finalDir = "AllFighterDataCompiled/{}/script/animcmd/body".format(char)
                 if trainingMode:
-                    finalDir = "AllFighterDataCompiledTraining/{}Compiled".format(inputDir[:-5])
+                    finalDir = "AllFighterDataCompiledTraining/{}/script/animcmd/body".format(char)
                 os.makedirs(finalDir, exist_ok=True)
                 os.rename("{}/effect.bin".format(compiledDir), "{}/effect.bin".format(finalDir))
             else:
                 finalDir = "AllFighterDataCompiled/{}/script/animcmd/weapon/{}".format(char, bodyOrWeapon)
                 if trainingMode:
-                    finalDir = "AllFighterDataCompiledTraining/{}Compiled".format(inputDir[:-5])
+                    finalDir = "AllFighterDataCompiledTraining/{}/script/animcmd/weapon/{}".format(char, bodyOrWeapon)
                 os.makedirs(finalDir, exist_ok=True)
                 os.rename("{}/effect.bin".format(compiledDir), "{}/effect.bin".format(finalDir))
             shutil.rmtree(compiledDir)
 
-
-main()
+if len(sys.argv) == 2 and os.path.isfile(sys.argv[1]):
+    print(processFile(sys.argv[1]))
+else:
+    main()

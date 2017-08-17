@@ -94,13 +94,11 @@ Parses www.kuroganehammer.com through HTML parsing and then by using FrannDotExe
 Used to test compilations on single characters quickly, with an argument to only compile specific moves (using regex). Very useful for finding out which moves are causing a problem. The raw decompiled files will be in ($charName)("body"/$weaponName)Input/animcmd/, the midpoint files that are processed by *parseChar()* are in ($charName)("body"/$weaponName)Output/animcmd/, and the output .bin files given by FITC are in ($charName)("body"/$weaponName)Compiled.
 
 ```
-# python3 performCompilation.py test charName "body"/weaponName moveNamesRegex
-=======
-# called as such: python3 performCompilation.py test charName "body"/weaponName moveNamesRegex
+# python3 performCompilation.py 'test' charName "body"/weaponName moveNamesRegex
 # compile all of Little Mac's moves
 python3 performCompilation.py test littlemac body *.acm
+# outputs littlemacbodyInput/, littlemacbodyOutput/, and littlemacbodyCompiled/
 
->>>>>>> 956fca14c6507e614ed329647affeaefea624e17
 # compile all of Ike's normals
 python3 performCompilation.py test ike body Attack*.acm
 # outputs ikebodyInput/, ikebodyOutput/, and ikebodyCompiled/

@@ -1230,6 +1230,13 @@ def main():
             shutil.rmtree(compiledDir)
 
 if len(sys.argv) == 2 and os.path.isfile(sys.argv[1]):
-    print(processFile(sys.argv[1]))
+    blklisted = False
+    training = False
+    if len(sys.argv) == 3:
+        if sys.arv[2].find('t') != -1:
+            training = True
+        if sys.argv[2].find('b') != -1:
+            blklisted = True
+    print(processFile(sys.argv[1], isBlacklisted=blklisted, isTrainingOnly=training))
 else:
     main()

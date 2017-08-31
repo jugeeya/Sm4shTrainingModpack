@@ -5,6 +5,7 @@ import subprocess
 import shlex
 import glob
 import shutil
+from collections import OrderedDict
 
 counterChars = "gekkouga,ike,kamui,littlemac,lucario,lucina,marth,palutena,peach,roy,shulk".split(",")
 
@@ -31,27 +32,50 @@ ifCompare = "If_Compare(Variable={}, Method={}, Variable2={})"
 ifCompare2 = "If_Compare2(Variable={}, Method={}, Value={})"
 ifBitIsSet = "If_Bit_is_Set(Variable={})"
 isExistArticle = "IS_EXIST_ARTICLE(Unknown={})"
-someCompare = "unk_477705C2(unknown={}, unknown={}, unknown={})"
-someCompare2 = "unk_2DA7E2B6(unknown={}, unknown={}, unknown={})"
+basicCompare = "unk_477705C2(unknown={}, unknown={}, unknown={})"
+floatCompare = "unk_2DA7E2B6(unknown={}, unknown={}, unknown={})"
 TRUEComp = "TRUE(Unknown={}){{"
+TRUEComp2 = "unk_870CF021(unknown={}){{"
 FALSEComp = "FALSE(Unknown={}){{"
 bitVariableSet = "Bit_Variable_Set(Variable={})"
 bitVariableClear = "Bit_Variable_Clear(Variable={})"
 basicVariableSet = "Basic_Variable_Set(Value={}, Variable={})"
+floatVariableSet = "Float_Variable_Set(Value={}, Variable={})"
 goto = "Goto(Unknown={})"
 endLoopOrCompare = "}"
 scriptEnd = "Script_End()"
 
 # colors: R, G, B, Alpha
-RED = ['255', '0', '0', '128']
-GREEN = ['0', '255', '0', '128']
-BLUE = ['0', '0', '255', '128']
-ORANGE = ['255', '165', '0', '128']
-MAGENTA = ['255', '0', '255', '128']
-WHITE = ['255', '255', '255', '128']
+ALPHA = '128'
 
+PINK = ['255', '105', '180', ALPHA]
+RED = ['255', '0', '0', ALPHA]
+ORANGE = ['255', '165', '0', ALPHA]
+YELLOW = ['255', '255', '0', ALPHA]
+GREEN = ['0', '255', '0', ALPHA]
+BLUE = ['0', '0', '255', ALPHA]
+CYAN = ['0', '255', '255', ALPHA]
+MAGENTA = ['255', '0', '255', ALPHA]
+TEAL = ['0', '128', '128', ALPHA]
+WHITE = ['255', '255', '255', ALPHA]
+
+equalTo = "0x0"
+notEqualTo = "0x1"
+lessThanOrEqualTo = "0x2"
+greaterThanOrEqualTo = "0x3"
+###???
+lessThan = "0x4"
+greaterThan = "0x5"
+
+exploitParamVar = "0x1200004B" # brawl glide data param (originally 1)
+exploitParamVar2 = "0x1200004A" # brawl glide data param (originally 60)
+hitstunVar = "0x1000003E"
+launchSpeedVar = "0x10000003" # launch speed basic
+ourLaundSpeedBitVar = "0x21000025"
 
 effectLines = "\tEffect()\n\t{\r\n"
+variableEffectLines = ""
+damageEffectLines = ""
 mainList = []
 myLines = []
 origEffectLines = ""
@@ -73,6 +97,84 @@ def isInt(s):
         return True
     except ValueError:
         return False
+
+def addHitstunOverlays(spinning=False):
+    global damageEffectLines, effectLines, inCompare, inLoop
+    if damageEffectLines == "":
+        addEffect(bitVariableClear.format(ourLaundSpeedBitVar))
+        for i in range(1, 101):
+            addEffect(asynchronousTimer.format(i))
+            # 1 tab
+            addEffect(basicCompare.format(hitstunVar, greaterThanOrEqualTo, hex(1)))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            # 2 tabs
+            addEffect(ifBitIsSet.format(ourLaundSpeedBitVar))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare += 1
+            # 3 tabs
+            addEffect(basicCompare.format(launchSpeedVar, greaterThan, hex(3)))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare += 1
+            if spinning:
+                addEffect(colorOverlay.format(*ORANGE))
+            else:
+                addEffect(colorOverlay.format(*GREEN))
+            inCompare -= 1
+            addEffect("}")
+            # 3 tabs
+            addEffect(FALSEComp.format("0x10"))
+            inCompare += 1
+            # 4 tabs
+            addEffect(basicCompare.format(launchSpeedVar, greaterThan, hex(2)))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare += 1
+            addEffect(colorOverlay.format(*TEAL))
+            inCompare -= 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare += 1
+            addEffect(colorOverlay.format(*CYAN))
+            inCompare -= 1
+            addEffect("}")
+            inCompare -= 1
+            addEffect("}")
+            # 2 tabs
+            inCompare -= 1
+            addEffect("}")
+            addEffect(FALSEComp.format('0x10'))
+            inCompare += 1
+            # 3 tabs
+            addEffect(basicCompare.format(hitstunVar, greaterThanOrEqualTo, hex(40)))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare += 1
+            addEffect(bitVariableSet.format(ourLaundSpeedBitVar))
+            inCompare -= 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare += 1
+            if spinning:
+                addEffect(colorOverlay.format(*ORANGE))
+            else:
+                addEffect(colorOverlay.format(*GREEN))
+            inCompare -= 1
+            addEffect("}")
+            inCompare -= 1
+            addEffect("}")
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+            addEffect(terminateOverlays)
+            inCompare -= 1
+            while inCompare:
+                addEffect("}")
+                inCompare = inCompare - 1
+            addEffect("}")
+        addEffect(scriptEnd)
+        damageEffectLines = effectLines
+    else:
+        effectLines = damageEffectLines
 
 def parseForEffect(lines):
     global origEffectLines
@@ -251,6 +353,17 @@ def addEffect(effectString):
 
     effectLines = effectLines + effectString + "\r\n"
 
+def addEffectToString(effectString, string):
+    string = string + "\t\t"
+    tabs = inCompare
+    if inLoop:
+        tabs = tabs + 1
+    for q in range(tabs):
+        string = string + "    "
+
+    string = string + effectString + "\r\n"
+    return string
+
 def getLastEffectString():
     allEffectLines = effectLines.split("\r\n")
     return removeBeginningWhitespace(allEffectLines[-2:-1])[0]
@@ -399,16 +512,23 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
         charName = os.path.split(os.path.dirname(filename))[0][:-5]
         if charName[-4:] == "body":
             charName = charName[:-4]
+        '''
         ourBasicVariable = ""
-        if charName in {"yoshi", "wario", "rockman", "pit", "reflet", "kirby", "lizardon", "lucario", "pitb", "gekkouga", "robot", "murabito", "wiifit", "sonic", "mewtwo", "cloud", "miigunner", "littlemac", "pacman", "pikmin", "pikachu"}:
+        if charName in {"shulk", "yoshi", "wario", "rockman", "pit", "reflet", "kirby", "lizardon", "lucario", "pitb", "gekkouga", "robot", "murabito", "wiifit", "sonic", "mewtwo", "cloud", "miigunner", "littlemac", "pacman", "pikmin", "pikachu"}:
             ourBasicVariable = "0x100000AC"
         elif charName == "bayonetta":
-            ourBasicVariable = "0x0000008A"
+            ourBasicVariable = "0x1000008A"
         else:
             ourBasicVariable = "0x10000086"
+        '''
+        ourBasicVariable = exploitParamVar
         if os.path.basename(filename) in {"EntryR.acm", "EntryL.acm"}:
-            addEffect(basicVariableSet.format("0x1", ourBasicVariable))
-        addEffect(someCompare.format(ourBasicVariable, "0x0", "0x0"))
+            addEffect(basicVariableSet.format("0x0", ourBasicVariable))
+            addEffect(basicVariableSet.format("0x0", exploitParamVar2))
+        if os.path.basename(filename) in {"AppealHiL.acm", "AppealHiR.acm"}:
+            addEffect(basicCompare.format(exploitParamVar2, notEqualTo, "0x0"))
+        else:
+            addEffect(basicCompare.format(ourBasicVariable, notEqualTo, "0x0"))
         addEffect(TRUEComp.format("0x12"))
         inCompare = 1
 
@@ -441,7 +561,8 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
         if os.path.isfile(tsvPath):
             with open(tsvPath) as tsv:
                 for line in tsv:
-                    if basename[:-4] in line:
+                    currMove = "\t" + basename[:-4] + "\t"
+                    if currMove in line:
                         currFile = line.split('\t')
                         FAFIndex = 2
                         while not isInt(currFile[FAFIndex]):
@@ -482,6 +603,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
     groundedfootstoolPose = "StepPose.acm"
     groundedfootstoolBack = "0xE0D78C1E.acm"
     spinningAnim = "DamageFlyRoll.acm"
+    hitstunAnimations = {"DamageAir1.acm", "DamageAir2.acm", "DamageAir3.acm", "DamageElec.acm", "DamageFlyHi.acm", "DamageFlyLw.acm", "DamageFlyN.acm", "DamageFlyTop.acm", "DamageHi1.acm", "DamageHi2.acm", "DamageHi3.acm", "DamageLw1.acm", "DamageLw2.acm", "DamageLw3.acm", "DamageN1.acm", "DamageN2.acm", "DamageN3.acm", "WallDamage.acm"}
     tumble = "DamageFall.acm"
     specialFall = "FallSpecial.acm"
     ledgegetup = "CliffClimbQuick.acm"
@@ -517,6 +639,48 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
 
     if didHandleEdgeCase(edgeCaseFilename):
         str = "This conditional is a placeholder."
+    elif basename in {"AppealLwL.acm", "AppealLwR.acm"}:
+        shieldDegenVar = "0x20000C7"
+        shieldRegenVar = "0x20000C8"
+        shieldDamageMultVar = "0x20000CA"
+        addEffect(floatCompare.format("0x20000CA", equalTo, "0x0"))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(floatVariableSet.format("1.19", shieldDamageMultVar))
+        addEffect(floatVariableSet.format("0.13", shieldDegenVar))
+        addEffect(floatVariableSet.format("0.08", shieldRegenVar))
+        inCompare -= 1
+        addEffect("}")
+        addEffect(FALSEComp.format("0x10"))
+        inCompare += 1
+        addEffect(floatVariableSet.format("0", shieldDamageMultVar))
+        addEffect(floatVariableSet.format("0", shieldDegenVar))
+        addEffect(floatVariableSet.format("0", shieldRegenVar))
+        inCompare -= 1
+        addEffect("}")
+        addEffect(scriptEnd)
+    elif basename in {"AppealHiL.acm", "AppealHiR.acm"}:
+        effectToggleLines = ""
+        effectToggleLines = addEffectToString(basicCompare.format(exploitParamVar, equalTo, "0x0"), effectToggleLines)
+
+        effectToggleLines = addEffectToString(TRUEComp.format("0x12"), effectToggleLines)
+        inCompare += 1
+        effectToggleLines = addEffectToString(basicVariableSet.format("0x1", exploitParamVar), effectToggleLines)
+        inCompare -= 1
+        effectToggleLines = addEffectToString("}", effectToggleLines)
+        effectToggleLines = addEffectToString(FALSEComp.format("0x10"), effectToggleLines)
+        inCompare += 1
+        effectToggleLines = addEffectToString(basicVariableSet.format("0x0", exploitParamVar), effectToggleLines)
+        inCompare -= 1
+        effectToggleLines = addEffectToString("}", effectToggleLines)
+        effectToggleLines = addEffectToString(scriptEnd, effectToggleLines)
+        effectLines += effectToggleLines
+    elif basename == spinningAnim:
+        addEffect(colorOverlay.format(*ORANGE))
+        addEffect(scriptEnd)
+        # addHitstunOverlays(spinning=True)
+    # elif basename in hitstunAnimations:
+        # addHitstunOverlays()
     elif basename == unshield:
         addLagEffects('7')
     elif basename == shieldDamage:
@@ -528,14 +692,11 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
         addLagEffects('8')
     elif basename == groundedfootstoolBack:
         addLagEffects('20')
-    elif basename == spinningAnim:
-        addEffect(asynchronousTimer.format('1'))
-        addEffect(colorOverlay.format(*ORANGE))
-        addEffect(scriptEnd)
     elif basename == tumble:
         addEffect(scriptEnd)
     elif basename == specialFall:
         addEffect(colorOverlay.format(*GREEN))
+        addEffect(scriptEnd)
     elif basename == spotdodge:
         addDodgeEffects(tsvLines[0].split("\t")[0:2], tsvLines[1].split("\t")[0])
     elif basename == froll:
@@ -636,11 +797,14 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
                 if i.startswith("IS_EXIST_ARTICLE"):
                     addEffect(isExistArticle.format(paramList[0]))
                 if i.startswith("unk_477705C2"):
-                    addEffect(someCompare.format(paramList[0], paramList[1], paramList[2]))
+                    addEffect(basicCompare.format(paramList[0], paramList[1], paramList[2]))
                 if i.startswith("unk_2DA7E2B6"):
-                    addEffect(someCompare2.format(paramList[0], paramList[1], paramList[2]))
+                    addEffect(floatCompare.format(paramList[0], paramList[1], paramList[2]))
                 if i.startswith("TRUE"):
                     addEffect(TRUEComp.format(paramList[0]))
+                    inCompare = inCompare + 1
+                if i.startswith("unk_870CF021"):
+                    addEffect(TRUEComp2.format(paramList[0]))
                     inCompare = inCompare + 1
                 if i.startswith("FALSE"):
                     addEffect(FALSEComp.format(paramList[0]))
@@ -967,7 +1131,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
             addEffect(terminateOverlays)
             FAF = 10000
 
-    if trainingOnly:
+    if trainingOnly: #and edgeCaseFilename != "bayonettabodySpecialHi.acm":
         inCompare = 0
         addEffect("}")
         addEffect(FALSEComp.format("0x10"))
@@ -979,76 +1143,127 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
 
 def didHandleEdgeCase(filename):
     global inLoop, inCompare
+    global variableEffectLines, effectLines, damageEffectLines
 
-    filepath = "edgeCaseCode/{}".format(filename)
-    if os.path.isfile(filepath):
-        with open(filepath, 'r') as file:
-            content = file.readlines()
-        content = [x.strip('\n') for x in content]
-        inEffect = False
-        for line in content:
-            #line = removeBeginningWhitespace(line)
-            if line.startswith("\tEffect()"):
-                inEffect = True
-            elif inEffect and not line.startswith("\t{") and not line.startswith("\t}"):
-                addEffect(line[1:])
-            elif line.startswith("\t}"):
-                inEffect = False
-        return True
+    # change "False" to "True" to test variables
+    shouldProcessVariables = False
+    if not shouldProcessVariables:
+        # special edge case: bayo up b not working in vanilla fix; doesn't work
+        '''
+        if filename == "bayonettabodySpecialHi.acm" and trainingOnly:
+            effectLines = "\tEffect()\n\t{\r\n" + origEffectLines
+            return True
+        '''
 
-    '''
-    # for variable testing
-    if filename[-4:] == ".acm":
-        basicVar = "0x00000006"
-        addEffect(someCompare.format(basicVar, "0x3", "0x4"))
-        addEffect(TRUEComp.format("0x12"))
-        inCompare = inCompare + 1
-        addEffect(colorOverlay.format(*GREEN))
-        inCompare = inCompare - 1
-        addEffect("}")
-        addEffect(FALSEComp.format("0x10"))
-        inCompare = inCompare + 1
-        addEffect(someCompare.format(basicVar, "0x3", "0x3"))
-        addEffect(TRUEComp.format("0x12"))
-        inCompare = inCompare + 1
-        addEffect(colorOverlay.format(*BLUE))
-        inCompare = inCompare - 1
-        addEffect("}")
-        addEffect(FALSEComp.format("0x10"))
-        inCompare = inCompare + 1
-        addEffect(someCompare.format(basicVar, "0x3", "0x2"))
-        addEffect(TRUEComp.format("0x12"))
-        inCompare = inCompare + 1
-        addEffect(colorOverlay.format(*ORANGE))
-        inCompare = inCompare - 1
-        addEffect("}")
-        addEffect(FALSEComp.format("0x10"))
-        inCompare = inCompare + 1
-        addEffect(someCompare.format(basicVar, "0x3", "0x1"))
-        addEffect(TRUEComp.format("0x12"))
-        inCompare = inCompare + 1
-        addEffect(colorOverlay.format(*RED))
-        inCompare = inCompare - 1
-        addEffect("}")
-        addEffect(FALSEComp.format("0x10"))
-        inCompare = inCompare + 1
-        addEffect(someCompare.format(basicVar, "0x3", "0x0"))
-        addEffect(TRUEComp.format("0x12"))
-        inCompare = inCompare + 1
-        addEffect(colorOverlay.format(*MAGENTA))
-        inCompare = inCompare - 1
-        addEffect("}")
-        addEffect(FALSEComp.format("0x10"))
-        inCompare += 1
-        addEffect(colorOverlay.format(*WHITE))
-        inCompare -= 1
-        while inCompare:
-            addEffect("}")
-            inCompare = inCompare - 1
-        addEffect("}")
-        addEffect(scriptEnd)
+        filepath = "edgeCaseCode/{}".format(filename)
+        if os.path.isfile(filepath):
+            with open(filepath, 'r') as file:
+                content = file.readlines()
+            content = [x.strip('\n') for x in content]
+            inEffect = False
+            for line in content:
+                #line = removeBeginningWhitespace(line)
+                if line.startswith("\tEffect()"):
+                    inEffect = True
+                elif inEffect and not line.startswith("\t{") and not line.startswith("\t}"):
+                    addEffect(line[1:])
+                elif line.startswith("\t}"):
+                    inEffect = False
+            return True
+    else:
+        # variable testing
+        basicVar = "0x18000001"
+        basicCompMethod = "0x3"
+        basicDict = OrderedDict(
+            [(50, PINK), (20, RED), (10, ORANGE), (5, YELLOW), (3, GREEN), (2, BLUE), (1, CYAN), (0, MAGENTA)])
+        floatVar = "0x0"
+        floatCompMethod = "0x3"
+        floatDict = OrderedDict([(10, PINK), (1.3, RED), (1.2, ORANGE), (1.1, YELLOW), (1, GREEN), (0.5, BLUE), (0, CYAN), (-1, MAGENTA)])
+        bitVar = "0x1F00000C"
+        whichToProcess = "float"
+        tauntsOnly = False
+        if tauntsOnly and filename.find("Appeal") == -1:
+            return True
+        if whichToProcess == "bit":
+            # bit variables, frames 1 through 100
+            if variableEffectLines == "":
+                for i in range(1, 101):
+                    addEffect(asynchronousTimer.format(i))
+                    addEffect(ifBitIsSet.format(bitVar))
+                    addEffect(TRUEComp.format("0x12"))
+                    inCompare = inCompare + 1
+
+                    addEffect(colorOverlay.format(*CYAN))
+
+                    inCompare = inCompare - 1
+                    addEffect("}")
+                    addEffect(FALSEComp.format("0x10"))
+                    inCompare = inCompare + 1
+                    addEffect(colorOverlay.format(*RED))
+                    inCompare -= 1
+                    while inCompare:
+                        addEffect("}")
+                        inCompare = inCompare - 1
+                    addEffect("}")
+                addEffect(scriptEnd)
+                variableEffectLines = effectLines
+            else:
+                effectLines = variableEffectLines
+        elif whichToProcess == "float":
+            # float variables, frames 1 through 100
+            if variableEffectLines == "":
+                for i in range(1, 101):
+                    addEffect(asynchronousTimer.format(i))
+                    for value in floatDict:
+                        color = floatDict[value]
+                        addEffect(floatCompare.format(floatVar, floatCompMethod, getHexFloat(value)))
+                        addEffect(TRUEComp.format("0x12"))
+                        inCompare = inCompare + 1
+
+                        addEffect(colorOverlay.format(*color))
+
+                        inCompare = inCompare - 1
+                        addEffect("}")
+                        addEffect(FALSEComp.format("0x10"))
+                        inCompare = inCompare + 1
+                    addEffect(colorOverlay.format(*WHITE))
+                    inCompare -= 1
+                    while inCompare:
+                        addEffect("}")
+                        inCompare = inCompare - 1
+                    addEffect("}")
+                addEffect(scriptEnd)
+                variableEffectLines = effectLines
+            else:
+                effectLines = variableEffectLines
+        elif whichToProcess == "basic":
+            # basic variables
+            if variableEffectLines == "":
+                for i in range(1, 101):
+                    addEffect(asynchronousTimer.format(i))
+                    for value in basicDict:
+                        color = basicDict[value]
+                        addEffect(basicCompare.format(basicVar, basicCompMethod, hex(value)))
+                        addEffect(TRUEComp.format("0x12"))
+                        inCompare = inCompare + 1
+
+                        addEffect(colorOverlay.format(*color))
+
+                        inCompare = inCompare - 1
+                        addEffect("}")
+                        addEffect(FALSEComp.format("0x10"))
+                        inCompare = inCompare + 1
+                    addEffect(colorOverlay.format(*WHITE))
+                    inCompare -= 1
+                    while inCompare:
+                        addEffect("}")
+                        inCompare = inCompare - 1
+                    addEffect("}")
+                addEffect(scriptEnd)
+                variableEffectLines = effectLines
+            else:
+                effectLines = variableEffectLines
         return True
-    '''
     return False
 
 

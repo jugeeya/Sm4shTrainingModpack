@@ -418,7 +418,7 @@ def parseChar(charName):
 
 def main():
     fighterDirectories = os.listdir("AllFighterData/")
-    shutil.rmtree("TSV/")
+    shutil.rmtree("TSV/", ignore_errors=True)
     os.mkdir("TSV")
     for char in fighterDirectories:
         stdout = sys.stdout

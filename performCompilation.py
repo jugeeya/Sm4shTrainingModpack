@@ -28,6 +28,7 @@ extsubroutine = "External_Subroutine(Hash={})"
 downEffect1 = "Graphic_Effect2(Graphic=0x1000008, Bone=0x0, Z=0, Y=0, X=0, ZRot=0, YRot=0, XRot=0, Size=1, RandomZ=0, RandomY=0, RandomX=0, RandomZRot=0, RandomYRot=0, RandomXRot=0, Terminate=0x0)"
 downEffect2 = "DOWN_EFFECT(unknown=0x100000A, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x3F800000, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0, unknown=0x0)"
 setLoop = "Set_Loop(Iterations={}){{"
+setFrameDuration = "Set_Frame_Duration(Speed={})"
 ifCompare = "If_Compare(Variable={}, Method={}, Variable2={})"
 ifCompare2 = "If_Compare2(Variable={}, Method={}, Value={})"
 ifBitIsSet = "If_Bit_is_Set(Variable={})"
@@ -57,6 +58,7 @@ BLUE = ['0', '0', '255', ALPHA]
 CYAN = ['0', '255', '255', ALPHA]
 MAGENTA = ['255', '0', '255', ALPHA]
 TEAL = ['0', '128', '128', ALPHA]
+TURQUOISE = ['64', '224', '208', ALPHA]
 WHITE = ['255', '255', '255', ALPHA]
 
 equalTo = "0x0"
@@ -67,11 +69,21 @@ greaterThanOrEqualTo = "0x3"
 lessThan = "0x4"
 greaterThan = "0x5"
 
-exploitParamVar = "0x1200004B" # brawl glide data param (originally 1)
-exploitParamVar2 = "0x1200004A" # brawl glide data param (originally 60)
+# toggle 0: none; 1: fullMod+DI+hitstunOverlay; 2:DI+hitstunOverlay; 3: hitstunOverlay
+showFullModVar = "0x1200004A" # brawl glide data param (originally 60)
+hasEnteredVar = "0x1200004B" # brawl glide data param (originally 1)
+showHitstunVar = "0x1200006E" # brawl cliffclimb over 100% (originally 100)
+DIChangeVar = "0x2000126" # brawl max kb to execute momentum commands (originally 0.2)
+DIDirectionVar = "0x2000127" # brawl (originally )
+maxDIChange = 0.17
+canAttackVar = "0x21000025"
+canAirdodgeVar = "0x21000026"
+extraVar = "0x21000028"
 hitstunVar = "0x1000003E"
 launchSpeedVar = "0x10000003" # launch speed basic
-ourLaundSpeedBitVar = "0x21000025"
+ourLaundSpeedBitVar = "0x21000027" # some other ryu thing
+
+shouldProcessVariables = False
 
 effectLines = "\tEffect()\n\t{\r\n"
 variableEffectLines = ""
@@ -82,6 +94,7 @@ origEffectLines = ""
 origIndex = 0
 blacklisted = False
 trainingOnly = False
+weaponBool = False
 inLoop = False
 inCompare = 0
 FAF = 10000
@@ -101,9 +114,28 @@ def isInt(s):
 def addHitstunOverlays(spinning=False):
     global damageEffectLines, effectLines, inCompare, inLoop
     if damageEffectLines == "":
+        effectLines = "\tEffect()\n\t{\r\n"
+        addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, hex(1)))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
         addEffect(bitVariableClear.format(ourLaundSpeedBitVar))
-        for i in range(1, 101):
+        addEffect(bitVariableClear.format(canAttackVar))
+        addEffect(bitVariableClear.format(canAirdodgeVar))
+        # if facing right? check directions.
+        addEffect(ifCompare.format("0x0", "0x4", "0x0"))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare+=1
+        addEffect(floatVariableSet.format(1.0, DIDirectionVar))
+        inCompare-=1
+        addEffect("}")
+        addEffect(FALSEComp.format("0x10"))
+        inCompare+=1
+        addEffect(floatVariableSet.format(-1.0, DIDirectionVar))
+        inCompare-=1
+        addEffect("}")
+        for i in range(1, 150):
             addEffect(asynchronousTimer.format(i))
+
             # 1 tab
             addEffect(basicCompare.format(hitstunVar, greaterThanOrEqualTo, hex(1)))
             addEffect(TRUEComp.format("0x12"))
@@ -113,28 +145,30 @@ def addHitstunOverlays(spinning=False):
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
             # 3 tabs
-            addEffect(basicCompare.format(launchSpeedVar, greaterThan, hex(3)))
+            #addEffect(basicCompare.format(launchSpeedVar, lessThanOrEqualTo, hex(2)))
+            addEffect(ifBitIsSet.format(canAttackVar))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
-            if spinning:
-                addEffect(colorOverlay.format(*ORANGE))
-            else:
-                addEffect(colorOverlay.format(*GREEN))
+            addEffect(colorOverlay.format(*MAGENTA))
             inCompare -= 1
             addEffect("}")
             # 3 tabs
             addEffect(FALSEComp.format("0x10"))
             inCompare += 1
             # 4 tabs
-            addEffect(basicCompare.format(launchSpeedVar, greaterThan, hex(2)))
+            #addEffect(basicCompare.format(showHitstunVar, equalTo, hex(1)))
+            addEffect(ifBitIsSet.format(canAirdodgeVar))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
-            addEffect(colorOverlay.format(*TEAL))
+            addEffect(colorOverlay.format(*CYAN))
             inCompare -= 1
             addEffect("}")
             addEffect(FALSEComp.format("0x10"))
             inCompare += 1
-            addEffect(colorOverlay.format(*CYAN))
+            if spinning:
+                addEffect(colorOverlay.format(*ORANGE))
+            else:
+                addEffect(colorOverlay.format(*GREEN))
             inCompare -= 1
             addEffect("}")
             inCompare -= 1
@@ -167,7 +201,7 @@ def addHitstunOverlays(spinning=False):
             inCompare = inCompare + 1
             addEffect(terminateOverlays)
             inCompare -= 1
-            while inCompare:
+            while inCompare > 2:
                 addEffect("}")
                 inCompare = inCompare - 1
             addEffect("}")
@@ -186,7 +220,7 @@ def parseForEffect(lines):
             inEffect = True
         elif inEffect:
             if not l.startswith("\t\tScript_End()") and not l == "\t\tTRUE(Unknown=0x2)\r":
-                origEffectLines = origEffectLines + "\t" + l + "\r\n"
+                origEffectLines = origEffectLines + "\t" + l + "\n"
 
 def moreHitboxesExist(remainingLines):
     for i in remainingLines:
@@ -344,6 +378,8 @@ def removeFromMainList(hitboxID):
 
 def addEffect(effectString):
     global effectLines
+    if effectString == scriptEnd and not shouldProcessVariables and not weaponBool:
+        return
     effectLines = effectLines + "\t\t"
     tabs = inCompare
     if inLoop:
@@ -354,6 +390,8 @@ def addEffect(effectString):
     effectLines = effectLines + effectString + "\r\n"
 
 def addEffectToString(effectString, string):
+    if effectString == scriptEnd and not shouldProcessVariables and not weaponBool:
+        return string
     string = string + "\t\t"
     tabs = inCompare
     if inLoop:
@@ -412,7 +450,7 @@ def getTrainingOutput(lines):
             if blacklisted:
                 fullOutput += "\tEffect()\n\t{\r"
             fullOutput += effectLines
-            fullOutput += origEffectLines+ "\n\t\t}\r\n\t\tScript_End()\r\n\t}\n\r\n"
+            fullOutput += origEffectLines+ "\t\t}\r\n\t\tScript_End()\r\n\t}\n\r\n"
         if not inEffect:
             if i != "\t\tTRUE(Unknown=0x2)\r":
                 fullOutput += i + "\n"
@@ -496,41 +534,83 @@ def addLagEffects(lagLength):
         addEffect(terminateOverlays)
     addEffect(scriptEnd)
 
-def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
+def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=False):
     global effectLines, inLoop, inCompare
-    global blacklisted, trainingOnly
+    global blacklisted, trainingOnly, weaponBool
     global currentFrame, FAF, invStart, invEnd
     global myLines, mainList, origEffectLines
 
+    weaponBool = isWeapon
+
     filename = filePath
+    basename = os.path.basename(filename)
+
+    spotdodge = "EscapeN.acm"
+    froll = "EscapeF.acm"
+    broll = "EscapeB.acm"
+    airdodge = "EscapeAir.acm"
+    shielding = "Guard.acm"
+    shieldOn = "GuardOn.acm"
+    unshield = "GuardOff.acm"
+    shieldDamage = "GuardDamage.acm"
+    ledgecatch = "CliffCatch.acm"
+    groundedfootstoolPose = "StepPose.acm"
+    groundedfootstoolBack = "0xE0D78C1E.acm"
+    spinningAnim = "DamageFlyRoll.acm"
+    hitstunAnimations = {"DamageAir1.acm", "DamageAir2.acm", "DamageAir3.acm", "DamageElec.acm", "DamageFlyHi.acm", "DamageFlyLw.acm", "DamageFlyN.acm", "DamageFlyTop.acm", "DamageHi1.acm", "DamageHi2.acm", "DamageHi3.acm", "DamageLw1.acm", "DamageLw2.acm", "DamageLw3.acm", "DamageN1.acm", "DamageN2.acm", "DamageN3.acm", "WallDamage.acm"}
+    upTaunts = {"AppealHiL.acm", "AppealHiR.acm"}
+    sideTaunts = {"AppealSL.acm", "AppealSR.acm"}
+    downTaunts = {"AppealLwL.acm", "AppealLwR.acm"}
+    tumble = "DamageFall.acm"
+    specialFall = "FallSpecial.acm"
+    ledgegetup = "CliffClimbQuick.acm"
+    ledgeroll = "CliffEscapeQuick.acm"
+    ledgejump = "CliffJumpQuick1.acm"
+    ledgeattack = "CliffAttackQuick.acm"
+    jumpsquat = "JumpSquat.acm"
+    lightLanding = "LandingLight.acm"
+    hardLanding = "LandingHeavy.acm"
+    landingAirN = "LandingAirN.acm"
+    landingAirF = "LandingAirF.acm"
+    landingAirB = "LandingAirB.acm"
+    landingAirHi = "LandingAirHi.acm"
+    landingAirLw = "LandingAirLw.acm"
+    passive = "Passive.acm"
+    passiveF = "PassiveStandF.acm"
+    passiveB = "PassiveStandB.acm"
+    downStandU = "DownStandU.acm"
+    downStandD = "DownStandD.acm"
+    downForwardU = "DownForwardU.acm"
+    downForwardD = "DownForwardD.acm"
+    downBackU = "DownBackU.acm"
+    downBackD = "DownBackD.acm"
+    downBoundU = "DownBoundU.acm"
+    downBoundD = "DownBoundD.acm"
+    jabresetU = "DownDamageU3.acm"
+    jabresetD = "DownDamageD3.acm"
 
     if isBlacklisted:
         blacklisted = True
         effectLines = ""
+
     if isTrainingOnly:
+        if basename in {"EntryR.acm", "EntryL.acm"}:
+            addEffect(basicVariableSet.format("0x0", showFullModVar))
+            addEffect(basicVariableSet.format("0x0", hasEnteredVar))
+
+    if not shouldProcessVariables and not weaponBool:
         trainingOnly = True
-        charName = os.path.split(os.path.dirname(filename))[0][:-5]
-        if charName[-4:] == "body":
-            charName = charName[:-4]
-        '''
-        ourBasicVariable = ""
-        if charName in {"shulk", "yoshi", "wario", "rockman", "pit", "reflet", "kirby", "lizardon", "lucario", "pitb", "gekkouga", "robot", "murabito", "wiifit", "sonic", "mewtwo", "cloud", "miigunner", "littlemac", "pacman", "pikmin", "pikachu"}:
-            ourBasicVariable = "0x100000AC"
-        elif charName == "bayonetta":
-            ourBasicVariable = "0x1000008A"
+        if basename in upTaunts or basename.startswith("Wait"):
+            addEffect(basicCompare.format(hasEnteredVar, notEqualTo, "0x0"))
+        elif basename in sideTaunts:
+            addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, "0x1"))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare += 1
+            addEffect(basicCompare.format(showFullModVar,lessThanOrEqualTo, "0x2"))
         else:
-            ourBasicVariable = "0x10000086"
-        '''
-        ourBasicVariable = exploitParamVar
-        if os.path.basename(filename) in {"EntryR.acm", "EntryL.acm"}:
-            addEffect(basicVariableSet.format("0x0", ourBasicVariable))
-            addEffect(basicVariableSet.format("0x0", exploitParamVar2))
-        if os.path.basename(filename) in {"AppealHiL.acm", "AppealHiR.acm"}:
-            addEffect(basicCompare.format(exploitParamVar2, notEqualTo, "0x0"))
-        else:
-            addEffect(basicCompare.format(ourBasicVariable, notEqualTo, "0x0"))
+            addEffect(basicCompare.format(showFullModVar, equalTo, "0x1"))
         addEffect(TRUEComp.format("0x12"))
-        inCompare = 1
+        inCompare += 1
 
 
     with open(filename, newline="\r\n") as f:
@@ -548,8 +628,6 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
     offsetEnd = 0
     prevFrame = 0
     processedEndlag = False
-
-    basename = os.path.basename(filename)
 
     tsvLines = []
 
@@ -591,61 +669,30 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
                         currHurtboxList.append(currVals[index])
                 hurtboxes[currVals[0]] = currHurtboxList
 
-    spotdodge = "EscapeN.acm"
-    froll = "EscapeF.acm"
-    broll = "EscapeB.acm"
-    airdodge = "EscapeAir.acm"
-    shielding = "Guard.acm"
-    shieldOn = "GuardOn.acm"
-    unshield = "GuardOff.acm"
-    shieldDamage = "GuardDamage.acm"
-    ledgecatch = "CliffCatch.acm"
-    groundedfootstoolPose = "StepPose.acm"
-    groundedfootstoolBack = "0xE0D78C1E.acm"
-    spinningAnim = "DamageFlyRoll.acm"
-    hitstunAnimations = {"DamageAir1.acm", "DamageAir2.acm", "DamageAir3.acm", "DamageElec.acm", "DamageFlyHi.acm", "DamageFlyLw.acm", "DamageFlyN.acm", "DamageFlyTop.acm", "DamageHi1.acm", "DamageHi2.acm", "DamageHi3.acm", "DamageLw1.acm", "DamageLw2.acm", "DamageLw3.acm", "DamageN1.acm", "DamageN2.acm", "DamageN3.acm", "WallDamage.acm"}
-    tumble = "DamageFall.acm"
-    specialFall = "FallSpecial.acm"
-    ledgegetup = "CliffClimbQuick.acm"
-    ledgeroll = "CliffEscapeQuick.acm"
-    ledgejump = "CliffJumpQuick1.acm"
-    ledgeattack = "CliffAttackQuick.acm"
-    jumpsquat = "JumpSquat.acm"
-    lightLanding = "LandingLight.acm"
-    hardLanding = "LandingHeavy.acm"
-    landingAirN = "LandingAirN.acm"
-    landingAirF = "LandingAirF.acm"
-    landingAirB = "LandingAirB.acm"
-    landingAirHi = "LandingAirHi.acm"
-    landingAirLw = "LandingAirLw.acm"
-    passive = "Passive.acm"
-    passiveF = "PassiveStandF.acm"
-    passiveB = "PassiveStandB.acm"
-    downStandU = "DownStandU.acm"
-    downStandD = "DownStandD.acm"
-    downForwardU = "DownForwardU.acm"
-    downForwardD = "DownForwardD.acm"
-    downBackU = "DownBackU.acm"
-    downBackD = "DownBackD.acm"
-    downBoundU = "DownBoundU.acm"
-    downBoundD = "DownBoundD.acm"
-    jabresetU = "DownDamageU3.acm"
-    jabresetD = "DownDamageD3.acm"
-
     # addHurtboxes()
 
     inputIndex = filename.find("Input")
     edgeCaseFilename = filename[:inputIndex] + filename[inputIndex+len("Input/animcmd/"):]
 
     if didHandleEdgeCase(edgeCaseFilename):
-        str = "This conditional is a placeholder."
-    elif basename in {"AppealLwL.acm", "AppealLwR.acm"}:
+        pass
+    elif basename.startswith("Wait") and not weaponBool:
+        addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, hex(4)))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(colorOverlay.format(*RED))
+        addEffect(basicVariableSet.format(hex(1), showFullModVar))
+        inCompare -= 1
+        addEffect('}')
+        addEffect(scriptEnd)
+    elif basename in downTaunts and not weaponBool:
         shieldDegenVar = "0x20000C7"
         shieldRegenVar = "0x20000C8"
         shieldDamageMultVar = "0x20000CA"
         addEffect(floatCompare.format("0x20000CA", equalTo, "0x0"))
         addEffect(TRUEComp.format("0x12"))
         inCompare += 1
+        addEffect(colorOverlay.format(*WHITE))
         addEffect(floatVariableSet.format("1.19", shieldDamageMultVar))
         addEffect(floatVariableSet.format("0.13", shieldDegenVar))
         addEffect(floatVariableSet.format("0.08", shieldRegenVar))
@@ -653,34 +700,79 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
         addEffect("}")
         addEffect(FALSEComp.format("0x10"))
         inCompare += 1
+        addEffect(colorOverlay.format(*BLUE))
         addEffect(floatVariableSet.format("0", shieldDamageMultVar))
         addEffect(floatVariableSet.format("0", shieldDegenVar))
         addEffect(floatVariableSet.format("0", shieldRegenVar))
         inCompare -= 1
         addEffect("}")
         addEffect(scriptEnd)
-    elif basename in {"AppealHiL.acm", "AppealHiR.acm"}:
+    elif basename in upTaunts and not weaponBool:
         effectToggleLines = ""
-        effectToggleLines = addEffectToString(basicCompare.format(exploitParamVar, equalTo, "0x0"), effectToggleLines)
+        effectToggleLines = addEffectToString(basicCompare.format(showFullModVar, equalTo, "0x0"), effectToggleLines)
 
         effectToggleLines = addEffectToString(TRUEComp.format("0x12"), effectToggleLines)
         inCompare += 1
-        effectToggleLines = addEffectToString(basicVariableSet.format("0x1", exploitParamVar), effectToggleLines)
+        effectToggleLines = addEffectToString(colorOverlay.format(*RED), effectToggleLines)
+        effectToggleLines = addEffectToString(basicVariableSet.format("0x1", showFullModVar), effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
         effectToggleLines = addEffectToString(FALSEComp.format("0x10"), effectToggleLines)
         inCompare += 1
-        effectToggleLines = addEffectToString(basicVariableSet.format("0x0", exploitParamVar), effectToggleLines)
+        effectToggleLines = addEffectToString(basicCompare.format(showFullModVar, equalTo, "0x1"), effectToggleLines)
+        effectToggleLines = addEffectToString(TRUEComp.format("0x12"), effectToggleLines)
+        inCompare += 1
+        effectToggleLines = addEffectToString(colorOverlay.format(*GREEN), effectToggleLines)
+        effectToggleLines = addEffectToString(basicVariableSet.format("0x2", showFullModVar), effectToggleLines)
+        inCompare -= 1
+        effectToggleLines = addEffectToString("}", effectToggleLines)
+        effectToggleLines = addEffectToString(FALSEComp.format("0x10"), effectToggleLines)
+        inCompare += 1
+        effectToggleLines = addEffectToString(basicCompare.format(showFullModVar, equalTo, "0x2"), effectToggleLines)
+        effectToggleLines = addEffectToString(TRUEComp.format("0x12"), effectToggleLines)
+        inCompare += 1
+        effectToggleLines = addEffectToString(colorOverlay.format(*BLUE), effectToggleLines)
+        effectToggleLines = addEffectToString(basicVariableSet.format("0x3", showFullModVar), effectToggleLines)
+        inCompare -= 1
+        effectToggleLines = addEffectToString("}", effectToggleLines)
+        effectToggleLines = addEffectToString(FALSEComp.format("0x10"), effectToggleLines)
+        inCompare += 1
+        effectToggleLines = addEffectToString(colorOverlay.format(*WHITE), effectToggleLines)
+        effectToggleLines = addEffectToString(basicVariableSet.format("0x0", showFullModVar), effectToggleLines)
+        inCompare -= 1
+        effectToggleLines = addEffectToString("}", effectToggleLines)
+        inCompare -= 1
+        effectToggleLines = addEffectToString("}", effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
         effectToggleLines = addEffectToString(scriptEnd, effectToggleLines)
         effectLines += effectToggleLines
+    elif basename in sideTaunts and not weaponBool:
+        DIValues = [0.2, -1.0*maxDIChange, 0, 1.0*maxDIChange, 10, 0.2]
+        DIDict = OrderedDict(
+            [(0.2, WHITE), (-1.0*maxDIChange, RED), (0, GREEN), (1.0*maxDIChange, BLUE), (10, MAGENTA)])
+        for DIindex in range(len(DIValues)-1):
+            currVal = DIValues[DIindex]
+            newVal = DIValues[DIindex+1]
+            color = DIDict[newVal]
+            addEffect(floatCompare.format(DIChangeVar, equalTo, getHexFloat(currVal)))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare = inCompare + 1
+            addEffect(floatVariableSet.format(newVal, DIChangeVar))
+            addEffect(colorOverlay.format(*color))
+            inCompare = inCompare - 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+        inCompare -= 1
+        while inCompare > 1:
+            addEffect("}")
+            inCompare = inCompare - 1
+        addEffect("}")
     elif basename == spinningAnim:
-        addEffect(colorOverlay.format(*ORANGE))
-        addEffect(scriptEnd)
-        # addHitstunOverlays(spinning=True)
-    # elif basename in hitstunAnimations:
-        # addHitstunOverlays()
+        addHitstunOverlays(spinning=True)
+    elif basename in hitstunAnimations:
+        addHitstunOverlays()
     elif basename == unshield:
         addLagEffects('7')
     elif basename == shieldDamage:
@@ -760,7 +852,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
     else:
         if basename == ledgeattack:
             addDodgeEffects2(tsvLines[14].split("\t")[0:2])
-            removeLastEffect(scriptEnd)
+            # removeLastEffect(scriptEnd)
         index = 0
         while index < len(myLines):
             iorig = myLines[index]
@@ -780,13 +872,21 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
                 if i.startswith("}"):
                     if inCompare:
                         if inCompare == 1 and trainingOnly:
-                            str = "Another placeholder."
+                            if inLoop:
+                                inLoop = False
+                                addEffect(endLoopOrCompare)
+                            else:
+                                inMain = False
+                                shouldExitLoop = True
                         else:
                             inCompare = inCompare - 1
                             addEffect(endLoopOrCompare)
-                    if inLoop:
+                    elif inLoop:
                         inLoop = False
                         addEffect(endLoopOrCompare)
+                    else:
+                        inMain = False
+                        shouldExitLoop = True
 
                 if i.startswith("If_Compare2"):
                     addEffect(ifCompare2.format(paramList[0], paramList[1], paramList[2]))
@@ -815,12 +915,15 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
 
                 loop = "Set_Loop"
                 if i.startswith("Set_Loop"):
-                    loopNum = int(paramList[0]) if paramList[0] != "-1" else 0
+                    loopNum = int(paramList[0]) # if paramList[0] != "-1" else 0
                     addEffect(setLoop.format(loopNum))
                     inLoop = True
 
                 if i.startswith("Loop_Rest()"):
                     addEffect("Loop_Rest()")
+
+                if i.startswith("Set_Frame_Duration"):
+                    addEffect(setFrameDuration.format(paramList[0]))
 
                 if i.startswith("Set_Armor"):
                     state = paramList[0]
@@ -1131,7 +1234,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
             addEffect(terminateOverlays)
             FAF = 10000
 
-    if trainingOnly: #and edgeCaseFilename != "bayonettabodySpecialHi.acm":
+    if trainingOnly:
         inCompare = 0
         addEffect("}")
         addEffect(FALSEComp.format("0x10"))
@@ -1142,11 +1245,10 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False):
         return getOutput(lines)
 
 def didHandleEdgeCase(filename):
-    global inLoop, inCompare
+    global inLoop, inCompare, shouldProcessVariables
     global variableEffectLines, effectLines, damageEffectLines
 
     # change "False" to "True" to test variables
-    shouldProcessVariables = False
     if not shouldProcessVariables:
         # special edge case: bayo up b not working in vanilla fix; doesn't work
         '''
@@ -1172,15 +1274,15 @@ def didHandleEdgeCase(filename):
             return True
     else:
         # variable testing
-        basicVar = "0x18000001"
-        basicCompMethod = "0x3"
+        basicVar = "0x100000AC"
+        basicCompMethod = equalTo
         basicDict = OrderedDict(
-            [(50, PINK), (20, RED), (10, ORANGE), (5, YELLOW), (3, GREEN), (2, BLUE), (1, CYAN), (0, MAGENTA)])
+            [(10, PINK), (6, RED), (5, ORANGE), (4, YELLOW), (3, GREEN), (2, BLUE), (1, CYAN), (0, MAGENTA)])
         floatVar = "0x0"
         floatCompMethod = "0x3"
         floatDict = OrderedDict([(10, PINK), (1.3, RED), (1.2, ORANGE), (1.1, YELLOW), (1, GREEN), (0.5, BLUE), (0, CYAN), (-1, MAGENTA)])
-        bitVar = "0x1F00000C"
-        whichToProcess = "float"
+        bitVar = "0x21000025"
+        whichToProcess = "basic"
         tauntsOnly = False
         if tauntsOnly and filename.find("Appeal") == -1:
             return True
@@ -1266,7 +1368,6 @@ def didHandleEdgeCase(filename):
         return True
     return False
 
-
 def stretchChecker(char, bodyOrWeapon, move):
     charName = char
     bodyWeaponName = bodyOrWeapon
@@ -1331,6 +1432,7 @@ def main():
             trainingMode = True
         char = sys.argv[2]
         bodyOrWeapon = sys.argv[3]
+        weaponBool = False if bodyOrWeapon == "body" else True
         movesToCompile = sys.argv[4]
         inputDir = "{}{}Input".format(char, bodyOrWeapon)
         outputDir = "{}{}Output".format(char, bodyOrWeapon)
@@ -1353,12 +1455,12 @@ def main():
                 if stretchCheck == "blacklisted":
                     print("Processing blacklisted file {} for {}...".format(file, char))
                     outputFile = open("{}/animcmd/{}".format(outputDir, file), 'w')
-                    outputFile.write(processFile(filePath, isBlacklisted=True, isTrainingOnly=trainingMode))
+                    outputFile.write(processFile(filePath, isBlacklisted=True, isTrainingOnly=trainingMode, isWeapon=weaponBool))
                     outputFile.close()
                 else:
                     print("Processing file {} for {}...".format(file, char))
                     outputFile = open("{}/animcmd/{}".format(outputDir, file), 'w')
-                    outputFile.write(processFile(filePath, isTrainingOnly=trainingMode))
+                    outputFile.write(processFile(filePath, isTrainingOnly=trainingMode, isWeapon=weaponBool))
                     outputFile.close()
                 '''
                 elif stretchCheck == "noprocess":
@@ -1372,7 +1474,7 @@ def main():
     charStartIndex = 1
     trainingMode = False
     allChars = os.listdir("AllFighterData/")
-    decompileErrorChars = ['koopajr', 'reflet']
+    decompileErrorChars = ['koopajr', 'reflet'] # not on latest commit, but it has a problem with conditionals
     for char in decompileErrorChars:
         allChars.remove(char)
     if len(sys.argv) >= 2 and sys.argv[1] == "training":
@@ -1404,6 +1506,7 @@ def main():
             os.makedirs("{}/animcmd".format(outputDir), exist_ok=True)
             os.rename("{}/fighter.mlist".format(inputDir), "{}/fighter.mlist".format(outputDir))
             bodyOrWeapon = inputDir[len(char):-5]
+            weaponBool = False if bodyOrWeapon == "body" else True
             files = os.listdir("{}/animcmd".format(inputDir))
             for file in files:
                 resetGlobals()
@@ -1412,7 +1515,7 @@ def main():
                 if stretchCheck == "blacklisted":
                     print("Processing blacklisted file {} for {}...".format(file, char))
                     outputFile = open("{}/animcmd/{}".format(outputDir, file), 'w')
-                    outputFile.write(processFile(filePath, isBlacklisted=True, isTrainingOnly=trainingMode))
+                    outputFile.write(processFile(filePath, isBlacklisted=True, isTrainingOnly=trainingMode, isWeapon=weaponBool))
                     outputFile.close()
                 elif stretchCheck == "noprocess":
                     print("Moving noprocess file {} for {}...".format(file, char))
@@ -1420,7 +1523,7 @@ def main():
                 else:
                     print("Processing file {} for {}...".format(file, char))
                     outputFile = open("{}/animcmd/{}".format(outputDir, file), 'w')
-                    outputFile.write(processFile(filePath, isTrainingOnly=trainingMode))
+                    outputFile.write(processFile(filePath, isTrainingOnly=trainingMode, isWeapon=weaponBool))
                     outputFile.close()
 
             compiledDir = "AllFighterDataCompiled/{}Compiled".format(inputDir[:-5])

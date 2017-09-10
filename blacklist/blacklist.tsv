@@ -1,10 +1,10 @@
 #MOVES THAT SHOULD NOT BE PROCESSED
-Wait1.acm
-Wait2.acm
-Wait3.acm
-Wait4.acm
-Wait5.acm
-WaitItem.acm
+#Wait1.acm
+#Wait2.acm
+#Wait3.acm
+#Wait4.acm
+#Wait5.acm
+#WaitItem.acm
 Dash.acm
 Run.acm
 RunBrakeL.acm
@@ -68,7 +68,7 @@ diddy
 		AttackLw4.acm
 		AttackAirF.acm
 		AttackAirB.acm
-		AttackAirHi.acm 
+		AttackAirHi.acm
 	barreljet
 	explosion
 	gun
@@ -417,7 +417,7 @@ rosetta
 		AttackS3.acm
 		AttackHi4.acm
 		AttackS4.acm
-		AttackLw4.acm 
+		AttackLw4.acm
 		AttackAirN.acm
 		AttackAirF.acm
 		AttackAirB.acm

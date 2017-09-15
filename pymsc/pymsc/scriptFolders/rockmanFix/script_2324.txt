@@ -1,0 +1,279 @@
+        begin 0x0, 0x3
+        pushInt. 0x3f800000
+        floatVarSet 0x0, 0x0
+        unk_2E loc_69
+        pushInt. 0x0
+        pushInt. 0x1000006
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushInt. 0x3000003
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushInt. 0x3000001
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushInt. 0x3000002
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushInt. 0x2000002
+        sys. 0x2, 0x17
+        pushInt. 0x1000006
+        pushVar. 0x0, 0x0
+        pushInt. 0x1
+        pushInt. script_774
+        callFunc 0x8
+
+loc_69:
+        unk_2E loc_97
+        pushInt. 0x24f
+        pushInt. 0x24e
+        pushInt. 0x24d
+        pushInt. 0x1000006
+        pushVar. 0x0, 0x0
+        pushInt. 0x1000007
+        pushInt. script_2317
+        pushInt. script_773
+        callFunc 0x7
+
+loc_97:
+        unk_2E. loc_AD
+        pushInt. 0x0
+        pushInt. 0x1
+        pushInt. script_2309
+        callFunc 0x2
+
+loc_AD:
+        setVar 0x0, 0x1
+        pushInt. 0x2713
+        sys. 0x1, 0x23
+        pushInt. 0x1
+        equals. 
+        if loc_13F
+        pushVar. 0x1, 0x12
+        pushInt. 0x0
+        equals. 
+        if loc_F4
+        unk_2E. loc_DF
+        pushInt. script_39
+        callFunc 0x0
+
+loc_DF:
+        pushInt. 0x0
+        notEqual. 
+        if loc_F4
+        pushInt. 0x1
+        else loc_F9
+
+loc_F4:
+        pushInt. 0x0
+
+loc_F9:
+        if loc_104
+        return_7 
+        else loc_13F
+
+loc_104:
+        pushVar. 0x1, 0x12
+        pushInt. 0x2
+        equals. 
+        if loc_134
+        unk_2E. loc_11F
+        pushInt. script_41
+        callFunc 0x0
+
+loc_11F:
+        pushInt. 0x0
+        notEqual. 
+        if loc_134
+        pushInt. 0x1
+        else loc_139
+
+loc_134:
+        pushInt. 0x0
+
+loc_139:
+        if loc_13F
+        return_7 
+
+loc_13F:
+        pushVar. 0x0, 0x1
+        if loc_194
+        pushInt. 0x15
+        pushInt. 0x1e00003c
+        sys. 0x2, 0x16
+        if loc_173
+        pushVar. 0x1, 0x12
+        pushInt. 0x0
+        equals. 
+        if loc_173
+        pushInt. 0x1
+        else loc_178
+
+loc_173:
+        pushInt. 0x0
+
+loc_178:
+        if loc_194
+        unk_2E loc_193
+        pushInt. 0x1
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_193:
+        return_7 
+
+loc_194:
+        pushVar. 0x1, 0x12
+        pushInt. 0x2
+        equals. 
+        if loc_1D9
+        pushVar. 0x0, 0x1
+        if loc_1BA
+        pushInt. 0xe
+        setVar 0x0, 0x2
+        else loc_1C3
+
+loc_1BA:
+        pushInt. 0x15f
+        setVar 0x0, 0x2
+
+loc_1C3:
+        unk_2E loc_1D8
+        pushVar. 0x0, 0x2
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_1D8:
+        return_7 
+
+loc_1D9:
+        pushInt. 0x1
+        if loc_1FC
+        pushVar. 0x1, 0x18
+        pushInt. 0x200000
+        bitAnd. 
+        if loc_1FC
+        pushInt. 0x1
+        else loc_201
+
+loc_1FC:
+        pushInt. 0x0
+
+loc_201:
+        if loc_241
+        pushVar. 0x0, 0x1
+        if loc_21D
+        pushInt. 0xa
+        setVar 0x0, 0x2
+        else loc_226
+
+loc_21D:
+        pushInt. 0x15d
+        setVar 0x0, 0x2
+
+loc_226:
+        unk_2E loc_23B
+        pushVar. 0x0, 0x2
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_23B:
+        pushInt. 0x1
+        return_6 
+
+loc_241:
+        pushInt. 0x1
+        if loc_264
+        pushVar. 0x1, 0x18
+        pushInt. 0x100000
+        bitAnd. 
+        if loc_264
+        pushInt. 0x1
+        else loc_269
+
+loc_264:
+        pushInt. 0x0
+
+loc_269:
+        if loc_285
+        pushInt. 0x271c
+        sys. 0x1, 0xe
+        if loc_285
+        pushInt. 0x1
+        else loc_28A
+
+loc_285:
+        pushInt. 0x0
+
+loc_28A:
+        if loc_2CA
+        pushVar. 0x0, 0x1
+        if loc_2A6
+        pushInt. 0xa
+        setVar 0x0, 0x2
+        else loc_2AF
+
+loc_2A6:
+        pushInt. 0x15d
+        setVar 0x0, 0x2
+
+loc_2AF:
+        unk_2E loc_2C4
+        pushVar. 0x0, 0x2
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_2C4:
+        pushInt. 0x1
+        return_6 
+
+loc_2CA:
+        pushInt. 0x1
+        if loc_2FD
+        unk_2E. loc_2E0
+        pushInt. script_88
+        callFunc 0x0
+
+loc_2E0:
+        pushInt. 0x0
+        pushInt. 0x2000001
+        sys. 0x2, 0x17
+        floatLess. 
+        if loc_2FD
+        pushInt. 0x1
+        else loc_302
+
+loc_2FD:
+        pushInt. 0x0
+
+loc_302:
+        if loc_342
+        pushVar. 0x0, 0x1
+        if loc_31E
+        pushInt. 0x0
+        setVar 0x0, 0x2
+        else loc_327
+
+loc_31E:
+        pushInt. 0x159
+        setVar 0x0, 0x2
+
+loc_327:
+        unk_2E loc_33C
+        pushVar. 0x0, 0x2
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_33C:
+        pushInt. 0x1
+        return_6 
+
+loc_342:
+        pushInt. 0x0
+        return_6 
+        end 

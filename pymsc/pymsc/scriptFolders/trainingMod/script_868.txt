@@ -1,0 +1,164 @@
+        begin 0x0, 0x2
+        pushInt. 0x10
+        pushInt. 0x2100000e
+        sys. 0x2, 0x16
+        not.
+        if loc_3D
+        pushInt. 0x6
+        pushInt. 0x1000003e
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        lessOrEqual.
+        if loc_3D
+        pushInt. 0x2710
+        pushInt. 0x2100000e
+        sys 0x2, 0x16
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x1 # if shouldMashJump
+        equals.
+        bitAnd.
+        if mashJump
+        	unk_2E done
+        	pushInt. 0xc
+        	pushInt. 0x0
+        	pushInt. script_16
+        	callFunc 0x2
+        else done
+        mashJump:
+        done:
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x0 # if shouldMashAirdodge
+        equals.
+        bitAnd.
+        if mashAirdodge
+        	unk_2E done2
+        	pushInt. 0x22
+        	pushInt. 0x0
+        	pushInt. script_16
+        	callFunc 0x2
+        else done2
+        mashAirdodge:
+        done2:
+
+loc_3D:
+        pushInt. 0x10
+        pushInt. 0x20000076
+        sys. 0x2, 0x16
+        if loc_6C
+        pushInt. 0x2
+        pushInt. 0x7
+        sys. 0x2, 0x2a
+        not.
+        if loc_6C
+        pushInt. 0x1
+        else loc_71
+
+loc_6C:
+        pushInt. 0x0
+
+loc_71:
+        if loc_8F
+        pushVar. 0x1, 0x9
+        pushInt. 0x3f800000
+        floatEqual.
+        if loc_8F
+        pushInt. 0x1
+        else loc_94
+
+loc_8F:
+        pushInt. 0x0
+
+loc_94:
+        if loc_117
+        pushInt. 0x2711
+        pushInt. 0x20000076
+        sys 0x2, 0x16
+        pushInt. 0x0
+        pushInt. 0x100000d
+        sys. 0x2, 0x17
+        floatVarSet 0x0, 0x0
+        pushInt. 0x6
+        pushInt. 0x1100000f
+        sys. 0x2, 0x16
+        setVar 0x0, 0x1
+        pushVar. 0x0, 0x1
+        pushInt. 0xffffffff
+        notEqual.
+        if loc_102
+        unk_2E loc_F0
+        pushVar. 0x0, 0x1
+        pushInt. 0x0
+        pushVar. 0x0, 0x0
+        pushInt. script_22
+        callFunc 0x3
+
+loc_F0:
+        pushShort. 0x1b
+        pushVar. 0x0, 0x1
+        pushVar. 0x0, 0x0
+        printf 0x3 #"sub_ftStatusUniqProcessDamage_execNormalDamageCommon motion kind: %d rate: %f"
+        else loc_117
+
+loc_102:
+        pushInt. 0x4
+        pushVar. 0x0, 0x0
+        sys 0x2, 0x12
+        pushShort. 0x1c
+        pushVar. 0x0, 0x0
+        printf 0x2 #"sub_ftStatusUniqProcessDamage_execNormalDamageCommon motion rate: %f"
+
+loc_117:
+        pushInt. 0x9
+        pushInt. 0x11000004
+        sys 0x2, 0x16
+        pushInt. 0xf
+        pushInt. 0x11000006
+        sys 0x2, 0x16
+        pushInt. 0xf
+        pushInt. 0x11000007
+        sys 0x2, 0x16
+        pushInt. 0x10
+        pushInt. 0x2000005a
+        sys. 0x2, 0x16
+        if loc_181
+        pushInt. 0x2
+        pushInt. 0xffffffff
+        sys. 0x2, 0x11
+        pushInt. 0x0
+        pushInt. 0x1f
+        sys. 0x2, 0x17
+        floatNotEqual.
+        if loc_181
+        unk_2E loc_181
+        pushInt. 0x1
+        pushInt. script_2200
+        callFunc 0x1
+
+loc_181:
+        end

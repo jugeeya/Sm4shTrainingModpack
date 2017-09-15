@@ -1,10 +1,4 @@
-import os
-import sys
-import struct
-import subprocess
-import shlex
-import glob
-import shutil
+import os, sys, struct, subprocess, shlex, glob, shutil, math
 from collections import OrderedDict
 
 counterChars = "gekkouga,ike,kamui,littlemac,lucario,lucina,marth,palutena,peach,roy,shulk".split(",")
@@ -16,6 +10,7 @@ setBoneIntangability = "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown={}, unkno
 setHurtbox = "Graphic_Effect6(Graphic=0x1000031, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 setHurtboxIntang = "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)"
 setHurtboxTest = "Graphic_Effect6(Graphic={}, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
+showAngle = "Graphic_Effect6(Graphic=0x1000094, Bone=0x0, Z={}, Y={}, X={}, ZRot={}, YRot=0, XRot=0, Size=0.5, Terminate=0x1, Unknown=0x420C0000)"
 grayHitbox = "Graphic_Effect6(Graphic=0x1000013, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 coloredHitbox = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown={}, unknown={}, unknown={})"
 grabHitbox = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown=0x0, unknown=0x437F0000, unknown=0x0)"
@@ -60,6 +55,7 @@ MAGENTA = ['255', '0', '255', ALPHA]
 TEAL = ['0', '128', '128', ALPHA]
 TURQUOISE = ['64', '224', '208', ALPHA]
 WHITE = ['255', '255', '255', ALPHA]
+BLACK = ['0', '0', '0', ALPHA]
 
 equalTo = "0x0"
 notEqualTo = "0x1"
@@ -72,18 +68,22 @@ greaterThan = "0x5"
 # toggle 0: none; 1: fullMod+DI+hitstunOverlay; 2:DI+hitstunOverlay; 3: hitstunOverlay
 showFullModVar = "0x1200004A" # brawl glide data param (originally 60)
 hasEnteredVar = "0x1200004B" # brawl glide data param (originally 1)
-showHitstunVar = "0x1200006E" # brawl cliffclimb over 100% (originally 100)
+mashToggleVar = "0x1200006E" # brawl cliffclimb over 100% (originally 100)
 DIChangeVar = "0x2000126" # brawl max kb to execute momentum commands (originally 0.2)
 DIDirectionVar = "0x2000127" # brawl (originally )
 maxDIChange = 0.17
 canAttackVar = "0x21000025"
 canAirdodgeVar = "0x21000026"
+shieldDegenVar = "0x20000C7"
+shieldRegenVar = "0x20000C8"
+shieldDamageMultVar = "0x20000CA"
 extraVar = "0x21000028"
 hitstunVar = "0x1000003E"
 launchSpeedVar = "0x10000003" # launch speed basic
 ourLaundSpeedBitVar = "0x21000027" # some other ryu thing
 
 shouldProcessVariables = False
+wifiSafe = False
 
 effectLines = "\tEffect()\n\t{\r\n"
 variableEffectLines = ""
@@ -145,7 +145,6 @@ def addHitstunOverlays(spinning=False):
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
             # 3 tabs
-            #addEffect(basicCompare.format(launchSpeedVar, lessThanOrEqualTo, hex(2)))
             addEffect(ifBitIsSet.format(canAttackVar))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
@@ -156,7 +155,6 @@ def addHitstunOverlays(spinning=False):
             addEffect(FALSEComp.format("0x10"))
             inCompare += 1
             # 4 tabs
-            #addEffect(basicCompare.format(showHitstunVar, equalTo, hex(1)))
             addEffect(ifBitIsSet.format(canAirdodgeVar))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
@@ -201,7 +199,8 @@ def addHitstunOverlays(spinning=False):
             inCompare = inCompare + 1
             addEffect(terminateOverlays)
             inCompare -= 1
-            while inCompare > 2:
+            untilCompare = 2 if not wifiSafe else 0
+            while inCompare > untilCompare:
                 addEffect("}")
                 inCompare = inCompare - 1
             addEffect("}")
@@ -281,6 +280,7 @@ def addHurtboxIntangibility(givenBone):
         yfinal = float(h[4])
         zfinal = float(h[5])
         size = getHexFloat(float(h[6])) #* 19 / 200
+        size = '0x3FC00000' # default size until I get a better graphic
         bone = hex(int(h[7]))
         if bone == hex(int(givenBone, 16)):
             for j in range(0, 4):
@@ -363,7 +363,7 @@ def addChangedToMainList(line,index):
             removeFromMainList(getParamList(h)[0])
     sizeIndex = newLine.find("Size=")
     commaIndex = newLine[sizeIndex:].find(",")
-    newSize = float(getParamList(line)[1]) * 19 / 200
+    newSize = float(getParamList(line)[1]) # already been processed: * 19 / 200
     newSizeStr = "Size={}".format(newSize)
     newLine = newLine[:sizeIndex] + newSizeStr + newLine[sizeIndex+commaIndex:]
     mainList.append(newLine)
@@ -378,7 +378,7 @@ def removeFromMainList(hitboxID):
 
 def addEffect(effectString):
     global effectLines
-    if effectString == scriptEnd and not shouldProcessVariables and not weaponBool:
+    if effectString == scriptEnd and not shouldProcessVariables and not weaponBool and not wifiSafe:
         return
     effectLines = effectLines + "\t\t"
     tabs = inCompare
@@ -390,7 +390,7 @@ def addEffect(effectString):
     effectLines = effectLines + effectString + "\r\n"
 
 def addEffectToString(effectString, string):
-    if effectString == scriptEnd and not shouldProcessVariables and not weaponBool:
+    if effectString == scriptEnd and not shouldProcessVariables and not weaponBool and not wifiSafe:
         return string
     string = string + "\t\t"
     tabs = inCompare
@@ -545,6 +545,15 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
     filename = filePath
     basename = os.path.basename(filename)
 
+    # custom section
+    shouldProcessCustom = False
+    if shouldProcessCustom:
+        if basename.startswith("FuraFuraStart"):
+            addEffect(floatVariableSet.format(15, "0x1000006"))
+            weaponBool = True
+            addEffect(scriptEnd)
+            return getOutput(lines)
+
     spotdodge = "EscapeN.acm"
     froll = "EscapeF.acm"
     broll = "EscapeB.acm"
@@ -598,11 +607,11 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
             addEffect(basicVariableSet.format("0x0", showFullModVar))
             addEffect(basicVariableSet.format("0x0", hasEnteredVar))
 
-    if not shouldProcessVariables and not weaponBool:
+    if not shouldProcessVariables and not weaponBool and not wifiSafe:
         trainingOnly = True
         if basename in upTaunts or basename.startswith("Wait"):
             addEffect(basicCompare.format(hasEnteredVar, notEqualTo, "0x0"))
-        elif basename in sideTaunts:
+        elif basename in sideTaunts or basename in downTaunts:
             addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, "0x1"))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
@@ -611,7 +620,6 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
             addEffect(basicCompare.format(showFullModVar, equalTo, "0x1"))
         addEffect(TRUEComp.format("0x12"))
         inCompare += 1
-
 
     with open(filename, newline="\r\n") as f:
         lines = f.readlines()
@@ -685,29 +693,47 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         inCompare -= 1
         addEffect('}')
         addEffect(scriptEnd)
-    elif basename in downTaunts and not weaponBool:
-        shieldDegenVar = "0x20000C7"
-        shieldRegenVar = "0x20000C8"
-        shieldDamageMultVar = "0x20000CA"
-        addEffect(floatCompare.format("0x20000CA", equalTo, "0x0"))
+    elif basename in downTaunts and not weaponBool and not wifiSafe:
+        mashDict = OrderedDict(
+            [(0, RED), (1, GREEN), (2, BLUE), (3, WHITE)])
+        numToggles = len(mashDict)
+        addEffect(basicCompare.format(mashToggleVar, greaterThanOrEqualTo, hex(numToggles-1)))
         addEffect(TRUEComp.format("0x12"))
         inCompare += 1
-        addEffect(colorOverlay.format(*WHITE))
-        addEffect(floatVariableSet.format("1.19", shieldDamageMultVar))
-        addEffect(floatVariableSet.format("0.13", shieldDegenVar))
-        addEffect(floatVariableSet.format("0.08", shieldRegenVar))
+        addEffect(colorOverlay.format(*RED))
+        addEffect(basicVariableSet.format(hex(0), mashToggleVar))
         inCompare -= 1
         addEffect("}")
         addEffect(FALSEComp.format("0x10"))
         inCompare += 1
-        addEffect(colorOverlay.format(*BLUE))
-        addEffect(floatVariableSet.format("0", shieldDamageMultVar))
-        addEffect(floatVariableSet.format("0", shieldDegenVar))
-        addEffect(floatVariableSet.format("0", shieldRegenVar))
+        for mashIndex in range(numToggles-1):
+            currVal = mashIndex
+            newVal = mashIndex+1
+            color = mashDict[newVal]
+            addEffect(basicCompare.format(mashToggleVar, equalTo, hex(currVal)))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare += 1
+            addEffect(basicVariableSet.format(hex(newVal), mashToggleVar))
+            addEffect(colorOverlay.format(*color))
+            if newVal == numToggles - 2:
+                addEffect(floatVariableSet.format("0", shieldDamageMultVar))
+                addEffect(floatVariableSet.format("0", shieldDegenVar))
+                addEffect(floatVariableSet.format("0", shieldRegenVar))
+            elif newVal == numToggles - 1:
+                addEffect(floatVariableSet.format("1.19", shieldDamageMultVar))
+                addEffect(floatVariableSet.format("0.13", shieldDegenVar))
+                addEffect(floatVariableSet.format("0.08", shieldRegenVar))
+            inCompare -= 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
         inCompare -= 1
+        while inCompare > 1:
+            addEffect("}")
+            inCompare = inCompare - 1
         addEffect("}")
         addEffect(scriptEnd)
-    elif basename in upTaunts and not weaponBool:
+    elif basename in upTaunts and not weaponBool and not wifiSafe:
         effectToggleLines = ""
         effectToggleLines = addEffectToString(basicCompare.format(showFullModVar, equalTo, "0x0"), effectToggleLines)
 
@@ -747,10 +773,11 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         effectToggleLines = addEffectToString("}", effectToggleLines)
         effectToggleLines = addEffectToString(scriptEnd, effectToggleLines)
         effectLines += effectToggleLines
-    elif basename in sideTaunts and not weaponBool:
-        DIValues = [0.2, -1.0*maxDIChange, 0, 1.0*maxDIChange, 10, 0.2]
+    elif basename in sideTaunts and not weaponBool and not wifiSafe:
+        # normal, 0,
+        DIValues = [0.2, 0, 0.785398, 1.570796, 2.356194, 3.141593, -2.356194,  -1.570796, -0.785398,  10, 0.2]
         DIDict = OrderedDict(
-            [(0.2, WHITE), (-1.0*maxDIChange, RED), (0, GREEN), (1.0*maxDIChange, BLUE), (10, MAGENTA)])
+            [(0.2, WHITE), (3.141593, BLACK), (2.356194, BLACK), (1.570796, BLACK), (0.785398, BLACK), (0, BLACK), (-0.785398, BLACK), (-1.570796, BLACK), (-2.356194, BLACK), (10, MAGENTA)])
         for DIindex in range(len(DIValues)-1):
             currVal = DIValues[DIindex]
             newVal = DIValues[DIindex+1]
@@ -760,6 +787,8 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
             inCompare = inCompare + 1
             addEffect(floatVariableSet.format(newVal, DIChangeVar))
             addEffect(colorOverlay.format(*color))
+            if color == BLACK:
+                addEffect(showAngle.format(0,-30*math.sin(newVal)+10,30*math.cos(newVal),math.degrees(newVal)))
             inCompare = inCompare - 1
             addEffect("}")
             addEffect(FALSEComp.format("0x10"))
@@ -1278,11 +1307,11 @@ def didHandleEdgeCase(filename):
         basicCompMethod = equalTo
         basicDict = OrderedDict(
             [(10, PINK), (6, RED), (5, ORANGE), (4, YELLOW), (3, GREEN), (2, BLUE), (1, CYAN), (0, MAGENTA)])
-        floatVar = "0x0"
+        floatVar = "0x2000218"
         floatCompMethod = "0x3"
-        floatDict = OrderedDict([(10, PINK), (1.3, RED), (1.2, ORANGE), (1.1, YELLOW), (1, GREEN), (0.5, BLUE), (0, CYAN), (-1, MAGENTA)])
+        floatDict = OrderedDict([(6.28, PINK), (3.14, RED), (1.57, ORANGE), (0.785, YELLOW), (0, GREEN), (-0.785, BLUE), (-1.57, CYAN), (-3.14, MAGENTA)])
         bitVar = "0x21000025"
-        whichToProcess = "basic"
+        whichToProcess = "float"
         tauntsOnly = False
         if tauntsOnly and filename.find("Appeal") == -1:
             return True
@@ -1423,7 +1452,8 @@ def resetGlobals():
 def main():
     charList = []
     noprocessWeapons = ["clayrocket", "can", "clay", "reticle", "sunbullet", "dein", "dein_s", "phantom"]
-    if len(sys.argv) >= 2 and (sys.argv[1] == "test" or sys.argv[1] == "testTraining"):
+    if len(sys.argv) >= 2 and (sys.argv[1] in {"test", "testTraining", "testCustom"}):
+        processList = []
         if len(sys.argv) != 5:
             print("testing requires exactly 4 arguments: \'test\'/\'testTraining\', char, bodyOrWeapon, movesToCompile")
             exit()

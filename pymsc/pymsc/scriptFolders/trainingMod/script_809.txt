@@ -1,10 +1,10 @@
         begin 0x0, 0x2
-        unk_2E loc_11
+        try loc_11
         pushInt. script_790
         callFunc 0x0
 
 loc_11:
-        unk_2E. loc_1D
+        try. loc_1D
         pushInt. script_95
         callFunc 0x0
 
@@ -16,7 +16,7 @@ loc_1D:
         pushInt. 0x2100001a
         sys. 0x2, 0x16
         if loc_96
-        unk_2E. loc_46
+        try. loc_46
         pushInt. script_84
         callFunc 0x0
 
@@ -26,7 +26,7 @@ loc_46:
         sys. 0x2, 0x17
         floatGreaterOrEqual.
         if loc_7A
-        unk_2E loc_6F
+        try loc_6F
         pushInt. 0x65
         pushInt. 0x1
         pushInt. script_16
@@ -38,7 +38,7 @@ loc_6F:
         else loc_96
 
 loc_7A:
-        unk_2E loc_90
+        try loc_90
         pushInt. 0x64
         pushInt. 0x1
         pushInt. script_16
@@ -55,7 +55,7 @@ loc_96:
         pushInt. 0x0
         equals.
         if loc_136
-        unk_2E. loc_BA
+        try. loc_BA
         pushInt. script_93
         callFunc 0x0
 
@@ -87,7 +87,7 @@ loc_103:
 
 loc_108:
         if loc_131
-        unk_2E. loc_119
+        try. loc_119
         pushInt. script_812
         callFunc 0x0
 
@@ -105,7 +105,7 @@ loc_131:
         else loc_14D
 
 loc_136:
-        unk_2E. loc_142
+        try. loc_142
         pushInt. script_812
         callFunc 0x0
 
@@ -166,12 +166,12 @@ loc_1D8:
         pushInt. 0x19
         pushInt. 0x1f00000e
         sys 0x2, 0x16
-        unk_2E loc_203
+        try loc_203
         pushInt. script_105
         callFunc 0x0
 
 loc_203:
-        unk_2E loc_20F
+        try loc_20F
         pushInt. script_104
         callFunc 0x0
 
@@ -182,6 +182,9 @@ loc_20F:
         pushInt. 0x0
         lessOrEqual.
         if loc_251
+
+
+
         pushInt. 0x3
         pushInt. 0x4
         sys. 0x2, 0x11
@@ -207,6 +210,7 @@ loc_256:
         pushInt. 0x19
         pushInt. 0x1f00000d
         sys 0x2, 0x16
+
         pushInt. 0x6
         pushInt. 0x1200004A # showFullModVar
         sys. 0x2, 0x16
@@ -217,15 +221,17 @@ loc_256:
         sys. 0x2, 0x16
         pushInt. 0x2
         equals.
-        bitOr.
+        bitOr. # showFullModVar == 1 or 2
+
         pushInt. 0x6
         pushInt. 0x1200006e
         sys. 0x2, 0x16
         pushInt. 0x0 # if shouldMashAirdodge
         equals.
-        bitAnd.
+
+        bitAnd. # and shouldShow
         if mashAirdodge
-      	  unk_2E done
+      	  try done
         	pushInt. 0x22
         	pushInt. 0x0
         	pushInt. script_16
@@ -233,6 +239,7 @@ loc_256:
         else done
         mashAirdodge:
         done:
+
 
 loc_275:
         pushInt. 0x0

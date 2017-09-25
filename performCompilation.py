@@ -1,6 +1,7 @@
 import os, sys, struct, subprocess, shlex, glob, shutil, math
 from collections import OrderedDict
 
+gameChars = "bayonetta,captain,cloud,dedede,diddy,donkey,duckhunt,falco,fox,gamewatch,ganon,gekkouga,ike,kamui,kirby,koopa,koopajr,link,littlemac,lizardon,lucario,lucas,lucina,luigi,mario,mariod,marth,metaknight,mewtwo,murabito,ness,pacman,palutena,peach,pikachu,pikmin,pit,pitb,purin,reflet,robot,rockman,rosetta,roy,ryu,samus,sheik,shulk,sonic,szerosuit,toonlink,wario,wiifit,yoshi,zelda,miiswordsman,miifighter,miigunner".split(",")
 counterChars = "gekkouga,ike,kamui,littlemac,lucario,lucina,marth,palutena,peach,roy,shulk".split(",")
 
 # game code lines
@@ -39,6 +40,7 @@ basicVariableSet = "Basic_Variable_Set(Value={}, Variable={})"
 floatVariableSet = "Float_Variable_Set(Value={}, Variable={})"
 goto = "Goto(Unknown={})"
 endLoopOrCompare = "}"
+allowInterrupt = "Allow_Interrupt()"
 scriptEnd = "Script_End()"
 
 # colors: R, G, B, Alpha
@@ -50,6 +52,7 @@ ORANGE = ['255', '165', '0', ALPHA]
 YELLOW = ['255', '255', '0', ALPHA]
 GREEN = ['0', '255', '0', ALPHA]
 BLUE = ['0', '0', '255', ALPHA]
+PURPLE = ['85', '26', '139', ALPHA]
 CYAN = ['0', '255', '255', ALPHA]
 MAGENTA = ['255', '0', '255', ALPHA]
 TEAL = ['0', '128', '128', ALPHA]
@@ -74,13 +77,17 @@ DIDirectionVar = "0x2000127" # brawl (originally )
 maxDIChange = 0.17
 canAttackVar = "0x21000025"
 canAirdodgeVar = "0x21000026"
+canReallyAirdodgeVar = "0x2000232" # orig 0.5
+canReallyAnyActionVar = "0x2000233" # orig 0.84
 shieldDegenVar = "0x20000C7"
 shieldRegenVar = "0x20000C8"
 shieldDamageMultVar = "0x20000CA"
-extraVar = "0x21000028"
+noBufferVar = "0x2000218"
+ledgeWaitFrameVar = "0x2000230" # super mushroom size multiplier? orig 1.7
+ourLaunchSpeedVar = "0x2000231" # related to super mushroom. orig 0.5
 hitstunVar = "0x1000003E"
 launchSpeedVar = "0x10000003" # launch speed basic
-ourLaundSpeedBitVar = "0x21000027" # some other ryu thing
+extraVar = "0x21000027" # some other ryu thing
 
 shouldProcessVariables = False
 wifiSafe = False
@@ -118,9 +125,17 @@ def addHitstunOverlays(spinning=False):
         addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, hex(1)))
         addEffect(TRUEComp.format("0x12"))
         inCompare += 1
-        addEffect(bitVariableClear.format(ourLaundSpeedBitVar))
+        addEffect(floatVariableSet.format(0, ourLaunchSpeedVar))
+        addEffect(floatVariableSet.format(0, canReallyAirdodgeVar))
+        addEffect(floatVariableSet.format(0, canReallyAnyActionVar))
         addEffect(bitVariableClear.format(canAttackVar))
         addEffect(bitVariableClear.format(canAirdodgeVar))
+        addEffect(floatCompare.format(noBufferVar, greaterThanOrEqualTo, getHexFloat(19.0)))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(floatVariableSet.format(0.8, noBufferVar))
+        inCompare -= 1
+        addEffect('}')
         # if facing right? check directions.
         addEffect(ifCompare.format("0x0", "0x4", "0x0"))
         addEffect(TRUEComp.format("0x12"))
@@ -141,7 +156,7 @@ def addHitstunOverlays(spinning=False):
             addEffect(TRUEComp.format("0x12"))
             inCompare = inCompare + 1
             # 2 tabs
-            addEffect(ifBitIsSet.format(ourLaundSpeedBitVar))
+            addEffect(floatCompare.format(ourLaunchSpeedVar, equalTo, getHexFloat(1)))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
             # 3 tabs
@@ -159,6 +174,7 @@ def addHitstunOverlays(spinning=False):
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
             addEffect(colorOverlay.format(*CYAN))
+            addEffect(floatVariableSet.format(1, canReallyAirdodgeVar))
             inCompare -= 1
             addEffect("}")
             addEffect(FALSEComp.format("0x10"))
@@ -180,7 +196,7 @@ def addHitstunOverlays(spinning=False):
             addEffect(basicCompare.format(hitstunVar, greaterThanOrEqualTo, hex(40)))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
-            addEffect(bitVariableSet.format(ourLaundSpeedBitVar))
+            addEffect(floatVariableSet.format(1, ourLaunchSpeedVar))
             inCompare -= 1
             addEffect("}")
             addEffect(FALSEComp.format("0x10"))
@@ -198,6 +214,7 @@ def addHitstunOverlays(spinning=False):
             addEffect(FALSEComp.format("0x10"))
             inCompare = inCompare + 1
             addEffect(terminateOverlays)
+            addEffect(floatVariableSet.format(1, canReallyAnyActionVar))
             inCompare -= 1
             untilCompare = 2 if not wifiSafe else 0
             while inCompare > untilCompare:
@@ -566,16 +583,19 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
     groundedfootstoolPose = "StepPose.acm"
     groundedfootstoolBack = "0xE0D78C1E.acm"
     spinningAnim = "DamageFlyRoll.acm"
+    noBufferAnimations = {"FuraFura.acm", "FuraFuraStartD.acm", "FuraFuraStartD.acm", "0xE42E1C1E.acm", "StepJump.acm", "0xE0D78C1E", "StepFall.acm", "0xAD2064E4.acm"} # StepAirPose?, DownSpotU/DownSpotD
     hitstunAnimations = {"DamageAir1.acm", "DamageAir2.acm", "DamageAir3.acm", "DamageElec.acm", "DamageFlyHi.acm", "DamageFlyLw.acm", "DamageFlyN.acm", "DamageFlyTop.acm", "DamageHi1.acm", "DamageHi2.acm", "DamageHi3.acm", "DamageLw1.acm", "DamageLw2.acm", "DamageLw3.acm", "DamageN1.acm", "DamageN2.acm", "DamageN3.acm", "WallDamage.acm"}
     upTaunts = {"AppealHiL.acm", "AppealHiR.acm"}
     sideTaunts = {"AppealSL.acm", "AppealSR.acm"}
     downTaunts = {"AppealLwL.acm", "AppealLwR.acm"}
+    fallingAnimations = {"Fall.acm", "FallSpecial.acm"}
     tumble = "DamageFall.acm"
     specialFall = "FallSpecial.acm"
     ledgegetup = "CliffClimbQuick.acm"
     ledgeroll = "CliffEscapeQuick.acm"
     ledgejump = "CliffJumpQuick1.acm"
     ledgeattack = "CliffAttackQuick.acm"
+    ledgewait = "CliffWait.acm"
     jumpsquat = "JumpSquat.acm"
     lightLanding = "LandingLight.acm"
     hardLanding = "LandingHeavy.acm"
@@ -611,7 +631,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         trainingOnly = True
         if basename in upTaunts or basename.startswith("Wait"):
             addEffect(basicCompare.format(hasEnteredVar, notEqualTo, "0x0"))
-        elif basename in sideTaunts or basename in downTaunts:
+        elif basename in sideTaunts or basename in downTaunts or basename in noBufferAnimations:
             addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, "0x1"))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
@@ -684,6 +704,21 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
 
     if didHandleEdgeCase(edgeCaseFilename):
         pass
+    elif basename == ledgewait:
+        for i in range(1, 150):
+            addEffect(asynchronousTimer.format(i))
+            addEffect(floatVariableSet.format(i, ledgeWaitFrameVar))
+        addEffect(scriptEnd)
+    elif basename in noBufferAnimations:
+        addEffect(floatCompare.format(noBufferVar, lessThanOrEqualTo, getHexFloat(19.0)))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(floatVariableSet.format(20.0, noBufferVar))
+        inCompare -= 1
+        addEffect('}')
+        inCompare -= 1
+        addEffect('}')
+        addEffect(scriptEnd)
     elif basename.startswith("Wait") and not weaponBool:
         addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, hex(4)))
         addEffect(TRUEComp.format("0x12"))
@@ -695,7 +730,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         addEffect(scriptEnd)
     elif basename in downTaunts and not weaponBool and not wifiSafe:
         mashDict = OrderedDict(
-            [(0, RED), (1, GREEN), (2, BLUE), (3, WHITE)])
+            [(0, RED), (1, GREEN), (2, BLUE), (3, MAGENTA), (4, WHITE)])
         numToggles = len(mashDict)
         addEffect(basicCompare.format(mashToggleVar, greaterThanOrEqualTo, hex(numToggles-1)))
         addEffect(TRUEComp.format("0x12"))
@@ -732,6 +767,8 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
             addEffect("}")
             inCompare = inCompare - 1
         addEffect("}")
+        addEffect(asynchronousTimer.format(15))
+        addEffect(allowInterrupt)
         addEffect(scriptEnd)
     elif basename in upTaunts and not weaponBool and not wifiSafe:
         effectToggleLines = ""
@@ -771,13 +808,15 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         effectToggleLines = addEffectToString("}", effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
+        effectToggleLines = addEffectToString(asynchronousTimer.format(15), effectToggleLines)
+        effectToggleLines = addEffectToString(allowInterrupt, effectToggleLines)
         effectToggleLines = addEffectToString(scriptEnd, effectToggleLines)
         effectLines += effectToggleLines
     elif basename in sideTaunts and not weaponBool and not wifiSafe:
         # normal, 0,
-        DIValues = [0.2, 0, 0.785398, 1.570796, 2.356194, 3.141593, -2.356194,  -1.570796, -0.785398,  10, 0.2]
+        DIValues = [0.2, 0, 0.785398, 1.570796, 2.356194, -3.14159, -2.356194,  -1.570796, -0.785398,  10, 20, 0.2]
         DIDict = OrderedDict(
-            [(0.2, WHITE), (3.141593, BLACK), (2.356194, BLACK), (1.570796, BLACK), (0.785398, BLACK), (0, BLACK), (-0.785398, BLACK), (-1.570796, BLACK), (-2.356194, BLACK), (10, MAGENTA)])
+            [(0.2, WHITE), (-3.14159, BLACK), (2.356194, BLACK), (1.570796, BLACK), (0.785398, BLACK), (0, BLACK), (-0.785398, BLACK), (-1.570796, BLACK), (-2.356194, BLACK), (10, MAGENTA), (20, MAGENTA)])
         for DIindex in range(len(DIValues)-1):
             currVal = DIValues[DIindex]
             newVal = DIValues[DIindex+1]
@@ -788,7 +827,15 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
             addEffect(floatVariableSet.format(newVal, DIChangeVar))
             addEffect(colorOverlay.format(*color))
             if color == BLACK:
-                addEffect(showAngle.format(0,-30*math.sin(newVal)+10,30*math.cos(newVal),math.degrees(newVal)))
+                addEffect(showAngle.format(0,-30*math.sin(-1*newVal)+10,30*math.cos(newVal),-1*math.degrees(newVal)))
+            if color == MAGENTA:
+                if newVal == 10:
+                    for i in range(1, len(DIValues)-3):
+                        processingVal = DIValues[i]
+                        addEffect(showAngle.format(0,-30*math.sin(processingVal)+10,30*math.cos(processingVal),math.degrees(processingVal)))
+                elif newVal == 20:
+                    for processingVal in {0, -3.14159}:
+                        addEffect(showAngle.format(0,-30*math.sin(processingVal)+10,30*math.cos(processingVal),math.degrees(processingVal)))
             inCompare = inCompare - 1
             addEffect("}")
             addEffect(FALSEComp.format("0x10"))
@@ -798,6 +845,8 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
             addEffect("}")
             inCompare = inCompare - 1
         addEffect("}")
+        addEffect(asynchronousTimer.format(15))
+        addEffect(allowInterrupt)
     elif basename == spinningAnim:
         addHitstunOverlays(spinning=True)
     elif basename in hitstunAnimations:

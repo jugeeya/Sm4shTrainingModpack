@@ -1,0 +1,362 @@
+        begin 0x0, 0x0
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x2 # if randomGetup
+        equals.
+        bitAnd.
+        pushInt. 0x6
+        pushInt. 0x2000230
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        pushInt. 0x79
+        sys. 0x2, 0x9
+        intToFloat 0x0 # random frame 0->121
+        equals.
+        bitAnd.
+        if shouldRandomLedgeGetup
+          pushInt. 0x7
+          pushInt. 0x0
+          pushInt. 0x4
+          sys. 0x2, 0x9
+          pushInt. 0x11000010
+          sys 0x3, 0x16 # set var to random val
+
+          pushInt. 0x6
+          pushInt. 0x11000010
+          sys. 0x2, 0x16
+          pushInt. 0x0
+          equals.
+          if doJump
+            try doJump
+            pushInt. 0x78
+            pushInt. 0x1
+            pushInt. script_16
+            callFunc 0x2
+          doJump:
+
+          pushInt. 0x6
+          pushInt. 0x11000010
+          sys. 0x2, 0x16
+          pushInt. 0x1
+          equals.
+          if doAttack
+            try doAttack
+            pushInt. 0x75
+            pushInt. 0x1
+            pushInt. script_16
+            callFunc 0x2
+          doAttack:
+
+          pushInt. 0x6
+          pushInt. 0x11000010
+          sys. 0x2, 0x16
+          pushInt. 0x2
+          equals.
+          if doRoll
+            try doRoll
+            pushInt. 0x77
+            pushInt. 0x1
+            pushInt. script_16
+            callFunc 0x2
+          doRoll:
+
+          pushInt. 0x6
+          pushInt. 0x11000010
+          sys. 0x2, 0x16
+          pushInt. 0x3
+          equals.
+          if doNormal
+            try doNormal
+            pushInt. 0x76
+            pushInt. 0x1
+            pushInt. script_16
+            callFunc 0x2
+          doNormal:
+        shouldRandomLedgeGetup:
+
+        pushVar. 0x1, 0x12
+        pushInt. 0x0
+        equals.
+        if loc_2B
+        try loc_2A
+        pushInt. 0x0
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_2A:
+        return_7
+
+loc_2B:
+        pushVar. 0x1, 0x12
+        pushInt. 0x2
+        equals.
+        if loc_51
+        try loc_50
+        pushInt. 0xe
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_50:
+        return_7
+
+loc_51:
+        pushInt. 0x2724
+        sys. 0x1, 0x1a
+        not.
+        if loc_76
+        try loc_75
+        pushInt. 0xe
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_75:
+        return_7
+
+loc_76:
+        pushInt. 0x2712
+        pushInt. 0x2100000f
+        sys. 0x2, 0x16
+        if loc_9F
+        try loc_9E
+        pushInt. 0x4c
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_9E:
+        return_7
+
+loc_9F:
+        pushInt. 0x15
+        pushInt. 0x1e00004c
+        sys. 0x2, 0x16
+        if loc_E6
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_E6
+        pushVar. 0x1, 0x26
+        pushInt. 0x10
+        bitAnd.
+        if loc_E6
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x2 # if randomGetup
+        equals.
+        bitAnd.
+        ifNot loc_E6
+        try loc_E5
+        pushInt. 0x78
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_E5:
+        return_7
+
+loc_E6:
+        pushInt. 0x15
+        pushInt. 0x1e00004b
+        sys. 0x2, 0x16
+        if loc_130
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_130
+        pushInt. 0x2712
+        pushInt. 0x21000011
+        sys. 0x2, 0x16
+        if loc_130
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x2 # if randomGetup
+        equals.
+        bitAnd.
+        ifNot loc_130
+        try loc_12F
+        pushInt. 0x78
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_12F:
+        return_7
+
+loc_130:
+        pushInt. 0x15
+        pushInt. 0x1e000046
+        sys. 0x2, 0x16
+        if loc_177
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_177
+        pushVar. 0x1, 0x26
+        pushInt. 0x1
+        bitAnd.
+        if loc_177
+        try loc_176
+        pushInt. 0x75
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_176:
+        return_7
+
+loc_177:
+        pushInt. 0x15
+        pushInt. 0x1e000047
+        sys. 0x2, 0x16
+        if loc_1BE
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_1BE
+        pushVar. 0x1, 0x26
+        pushInt. 0x4
+        bitAnd.
+        if loc_1BE
+        try loc_1BD
+        pushInt. 0x75
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_1BD:
+        return_7
+
+loc_1BE:
+        pushInt. 0x15
+        pushInt. 0x1e000048
+        sys. 0x2, 0x16
+        if loc_205
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_205
+        pushVar. 0x1, 0x26
+        pushInt. 0x40
+        bitAnd.
+        if loc_205
+        try loc_204
+        pushInt. 0x77
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_204:
+        return_7
+
+loc_205:
+        pushInt. 0x15
+        pushInt. 0x1e000049
+        sys. 0x2, 0x16
+        if loc_24F
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_24F
+        pushInt. 0x2712
+        pushInt. 0x2100000d
+        sys. 0x2, 0x16
+        if loc_24F
+        try loc_24E
+        pushInt. 0x76
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_24E:
+        return_7
+
+loc_24F:
+        pushInt. 0x15
+        pushInt. 0x1e000002
+        sys. 0x2, 0x16
+        if loc_299
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_299
+        pushInt. 0x2712
+        pushInt. 0x21000013
+        sys. 0x2, 0x16
+        if loc_299
+        try loc_298
+        pushInt. 0x108
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_298:
+        return_7
+
+loc_299:
+        pushInt. 0x15
+        pushInt. 0x1e000002
+        sys. 0x2, 0x16
+        if loc_2E3
+        pushVar. 0x1, 0x12
+        pushInt. 0x1
+        equals.
+        if loc_2E3
+        pushInt. 0x2712
+        pushInt. 0x2100000e
+        sys. 0x2, 0x16
+        if loc_2E3
+        try loc_2E2
+        pushInt. 0xe
+        pushInt. 0x0
+        pushInt. script_16
+        callFunc 0x2
+
+loc_2E2:
+        return_7
+
+loc_2E3:
+        try loc_2EF
+        pushInt. script_197
+        callFunc 0x0
+
+loc_2EF:
+        end

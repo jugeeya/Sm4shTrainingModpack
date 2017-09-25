@@ -13,6 +13,21 @@
         pushInt. 0x2710
         pushInt. 0x2100000e
         sys 0x2, 0x16
+
+        pushInt. 0x6
+        pushInt. 0x11000010
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        equals.
+        if setRandom
+          pushInt. 0x7
+          pushInt. 0x1
+          pushInt. 0x3
+          sys. 0x2, 0x9
+          pushInt. 0x11000010
+          sys 0x3, 0x16 # set random
+        setRandom:
+
         pushInt. 0x6
         pushInt. 0x1200004A # showFullModVar
         sys. 0x2, 0x16
@@ -25,17 +40,53 @@
         equals.
         bitOr.
         pushInt. 0x6
+        pushInt. 0x2000218
+        sys. 0x2, 0x16
+        pushInt. 10.0f
+        floatLess.
+        bitAnd. # noBufferVar < 10.0 (should be 0.8)
+
+        pushInt. 0x6
         pushInt. 0x1200006e
         sys. 0x2, 0x16
         pushInt. 0x1 # if shouldMashJump
         equals.
-        bitAnd.
+
+        bitAnd. # if (showFullModVar == 1 or showFullModVar == 2) and not noBufferVar and (shouldMashJump or shouldRandomMashJumpAD)
         if mashJump
-        	unk_2E done
-        	pushInt. 0xc
-        	pushInt. 0x0
-        	pushInt. script_16
-        	callFunc 0x2
+          pushInt. 0x6
+          pushInt. 0x10000001
+          sys. 0x2, 0x16
+          pushInt. 0x6
+          pushInt. 0x10000002
+          sys. 0x2, 0x16
+          lessThan.
+          if tryJump
+            pushInt. 0x7
+            pushInt. 0x6
+            pushInt. 0x10000001
+            sys. 0x2, 0x16 # get numJumpsUsed
+            pushInt. 0x1
+            addi.
+            pushInt. 0x10000001
+            sys 0x3, 0x16 # set numJumpsUsed = numJumpsUsed + 1
+            try done
+            pushInt. 0x6
+            pushInt. 0x1300010c
+            sys. 0x2, 0x16
+            pushInt. 0x1
+            equals.
+            if normalJumpType
+             pushInt. 0xc
+             else callJumpAction
+            normalJumpType:
+              pushInt. 0xd
+            callJumpAction:
+            pushInt. 0x1
+            pushInt. script_16
+            callFunc 0x2
+          else done
+          tryJump:
         else done
         mashJump:
         done:
@@ -51,20 +102,45 @@
         equals.
         bitOr.
         pushInt. 0x6
+        pushInt. 0x2000218
+        sys. 0x2, 0x16
+        pushInt. 10.0f
+        floatLess.
+        bitAnd. # noBufferVar < 10 (should be 0.8)
+
+        pushInt. 0x6
         pushInt. 0x1200006e
         sys. 0x2, 0x16
         pushInt. 0x0 # if shouldMashAirdodge
         equals.
-        bitAnd.
+
+        bitAnd. # if (showFullModVar == 1 or showFullModVar == 2) and shouldMashAirdodge
         if mashAirdodge
-        	unk_2E done2
-        	pushInt. 0x22
-        	pushInt. 0x0
-        	pushInt. script_16
-        	callFunc 0x2
+          pushVar. 0x1, 0x12
+          pushInt. 0x2
+          equals.
+          if tryAirdodge
+            try done2
+            pushInt. 0x22
+            pushInt. 0x0
+            pushInt. script_16 #airdodge
+            callFunc 0x2
+          else done2
+          tryAirdodge:
+            try done2
+            pushInt. 0x1b
+            pushInt. 0x0
+            pushInt. script_16 # shield on
+            callFunc 0x2
+            try done2
+            pushInt. 0x1c
+            pushInt. 0x0
+            pushInt. script_16 # hold shield
+            callFunc 0x2
         else done2
         mashAirdodge:
         done2:
+
 
 loc_3D:
         pushInt. 0x10
@@ -111,7 +187,7 @@ loc_94:
         pushInt. 0xffffffff
         notEqual.
         if loc_102
-        unk_2E loc_F0
+        try loc_F0
         pushVar. 0x0, 0x1
         pushInt. 0x0
         pushVar. 0x0, 0x0
@@ -155,7 +231,7 @@ loc_117:
         sys. 0x2, 0x17
         floatNotEqual.
         if loc_181
-        unk_2E loc_181
+        try loc_181
         pushInt. 0x1
         pushInt. script_2200
         callFunc 0x1

@@ -1,7 +1,7 @@
         begin 0x0, 0x11
-        pushVar. 0x1, 0x30
+        pushVar. 0x1, 0x30 # cos(stickAngle)?
         floatVarSet 0x0, 0x0
-        pushVar. 0x1, 0x20
+        pushVar. 0x1, 0x20 # sin(stickAngle)
         floatVarSet 0x0, 0x1
         pushInt. 0x6
         pushInt. 0x1200004A # showFullModVar
@@ -68,13 +68,13 @@ loc_AC:
         sys. 0x2, 0x17
         floatVarSet 0x0, 0x6
         pushInt. 0x1
-        unk_2E. loc_D2
+        try. loc_D2
         pushVar. 0x0, 0x3
         pushInt. script_13
         callFunc 0x1
 
 loc_D2:
-        unk_2E. loc_E2
+        try. loc_E2
         pushVar. 0x0, 0x2
         pushInt. script_13
         callFunc 0x1
@@ -89,7 +89,7 @@ loc_E2:
         pushVar. 0x0, 0x2
         sys. 0x3, 0xa
         floatVarSet 0x0, 0x7
-        unk_2E. loc_123
+        try. loc_123
         pushVar. 0x0, 0x3
         pushVar. 0x0, 0x0
         multf.
@@ -133,6 +133,12 @@ loc_15B:
         pushInt. 0x2
         equals.
         bitOr.
+        pushInt. 0x0
+        pushInt. 0x2000126
+        sys. 0x2, 0x17
+        pushInt. 0.2f
+        notEqual. # go to normal DI clause if necessary
+        bitAnd.
         if shouldChangeDI
           pushInt. 0x0
           pushInt. 0x2000126
@@ -149,29 +155,38 @@ loc_15B:
             addf.
             pushInt. 0.785398f
             multf. # push random cardinal direction
-          else getSin
+            else getSin
           calcRandomDI:
+          pushInt. 0x0
+          pushInt. 0x2000126
+          sys. 0x2, 0x17 # push DIChangeVar
+          pushInt. 20.0f # if it's 20, do random DI in/away
+          equals.
+          if calcRandomDIInAway
+            pushInt. 0x0
+            pushInt. 0x2
+            sys. 0x2, 0x9
+            intToFloat 0x0
+            negf.
+            pushInt. 3.14159f
+            multf. # push random left/right
+            else getSin
+          calcRandomDIInAway:
           pushInt. 0x0
           pushInt. 0x2000126
           sys. 0x2, 0x17 # push DIChangeVar, vals should be -pi through pi
           getSin:
-            pushInt. 0x0
-            pushInt. 0x2000126
-            sys. 0x2, 0x17
-            pushInt. 0.2f
-            notEqual. # go to normal DI clause if necessary
-            if normalDI
               floatVarSet 0x0, 0x8
               pushVar. 0x0, 0x8
               pushVar. 0x0, 0x7
               subf.
               floatVarSet 0x0, 0x8 # stickAngle - moveAngle
               pushVar. 0x0, 0x8
-              pushInt. 3.141593f
+              pushInt. 3.14159f
               floatGreater.
               if biggerThanPi
                  pushVar. 0x0, 0x8
-                 pushInt. 3.141593f
+                 pushInt. 3.14159f
                  subf.
                  negf.
                  floatVarSet 0x0, 0x8
@@ -179,11 +194,11 @@ loc_15B:
               biggerThanPi:
               checkLess:
               pushVar. 0x0, 0x8
-              pushInt. -3.141593f
+              pushInt. -3.14159f
               floatLess.
               if lessThanNegPi
                  pushVar. 0x0, 0x8
-                 pushInt. 3.141593f
+                 pushInt. 3.14159f
                  addf.
                  negf.
                  floatVarSet 0x0, 0x8
@@ -236,10 +251,7 @@ loc_15B:
               sys. 0x2, 0x17 # push DIDirectionVar
               multf.
         else done
-        normalDI:
-        pop
         shouldChangeDI:
-          normalDI:
           pushVar. 0x0, 0x6
           pushVar. 0x0, 0x8
           multf.
@@ -252,7 +264,7 @@ loc_15B:
         pushInt. 0x40490fdb
         divf.
         floatVarSet 0x0, 0xa
-        unk_2E. loc_18E
+        try. loc_18E
         pushVar. 0x0, 0xa
         pushInt. script_13
         callFunc 0x1
@@ -359,10 +371,8 @@ loc_1D2:
           subf.
           subf.
           floatVarSet 0x0, 0x1 # sin(our angle)
-        else doneLSI
         shouldChangeLSI:
-        doneLSI:
-        pushVar. 0x0, 0x1
+        pushVar. 0x0, 0x1 # above this line is LSI replacement code
         pushInt. 0x0
         floatEqual.
         if loc_22F

@@ -16,74 +16,74 @@
         pushInt. 0x2 # if randomGetup
         equals.
         bitAnd.
-        pushInt. 0x6
-        pushInt. 0x2000230
-        sys. 0x2, 0x16
-        pushInt. 0x0
-        pushInt. 0x79
-        sys. 0x2, 0x9
-        intToFloat 0x0 # random frame 0->121
-        equals.
-        bitAnd.
         if shouldRandomLedgeGetup
-          pushInt. 0x7
+          pushInt. 0x6
+          pushInt. 0x2000230
+          sys. 0x2, 0x16
           pushInt. 0x0
-          pushInt. 0x4
+          pushInt. 0x79
           sys. 0x2, 0x9
-          pushInt. 0x11000010
-          sys 0x3, 0x16 # set var to random val
+          intToFloat 0x0 # random frame 0->121
+          floatEqual. # correct frame
+          if shouldRandomLedgeGetup
+            pushInt. 0x7
+            pushInt. 0x0
+            pushInt. 0x4
+            sys. 0x2, 0x9
+            pushInt. 0x11000010
+            sys 0x3, 0x16 # set var to random val
 
-          pushInt. 0x6
-          pushInt. 0x11000010
-          sys. 0x2, 0x16
-          pushInt. 0x0
-          equals.
-          if doJump
-            try doJump
-            pushInt. 0x78
-            pushInt. 0x1
-            pushInt. script_16
-            callFunc 0x2
-          doJump:
+            pushInt. 0x6
+            pushInt. 0x11000010
+            sys. 0x2, 0x16
+            pushInt. 0x0
+            equals.
+            if doJump
+              try doJump
+              pushInt. 0x78
+              pushInt. 0x1
+              pushInt. script_16
+              callFunc 0x2
+            doJump:
 
-          pushInt. 0x6
-          pushInt. 0x11000010
-          sys. 0x2, 0x16
-          pushInt. 0x1
-          equals.
-          if doAttack
-            try doAttack
-            pushInt. 0x75
+            pushInt. 0x6
+            pushInt. 0x11000010
+            sys. 0x2, 0x16
             pushInt. 0x1
-            pushInt. script_16
-            callFunc 0x2
-          doAttack:
+            equals.
+            if doAttack
+              try doAttack
+              pushInt. 0x75
+              pushInt. 0x1
+              pushInt. script_16
+              callFunc 0x2
+            doAttack:
 
-          pushInt. 0x6
-          pushInt. 0x11000010
-          sys. 0x2, 0x16
-          pushInt. 0x2
-          equals.
-          if doRoll
-            try doRoll
-            pushInt. 0x77
-            pushInt. 0x1
-            pushInt. script_16
-            callFunc 0x2
-          doRoll:
+            pushInt. 0x6
+            pushInt. 0x11000010
+            sys. 0x2, 0x16
+            pushInt. 0x2
+            equals.
+            if doRoll
+              try doRoll
+              pushInt. 0x77
+              pushInt. 0x1
+              pushInt. script_16
+              callFunc 0x2
+            doRoll:
 
-          pushInt. 0x6
-          pushInt. 0x11000010
-          sys. 0x2, 0x16
-          pushInt. 0x3
-          equals.
-          if doNormal
-            try doNormal
-            pushInt. 0x76
-            pushInt. 0x1
-            pushInt. script_16
-            callFunc 0x2
-          doNormal:
+            pushInt. 0x6
+            pushInt. 0x11000010
+            sys. 0x2, 0x16
+            pushInt. 0x3
+            equals.
+            if doNormal
+              try doNormal
+              pushInt. 0x76
+              pushInt. 0x1
+              pushInt. script_16
+              callFunc 0x2
+            doNormal:
         shouldRandomLedgeGetup:
 
         pushVar. 0x1, 0x12
@@ -91,7 +91,29 @@
         equals.
         if loc_2B
         try loc_2A
-        pushInt. 0x0
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x2 # if randomGetup
+        equals.
+        bitAnd.
+        if randomGetup
+          pushInt. 0x1b
+          else callAction
+        randomGetup:
+          pushInt. 0x0
+        callAction:
         pushInt. 0x0
         pushInt. script_16
         callFunc 0x2
@@ -171,7 +193,8 @@ loc_9F:
         pushInt. 0x2 # if randomGetup
         equals.
         bitAnd.
-        ifNot loc_E6
+        not.
+        if loc_E6
         try loc_E5
         pushInt. 0x78
         pushInt. 0x1
@@ -211,7 +234,8 @@ loc_E6:
         pushInt. 0x2 # if randomGetup
         equals.
         bitAnd.
-        ifNot loc_130
+        not.
+        if loc_130
         try loc_12F
         pushInt. 0x78
         pushInt. 0x1

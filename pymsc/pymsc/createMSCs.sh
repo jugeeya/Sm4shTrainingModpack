@@ -18,9 +18,16 @@ do
     then
 	for script in $folder/*
 	do
-	    echo "Moving $script..."
-	    rm output/$(basename $script)
-	    cp $script output/$(basename $script)
+	    scriptBasename=$(basename $script)
+	    if [ ${scriptBasename:0:6} == "script" ]
+	    then
+		echo "Replacing $script..."
+		rm output/$scriptBasename
+	    else
+		echo "Adding $script..."
+		echo $scriptBasename >> output/Scripts
+	    fi
+	    cp $script output/$scriptBasename
 	done
     fi
     if [ $char == "rockman"  ]

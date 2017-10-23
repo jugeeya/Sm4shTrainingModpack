@@ -1,0 +1,41 @@
+        begin 0x2, 0x2
+        pushVar. 0x1, 0xb
+        if loc_21
+        try loc_21
+        pushVar. 0x0, 0x0
+        pushInt. 0x0
+        equals.
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
+        bitAnd.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x2 # if randomGetup
+        equals.
+        bitAnd.
+        pushInt. 0x6
+        pushInt. 0x2000234
+        sys. 0x2, 0x16
+        pushInt. 1.25f # if not default value, shouldBuffer
+        equals.
+        not.
+        bitAnd.
+        if shouldShield
+          pushInt. 0x7
+          pushInt. 1.25f
+          pushInt. 0x2000234
+          sys 0x3, 0x16 # reset to orig
+          pushInt. 0x1b
+          else changeAction
+        shouldShield:
+          pushVar. 0x0, 0x0
+        changeAction:
+        pushVar. 0x0, 0x1
+        pushVar. 0x1, 0xb
+        callFunc 0x2
+
+loc_21:
+        end

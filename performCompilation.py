@@ -12,11 +12,15 @@ setHurtbox = "Graphic_Effect6(Graphic=0x1000031, Bone={}, Z={}, Y={}, X={}, ZRot
 setHurtboxIntang = "EFFECT_FOLLOW_COLOR(unknown=0x1000031, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown=0x0, unknown=0x0, unknown=0x437F0000)"
 setHurtboxTest = "Graphic_Effect6(Graphic={}, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 showAngle = "Graphic_Effect6(Graphic=0x1000094, Bone=0x0, Z={}, Y={}, X={}, ZRot={}, YRot=0, XRot=0, Size=0.5, Terminate=0x1, Unknown=0x420C0000)"
+showSegmentGreen = "Graphic_Effect6(Graphic=0x1000057, Bone=0x0, Z={}, Y={}, X={}, ZRot={}, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
+# z,y,x,zrot,size
+showSegment = "EFFECT_FOLLOW_COLOR(unknown=0x1000057, unknown=0x0, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown={}, unknown={}, unknown={})"
 grayHitbox = "Graphic_Effect6(Graphic=0x1000013, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 coloredHitbox = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown={}, unknown={}, unknown={})"
 grabHitbox = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown=0x0, unknown=0x437F0000, unknown=0x0)"
 terminateGraphic13 = "Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)"
 terminateGraphic31 = "Terminate_Graphic_Effect(Graphic=0x1000031, unknown=0x1, unknown=0x1)"
+terminateGraphic57 = "Terminate_Graphic_Effect(Graphic=0x1000057, unknown=0x1, unknown=0x1)"
 colorOverlay = "Color_Overlay(Red={}, Green={}, Blue={}, Alpha={})"
 terminateOverlays = "Terminate_Overlays()"
 subroutine = "Subroutine(Hash={})"
@@ -87,6 +91,10 @@ ledgeWaitFrameVar = "0x2000230" # super mushroom size multiplier? orig 1.7
 ourLaunchSpeedVar = "0x2000231" # related to super mushroom. orig 0.5
 hitstunVar = "0x1000003E"
 launchSpeedVar = "0x10000003" # launch speed basic
+currentPercentVar = "0x11000010"
+shouldShieldVar = "0x2000234" # poison mushroom voice pitch mult, orig 1.25
+playerNumVar = "0x100000AC"
+playerOneVar = "0x200000A5"
 extraVar = "0x21000027" # some other ryu thing
 
 shouldProcessVariables = False
@@ -107,9 +115,103 @@ inCompare = 0
 FAF = 10000
 invStart = 10000
 invEnd = 10000
-# hurtboxes: hurtboxNum : attrList [X, ...}
+# hurtboxes: hurtboxNum : attrList [X, ...]
 hurtboxes = {}
 currentFrame = 0
+
+# alphabet: char : segmentList [segmentAttrList [Z, Y, X, ZRot, (optional isHalf=1)] ...]
+# sevSeg :
+#       _
+#      |_| from top to top left, clockwise: a->f + g mid +  \|/ from top mid to top left, clockwise: h->m + --two half g's: n, o
+#      |_|                                                  /|\
+#
+raygunLength = 8
+raygunHeight = 6
+raygunHorizOffset = 2
+segmentDict = {
+    'a': [0,raygunHeight*2,raygunLength/2+raygunHorizOffset+1,0],
+    'b': [0,raygunHeight,raygunLength,90],
+    'c': [0,0,raygunLength,90],
+    'd': [0,0,raygunLength/2+raygunHorizOffset+1,0],
+    'e': [0,0,0,90],
+    'f': [0,raygunHeight,0,90],
+    'g': [0,raygunHeight,raygunLength/2+raygunHorizOffset+1,0],
+    'h': [0,raygunHeight,raygunLength/2,90],
+    'i': [0,raygunHeight*2,raygunLength/2+2*raygunHorizOffset,-52,0.45],
+    'j': [0,0,raygunLength/2+2*raygunHorizOffset,52,0.45],
+    'k': [0,0,raygunLength/2,90],
+    'l': [0,raygunHeight,raygunLength/2,-52,0.45],
+    'm': [0,raygunHeight,raygunLength/2,52,0.45],
+    'n': [0,raygunHeight,raygunHorizOffset+1,0,0.25],
+    'o': [0,raygunHeight,raygunLength/2+raygunHorizOffset+1,0,0.25],
+}
+
+alphabet = {
+    'A': [segmentDict[x] for x in ['a','b','c','e','f','g']],
+    'B': [segmentDict[x] for x in ['a','d','e','f','i','j','n']],
+    'C': [segmentDict[x] for x in ['a','d','e','f']],
+    'D': [segmentDict[x] for x in ['e','f','l','m']],
+    'E': [segmentDict[x] for x in ['a','d','e','f','n']],
+    'F': [segmentDict[x] for x in ['a','e','f','n']],
+    'G': [segmentDict[x] for x in ['a','c','d','e','f','o']],
+    'H': [segmentDict[x] for x in ['b','c','e','f','g']],
+    'I': [segmentDict[x] for x in ['a','d','h','k']],
+    'J': [segmentDict[x] for x in ['b','c','d']],
+    'K': [segmentDict[x] for x in ['e','f','n','i','j']],
+    'L': [segmentDict[x] for x in ['d','e','f']],
+    'M': [segmentDict[x] for x in ['b','c','e','f','i','m']],
+    'N': [segmentDict[x] for x in ['b','c','e','f','j','m']],
+    'O': [segmentDict[x] for x in ['a','b','c','d','e','f']],
+    'P': [segmentDict[x] for x in ['a','b','e','f','g']],
+    'Q': [segmentDict[x] for x in ['a','b','c','d','e','f','j']],
+    'R': [segmentDict[x] for x in ['a','e','f','i','j','n']],
+    'S': [segmentDict[x] for x in ['a','c','d','f','g']],
+    'T': [segmentDict[x] for x in ['a','h','k']],
+    'U': [segmentDict[x] for x in ['b','c','d','e','f']],
+    'V': [segmentDict[x] for x in ['e','f','i','l']],
+    'W': [segmentDict[x] for x in ['b','c','e','f','j','l']],
+    'X': [segmentDict[x] for x in ['i','j','l','m']],
+    'Y': [segmentDict[x] for x in ['i','k','m']],
+    'Z': [segmentDict[x] for x in ['a','d','i','l']],
+    '0': [segmentDict[x] for x in ['a','b','c','d','e','f']],
+    '1': [segmentDict[x] for x in ['e','f']],
+    '2': [segmentDict[x] for x in ['a','b','d','e','g']],
+    '3': [segmentDict[x] for x in ['a','b','c','d','g']],
+    '4': [segmentDict[x] for x in ['b','c','f','g']],
+    '5': [segmentDict[x] for x in ['a','c','d','f','g']],
+    '6': [segmentDict[x] for x in ['a','c','d','e','f','g']],
+    '7': [segmentDict[x] for x in ['a','b','c']],
+    '8': [segmentDict[x] for x in ['a','b','c','d','e','f','g']],
+    '9': [segmentDict[x] for x in ['a','b','c','d','f','g']],
+    ' ': [],
+    '+': [segmentDict[x] for x in ['g','h','k']],
+    '#': [segmentDict[x] for x in ['a','b','c','d','e','f','h','i','j','k','l','m','n','o']] # all segments
+}
+alphabetReversed = {}
+segmentReverseDict = {
+    'b': 'f',
+    'c': 'e',
+    'e': 'c',
+    'f': 'b',
+    'i': 'm',
+    'j': 'l',
+    'l': 'j',
+    'm': 'i',
+    'n': 'o',
+    'o': 'n',
+}
+for char in alphabet:
+    alphabetReversed[char] = []
+    for segment in alphabet[char]:
+        shouldContinue = False
+        for segName in segmentReverseDict:
+            if segment == segmentDict[segName]:
+                alphabetReversed[char].append(segmentDict[segmentReverseDict[segName]])
+                shouldContinue = True
+        if not shouldContinue:
+            alphabetReversed[char].append(segment)
+
+shortChars = ['D','1']
 
 def isInt(s):
     try:
@@ -117,6 +219,89 @@ def isInt(s):
         return True
     except ValueError:
         return False
+
+def printChar(charToPrint, lineNum, horizOffset, facingLeft=False, addToString=False):
+    if facingLeft:
+        segments = alphabetReversed[charToPrint]
+    else:
+        segments = alphabet[charToPrint]
+    lineOffset = 40 - (lineNum * 16)
+    savedSegments = []
+    for segment in segments:
+        z = getHexFloat(segment[0])
+        y = getHexFloat(segment[1] + lineOffset)
+        x = getHexFloat(segment[2] + horizOffset)
+        zrot = getHexFloat(segment[3])
+        size = getHexFloat(0.5)
+        if len(segment) == 5:
+            size = getHexFloat(segment[4])
+        hexColor = [getHexFloat(int(x)) for x in BLACK][:-1]
+        segmentEffect = showSegment.format(z,y,x,zrot,size,*hexColor)
+        if not addToString:
+            addEffect(segmentEffect)
+        savedSegments.append(segmentEffect)
+    return savedSegments
+
+def printString(stringToPrint, addToString=False):
+    global inCompare
+    lineNum = 0
+    horizOffset = 0
+    charNum = 0
+
+    facingLeft = True
+    savedEffects = []
+    savedEffects.append(ifCompare.format("0x0","0x4","0x0"))
+    savedEffects.append(TRUEComp.format("0x12"))
+    if not addToString:
+        addEffect(ifCompare.format("0x0","0x4","0x0"))
+        addEffect(TRUEComp.format("0x12"))
+    inCompare+=1
+    for i in range(0,2):
+        lineNum = 0
+        if len(stringToPrint) <= 8 and "\n" not in stringToPrint:
+            lineNum = 1
+        horizOffset = 0
+        charNum = 0
+        for char in stringToPrint:
+            if char == "\n":
+                horizOffset = 0
+                charNum = 0
+                lineNum+=1
+                continue
+            effects = printChar(char.upper(), lineNum, horizOffset, facingLeft, addToString)
+            if addToString:
+                for effect in effects:
+                    savedEffects.append(effect)
+            charNum+=1
+            if char in shortChars:
+                if facingLeft:
+                    horizOffset -= (raygunLength/2 + 4)
+                else:
+                    horizOffset += (raygunLength/2 + 4)
+            else:
+                if facingLeft:
+                    horizOffset -= (raygunLength+4)
+                else:
+                    horizOffset += (raygunLength+4)
+
+            if charNum > 8:
+                horizOffset = 0
+                charNum = 0
+                lineNum+=1
+        if i == 0:
+            inCompare -= 1
+            savedEffects.append("}")
+            savedEffects.append(FALSEComp.format("0x10"))
+            if not addToString:
+                addEffect("}")
+                addEffect(FALSEComp.format("0x10"))
+            inCompare += 1
+            facingLeft = False
+    inCompare -= 1
+    savedEffects.append("}")
+    if not addToString:
+        addEffect("}")
+    return savedEffects
 
 def addHitstunOverlays(spinning=False):
     global damageEffectLines, effectLines, inCompare, inLoop
@@ -150,6 +335,13 @@ def addHitstunOverlays(spinning=False):
         addEffect("}")
         for i in range(1, 150):
             addEffect(asynchronousTimer.format(i))
+
+            addEffect(ifBitIsSet.format("0x2100000E")) # var game uses when hitstun <= 0
+            addEffect(TRUEComp.format("0x12"))
+            inCompare+=1;
+            addEffect(floatVariableSet.format(1, canReallyAnyActionVar))
+            inCompare-=1;
+            addEffect("}")
 
             # 1 tab
             addEffect(basicCompare.format(hitstunVar, greaterThanOrEqualTo, hex(1)))
@@ -556,20 +748,12 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
     global blacklisted, trainingOnly, weaponBool
     global currentFrame, FAF, invStart, invEnd
     global myLines, mainList, origEffectLines
+    global playerNumVar
 
     weaponBool = isWeapon
 
     filename = filePath
     basename = os.path.basename(filename)
-
-    # custom section
-    shouldProcessCustom = False
-    if shouldProcessCustom:
-        if basename.startswith("FuraFuraStart"):
-            addEffect(floatVariableSet.format(15, "0x1000006"))
-            weaponBool = True
-            addEffect(scriptEnd)
-            return getOutput(lines)
 
     spotdodge = "EscapeN.acm"
     froll = "EscapeF.acm"
@@ -631,7 +815,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         trainingOnly = True
         if basename in upTaunts or basename.startswith("Wait"):
             addEffect(basicCompare.format(hasEnteredVar, notEqualTo, "0x0"))
-        elif basename in sideTaunts or basename in downTaunts or basename in noBufferAnimations:
+        elif basename in sideTaunts or basename in downTaunts or basename in noBufferAnimations or basename.startswith("Wait"):
             addEffect(basicCompare.format(showFullModVar, greaterThanOrEqualTo, "0x1"))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
@@ -702,6 +886,9 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
     inputIndex = filename.find("Input")
     edgeCaseFilename = filename[:inputIndex] + filename[inputIndex+len("Input/animcmd/"):]
 
+    if charName == "bayonetta":
+        playerNumVar = "0x10000086"
+
     if didHandleEdgeCase(edgeCaseFilename):
         pass
     elif basename == ledgewait:
@@ -725,17 +912,65 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         inCompare += 1
         addEffect(colorOverlay.format(*RED))
         addEffect(basicVariableSet.format(hex(1), showFullModVar))
+        addEffect(basicVariableSet.format(hex(10), playerNumVar))
         inCompare -= 1
         addEffect('}')
+
+        addEffect(basicCompare.format(mashToggleVar, greaterThanOrEqualTo, "0x3"))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(basicCompare.format(mashToggleVar,lessThanOrEqualTo, "0x4"))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(basicCompare.format(currentPercentVar, equalTo, hex(0)))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        string = "POINT\n0"
+        printString(string)
+        inCompare -= 1
+        addEffect("}")
+        addEffect(FALSEComp.format("0x10"))
+        inCompare += 1
+        for digit in range(1,10):
+            string = "POINT\n{}".format(digit)
+            addEffect(basicCompare.format(currentPercentVar, equalTo, hex(digit)))
+            addEffect(TRUEComp.format("0x12"))
+            inCompare += 1
+            printString(string)
+            inCompare -= 1
+            addEffect("}")
+            addEffect(FALSEComp.format("0x10"))
+            inCompare = inCompare + 1
+        inCompare -= 1
+        while inCompare > 1:
+            addEffect("}")
+            inCompare = inCompare - 1
+        addEffect("}")
+
+        addEffect(basicCompare.format(mashToggleVar, notEqualTo, "0x3"))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(basicCompare.format(mashToggleVar, notEqualTo, "0x4"))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare += 1
+        addEffect(terminateGraphic57)
+        inCompare -= 1
+        addEffect('}')
+        inCompare -= 1
+        addEffect('}')
+
         addEffect(scriptEnd)
     elif basename in downTaunts and not weaponBool and not wifiSafe:
         mashDict = OrderedDict(
-            [(0, RED), (1, GREEN), (2, BLUE), (3, MAGENTA), (4, WHITE)])
+            [(0, [RED, "MASH\nAIRDODGE"]), (1, [GREEN, "MASH\nJUMP"]), (2, [BLUE, "RANDOM\nLEDGE"]), (3, [ORANGE, "DAMAGE\n+10"]), (4, [ORANGE, "DAMAGE\n+1"]), (5, [MAGENTA, "INFINITE\nSHIELD"]), (6, [WHITE, "NONE"])])
         numToggles = len(mashDict)
         addEffect(basicCompare.format(mashToggleVar, greaterThanOrEqualTo, hex(numToggles-1)))
         addEffect(TRUEComp.format("0x12"))
         inCompare += 1
-        addEffect(colorOverlay.format(*RED))
+        color = mashDict[0][0]
+        string = mashDict[0][1]
+        addEffect(colorOverlay.format(*color))
+        printString(string)
         addEffect(basicVariableSet.format(hex(0), mashToggleVar))
         inCompare -= 1
         addEffect("}")
@@ -744,12 +979,14 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         for mashIndex in range(numToggles-1):
             currVal = mashIndex
             newVal = mashIndex+1
-            color = mashDict[newVal]
+            color = mashDict[newVal][0]
+            string = mashDict[newVal][1]
             addEffect(basicCompare.format(mashToggleVar, equalTo, hex(currVal)))
             addEffect(TRUEComp.format("0x12"))
             inCompare += 1
             addEffect(basicVariableSet.format(hex(newVal), mashToggleVar))
             addEffect(colorOverlay.format(*color))
+            printString(string)
             if newVal == numToggles - 2:
                 addEffect(floatVariableSet.format("0", shieldDamageMultVar))
                 addEffect(floatVariableSet.format("0", shieldDegenVar))
@@ -767,8 +1004,10 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
             addEffect("}")
             inCompare = inCompare - 1
         addEffect("}")
-        addEffect(asynchronousTimer.format(15))
+        addEffect(asynchronousTimer.format(30))
         addEffect(allowInterrupt)
+        addEffect(asynchronousTimer.format(30))
+        addEffect(terminateGraphic57)
         addEffect(scriptEnd)
     elif basename in upTaunts and not weaponBool and not wifiSafe:
         effectToggleLines = ""
@@ -777,6 +1016,8 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         effectToggleLines = addEffectToString(TRUEComp.format("0x12"), effectToggleLines)
         inCompare += 1
         effectToggleLines = addEffectToString(colorOverlay.format(*RED), effectToggleLines)
+        for segment in printString("FULL\nMOD", True):
+            effectToggleLines = addEffectToString(segment, effectToggleLines)
         effectToggleLines = addEffectToString(basicVariableSet.format("0x1", showFullModVar), effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
@@ -786,6 +1027,8 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         effectToggleLines = addEffectToString(TRUEComp.format("0x12"), effectToggleLines)
         inCompare += 1
         effectToggleLines = addEffectToString(colorOverlay.format(*GREEN), effectToggleLines)
+        for segment in printString("HITBOXES\nVIS OFF", True):
+            effectToggleLines = addEffectToString(segment, effectToggleLines)
         effectToggleLines = addEffectToString(basicVariableSet.format("0x2", showFullModVar), effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
@@ -795,12 +1038,16 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         effectToggleLines = addEffectToString(TRUEComp.format("0x12"), effectToggleLines)
         inCompare += 1
         effectToggleLines = addEffectToString(colorOverlay.format(*BLUE), effectToggleLines)
+        for segment in printString("OVERLAY\nONLY", True):
+            effectToggleLines = addEffectToString(segment, effectToggleLines)
         effectToggleLines = addEffectToString(basicVariableSet.format("0x3", showFullModVar), effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
         effectToggleLines = addEffectToString(FALSEComp.format("0x10"), effectToggleLines)
         inCompare += 1
         effectToggleLines = addEffectToString(colorOverlay.format(*WHITE), effectToggleLines)
+        for segment in printString("VANILLA", True):
+            effectToggleLines = addEffectToString(segment, effectToggleLines)
         effectToggleLines = addEffectToString(basicVariableSet.format("0x0", showFullModVar), effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
@@ -808,12 +1055,30 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
         effectToggleLines = addEffectToString("}", effectToggleLines)
         inCompare -= 1
         effectToggleLines = addEffectToString("}", effectToggleLines)
-        effectToggleLines = addEffectToString(asynchronousTimer.format(15), effectToggleLines)
+        effectToggleLines = addEffectToString(asynchronousTimer.format(30), effectToggleLines)
         effectToggleLines = addEffectToString(allowInterrupt, effectToggleLines)
+        effectToggleLines = addEffectToString(asynchronousTimer.format(30), effectToggleLines)
+        effectToggleLines = addEffectToString(terminateGraphic57, effectToggleLines)
         effectToggleLines = addEffectToString(scriptEnd, effectToggleLines)
         effectLines += effectToggleLines
     elif basename in sideTaunts and not weaponBool and not wifiSafe:
         # normal, 0,
+        addEffect(basicCompare.format(mashToggleVar, equalTo, hex(3)))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare+=1
+        addEffect("Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=10, Angle=0x4A, KBG=0x0, WBKB=0x0, BKB=0x0, Size=200, X=0, Y=0, Z=0, Effect=0x0, Trip=0, Hitlag=0, SDI=1, Clang=0x1, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x0, SFX=0x0,Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4)")
+        inCompare-=1
+        addEffect("}")
+        addEffect(FALSEComp.format("0x10"))
+        inCompare+=1
+        addEffect(basicCompare.format(mashToggleVar, equalTo, hex(4)))
+        addEffect(TRUEComp.format("0x12"))
+        inCompare+=1
+        addEffect("Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=1, Angle=0x4A, KBG=0x0, WBKB=0x0, BKB=0x0, Size=200, X=0, Y=0, Z=0, Effect=0x0, Trip=0, Hitlag=0, SDI=1, Clang=0x1, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x0, SFX=0x0,Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4)")
+        inCompare-=1
+        addEffect("}")
+        addEffect(FALSEComp.format("0x10"))
+        inCompare+=1
         DIValues = [0.2, 0, 0.785398, 1.570796, 2.356194, -3.14159, -2.356194,  -1.570796, -0.785398,  10, 20, 0.2]
         DIDict = OrderedDict(
             [(0.2, WHITE), (-3.14159, BLACK), (2.356194, BLACK), (1.570796, BLACK), (0.785398, BLACK), (0, BLACK), (-0.785398, BLACK), (-1.570796, BLACK), (-2.356194, BLACK), (10, MAGENTA), (20, MAGENTA)])
@@ -863,6 +1128,7 @@ def processFile(filePath, isBlacklisted=False, isTrainingOnly=False, isWeapon=Fa
     elif basename == groundedfootstoolBack:
         addLagEffects('20')
     elif basename == tumble:
+        addEffect(floatVariableSet.format(1, canReallyAnyActionVar))
         addEffect(scriptEnd)
     elif basename == specialFall:
         addEffect(colorOverlay.format(*GREEN))
@@ -1356,9 +1622,9 @@ def didHandleEdgeCase(filename):
         basicCompMethod = equalTo
         basicDict = OrderedDict(
             [(10, PINK), (6, RED), (5, ORANGE), (4, YELLOW), (3, GREEN), (2, BLUE), (1, CYAN), (0, MAGENTA)])
-        floatVar = "0x2000218"
+        floatVar = "0x2000234"
         floatCompMethod = "0x3"
-        floatDict = OrderedDict([(6.28, PINK), (3.14, RED), (1.57, ORANGE), (0.785, YELLOW), (0, GREEN), (-0.785, BLUE), (-1.57, CYAN), (-3.14, MAGENTA)])
+        floatDict = OrderedDict([(90, PINK), (70, RED), (50, ORANGE), (30, YELLOW), (10, GREEN), (5, BLUE), (3, CYAN), (1, MAGENTA)])
         bitVar = "0x21000025"
         whichToProcess = "float"
         tauntsOnly = False

@@ -3,10 +3,17 @@
         floatVarSet 0x0, 0x0
         pushVar. 0x1, 0x20 # sin(stickAngle)
         floatVarSet 0x0, 0x1
-        try. showMod
-          pushInt. doMod
-          callFunc 0x0
-        showMod:
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
         ifNot loc_33
         pushVar. 0x0, 0x0
         pushInt. 0x0
@@ -115,10 +122,17 @@ loc_123:
         floatVarSet 0x0, 0x8
 
 loc_15B:
-        try. showMod2
-          pushInt. doMod
-          callFunc 0x0
-        showMod2:
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
         pushInt. 0x0
         pushInt. 0x2000126
         sys. 0x2, 0x17
@@ -141,7 +155,7 @@ loc_15B:
             addf.
             pushInt. 0.785398f
             multf. # push random cardinal direction
-            else getSinOfAngle
+            else getSin
           calcRandomDI:
           pushInt. 0x0
           pushInt. 0x2000126
@@ -156,7 +170,7 @@ loc_15B:
             negf.
             pushInt. 3.14159f
             multf. # push random left/right
-            else getSinOfAngle
+            else getSin
           calcRandomDIInAway:
           pushInt. 0x0
           pushInt. 0x2000127
@@ -168,26 +182,26 @@ loc_15B:
             pushInt. 0x2000126
             sys. 0x2, 0x17
             pushInt. 0.0f
-            floatEqual.
+            floatEquals.
             if angleIsPositive
               pushInt. 3.14159f
               pushInt. 0x0
               pushInt. 0x2000126
               sys. 0x2, 0x17 # push DIChangeVar, vals should be -pi through pi
               subf.
-              else getSinOfAngle
+              else getSin
             angleIsPositive:
               pushInt. 3.14159f
               pushInt. 0x0
               pushInt. 0x2000126
               sys. 0x2, 0x17 # push DIChangeVar, vals should be -pi through pi
               addf.
-              else getSinOfAngle
+              else getSin
           shouldReverse:
           pushInt. 0x0
           pushInt. 0x2000126
           sys. 0x2, 0x17
-          getSinOfAngle:
+          getSin:
               floatVarSet 0x0, 0x8
               pushVar. 0x0, 0x8
               pushVar. 0x0, 0x7
@@ -195,7 +209,7 @@ loc_15B:
               floatVarSet 0x0, 0x8 # stickAngle - moveAngle
               pushVar. 0x0, 0x8
               pushInt. 3.14159f
-              floatEqual. # is actually floatGreater
+              floatGreater.
               if biggerThanPi
                  pushVar. 0x0, 0x8
                  pushInt. 3.14159f
@@ -217,15 +231,51 @@ loc_15B:
               else doneAdjusting
               lessThanNegPi:
               doneAdjusting:
-              try. getSinAngle
-                pushVar. 0x0, 0x8
-                pushInt. getSin
-                callFunc 0x1
-              getSinAngle:
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              multf.
+              multf.
+              pushInt. 6.0f
+              divf.
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              multf.
+              multf.
+              multf.
+              multf.
+              pushInt. 120.0f
+              divf.
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              pushVar. 0x0, 0x8
+              multf.
+              multf.
+              multf.
+              multf.
+              multf.
+              multf.
+              pushInt. 5040.0f
+              divf.
+              subf.
+              subf.
+              subf.
               floatVarSet 0x0, 0x8
               pushVar. 0x0, 0x8
               pushVar. 0x0, 0x6 # max DI change
               multf.
+              #pushInt. 0x0
+              #pushInt. 0x2000127
+              #sys. 0x2, 0x17 # push DIDirectionVar
+              #multf.
         else done
         shouldChangeDI:
           pushVar. 0x0, 0x6
@@ -281,10 +331,17 @@ loc_1D2:
         pushInt. 0x200011c
         sys. 0x2, 0x17
         floatVarSet 0x0, 0xe
-        try. showMod3
-          pushInt. doMod
-          callFunc 0x0
-        showMod3:
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
         pushInt. 0x0
         pushInt. 0x2000126
         sys. 0x2, 0x17 # DIChangeVar
@@ -302,11 +359,43 @@ loc_1D2:
           pushInt. 0x2000126
           sys. 0x2, 0x17 # DIChangeVar
           floatVarSet 0x0, 0x1 # our angle
-          try. getSinAngle2
-            pushVar. 0x0, 0x1
-            pushInt. getSin
-            callFunc 0x1
-          getSinAngle2:
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          multf.
+          multf.
+          pushInt. 6.0f
+          divf.
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          multf.
+          multf.
+          multf.
+          multf.
+          pushInt. 120.0f
+          divf.
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushVar. 0x0, 0x1
+          multf.
+          multf.
+          multf.
+          multf.
+          multf.
+          multf.
+          pushInt. 5040.0f
+          divf.
+          subf.
+          subf.
+          subf.
           floatVarSet 0x0, 0x1 # sin(our angle)
         shouldChangeLSI:
         pushVar. 0x0, 0x1 # above this line is LSI replacement code

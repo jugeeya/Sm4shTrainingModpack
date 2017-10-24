@@ -61,8 +61,8 @@ python3 performCompilation.py training peach pitb kamui
 Again, same as the previous but produces training-mode-only output in the corresponding folder.
 
 ## Where processing occurs
-#### *processFile(filePath, isBlacklisted=False, isTrainingOnly=False)*
-This is the core of all the work in the script. Given a game file (.acm), a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. *didHandleEdgeCase()* is a special function that checks the edgeCaseCode/ folder for specific .acm files that cannot be handled by the script due to the acm files not containing enough information.  
+#### *processFile(isBlacklisted=False, isTrainingOnly=False)*
+This is the core of all the work in the script. Given an ACMFile object, a character's TSV file (if the file is in the character's body), and whether or not it is blacklisted, this method will output the exact same game script with the effect.bin portion changed based on a variety of factors. It parses the game.bin portion to create the effect.bin portion that generates the hitbox and overlay visualizations. *didHandleEdgeCase()* is a special function that checks the edgeCaseCode/ folder for specific .acm files that cannot be handled by the script due to the acm files not containing enough information.  
 
 #### Testing a single file
 To call this function and inspect how it processes single files, it can be called as shown below:

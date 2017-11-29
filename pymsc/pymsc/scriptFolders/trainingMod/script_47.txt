@@ -18,30 +18,45 @@ loc_20:
         return_6
 
 loc_35:
-        #pushInt. 0x6
-        #pushInt. 0x1200004A # showFullModVar
-        #sys. 0x2, 0x16
-        #pushInt. 0x1
-        #equals.
-        #pushInt. 0x6
-        #pushInt. 0x1200004A # showFullModVar
-        #sys. 0x2, 0x16
-        #pushInt. 0x2
-        #equals.
-        #bitOr.
-        #pushInt. 0x6
-        #pushInt. 0x1200006e
-        #sys. 0x2, 0x16
-        #pushInt. 0x2 # if holdShield
-        #equals.
-        #bitAnd.
-        #if shouldTryShield
-        #  try shouldTryShield
-        #    pushInt. 0x1b
-        #    pushInt. 0x1
-        #    pushInt. script_16
-        #    callFunc 0x2
-        #shouldTryShield:
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
+
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x0 # if mashAirdodge
+        equals.
+        pushVar. 0x1, 0x5
+        pushInt. 0x54 # if prevAction was DownStand
+        equals.
+        bitAnd.
+
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. 0x2 # if randomGetup
+        equals.
+        pushVar. 0x1, 0x5
+        pushInt. 0x75 # if prevAction >= ledgeAttack
+        greaterOrEqual.
+        pushVar. 0x1, 0x5
+        pushInt. 0x77 # if prevAction <= ledgeNormal
+        lessOrEqual.
+        bitAnd.
+        bitAnd.
+
+        bitOr.
+        bitAnd.
+        if shouldTryShield
+            try shouldTryShield
+            pushInt. 0x1b
+            pushInt. 0x1
+            pushInt. script_16
+            callFunc 0x2
+        shouldTryShield:
+
         pushVar. 0x1, 0x18
         pushInt. 0x1
         bitAnd.

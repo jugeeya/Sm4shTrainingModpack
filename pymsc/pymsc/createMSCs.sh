@@ -13,7 +13,7 @@ do
     char=$(basename $dir)
     echo "Disassembling $char..."
     mkdir -p ../../AllFighterMSCCompiled/$char/script/msc
-    python3 disasm.py ../../AllFighterData/$char/script/msc/$char.mscsb
+    python3 disasm.py --char-std ../../AllFighterData/$char/script/msc/$char.mscsb
     if [ $# -eq 2 ]
     then
 	for script in $folder/*

@@ -1,0 +1,198 @@
+        begin 0x0, 0x0
+        pushInt. 0x1
+        sys. 0x1, 0x30
+        pushInt. 0x0
+        equals.
+        if loc_AC
+        pushVar. 0x1, 0x8
+        pushInt. 0x0
+        equals.
+        if loc_40
+        pushVar. 0x1, 0x9
+        pushInt. 0x49742400
+        floatLess.
+        if loc_40
+        pushInt. 0x1
+        else loc_45
+
+loc_40:
+        pushInt. 0x0
+
+loc_45:
+        if loc_9B
+        pushInt. 0x2
+        sys. 0x1, 0x49
+        pushInt. 0x1
+        equals.
+        if loc_77
+        pushInt. 0x0
+        sys. 0x1, 0x4c
+        float+= 0x1, 0x9
+        pushInt. 0x1
+        setVar 0x1, 0x3
+        else loc_96
+
+loc_77:
+        pushVar. 0x1, 0xa
+        pushInt. 0x3f800000
+        addf.
+        floatVarSet 0x1, 0x9
+        pushVar. 0x1, 0x9
+        floatVarSet 0x1, 0xa
+        pushInt. 0x0
+        setVar 0x1, 0x3
+
+loc_96:
+        else loc_A7
+
+loc_9B:
+        pushInt. 0x2
+        sys. 0x1, 0x49
+        setVar 0x1, 0x3
+
+loc_A7:
+        else loc_B5
+
+loc_AC:
+        pushInt. 0x1
+        setVar 0x1, 0x3
+
+loc_B5:
+        pushVar. 0x1, 0xe
+        pushInt. 0x0
+        notEquals.
+        if loc_CF
+        try loc_CF
+        pushVar. 0x1, 0xe
+        callFunc 0x0
+
+loc_CF:
+        pushInt. 0x1
+        sys. 0x1, 0x18
+        setVar 0x1, 0x12
+        pushInt. 0x1
+        sys. 0x1, 0x13
+        pushVar. 0x1, 0x14
+        notEquals.
+        if newFrame # zero out all vars
+          pushInt. 0x2711
+          pushInt. 0x200000b2
+          sys 0x2, 0x16
+          pushInt. 0x2711
+          pushInt. 0x200000b3
+          sys 0x2, 0x16
+          pushInt. 0x2711
+          pushInt. 0x200000b4
+          sys 0x2, 0x16
+          pushInt. 0x2711
+          pushInt. 0x200000b5
+          sys 0x2, 0x16
+          pushInt. 0x2711
+          pushInt. 0x200000b6
+          sys 0x2, 0x16
+
+          pushInt. 0x7
+          pushInt. 0x0
+          sys. 0x1, 0xf
+          pushInt. 10.0f
+          multf.
+          floatToInt 0x0
+          intToFloat 0x0
+          pushInt. 0x11000012
+          sys 0x3, 0x16
+          pushInt. 0x7
+          pushInt. 0x1
+          sys. 0x1, 0xf
+          pushInt. 10.0f
+          multf.
+          floatToInt 0x0
+          intToFloat 0x0
+          pushInt. 0x11000013
+          sys 0x3, 0x16
+        newFrame:
+        pushInt. 0x1
+        sys. 0x1, 0x13 #"push animation frame"
+        floatVarSet 0x1, 0x14
+
+        pushVar. 0x1, 0x18
+        pushInt. 0x20000000
+        bitAnd.
+        if ZPressed
+          pushInt. 0x2710
+          pushInt. 0x200000b2
+          sys 0x2, 0x16
+        ZPressed:
+
+        pushVar. 0x1, 0x26
+        pushInt. 0x10
+        bitAnd.
+        if XPressed
+          pushInt. 0x2710
+          pushInt. 0x200000b3
+          sys 0x2, 0x16
+        XPressed:
+
+        pushVar. 0x1, 0x26
+        pushInt. 0x1
+        bitAnd.
+        if APressed
+          pushInt. 0x2710
+          pushInt. 0x200000b4
+          sys 0x2, 0x16
+        APressed:
+
+        pushVar. 0x1, 0x26
+        pushInt. 0x4
+        bitAnd.
+        if BPressed
+          pushInt. 0x2710
+          pushInt. 0x200000b5
+          sys 0x2, 0x16
+        BPressed:
+
+        pushVar. 0x1, 0x26
+        pushInt. 0x40
+        bitAnd.
+        if LPressed
+          pushInt. 0x2710
+          pushInt. 0x200000b6
+          sys 0x2, 0x16
+        LPressed:
+
+        pushVar. 0x1, 0x2
+        pushInt. 0x0
+        notEquals.
+        if loc_10A
+        try loc_101
+        pushVar. 0x1, 0x2
+        callFunc 0x0
+
+loc_101:
+        pushInt. 0x0
+        setVar 0x1, 0x2
+
+loc_10A:
+        pushVar. 0x1, 0x3
+        not.
+        if loc_148
+        pushVar. 0x1, 0xf
+        pushInt. 0x0
+        notEquals.
+        if loc_12E
+        try loc_12E
+        pushVar. 0x1, 0xf
+        callFunc 0x0
+
+loc_12E:
+        pushVar. 0x1, 0x10
+        pushInt. 0x0
+        notEquals.
+        if loc_148
+        try loc_148
+        pushVar. 0x1, 0x10
+        callFunc 0x0
+
+loc_148:
+        pushInt. 0x0
+        setVar 0x1, 0x8
+        end

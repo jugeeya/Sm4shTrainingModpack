@@ -5,6 +5,17 @@
         pushInt. 0x0
         lessOrEqual.
         if hitstunEnded
+          #exp test
+          pushInt. 0x10
+          pushInt. 0x200000b2
+          sys. 0x2, 0x16
+          if tumbleAnim
+            pushInt. 0x2718
+            pushInt. 0x47 #Play the blast KO sfx (script_220)
+            sys 0x2, 0x1e
+          tumbleAnim:
+          #end exp
+
           try. showMod
             pushInt. doMod
             callFunc 0x0

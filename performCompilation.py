@@ -34,7 +34,6 @@ def stretchChecker(char, bodyOrWeapon, move):
     if (foundCharAndMove == False):
         return "okay"
 
-
 def main():
     charList = []
     noprocessWeapons = ["clayrocket", "can", "clay", "reticle", "sunbullet", "dein", "dein_s", "phantom"]

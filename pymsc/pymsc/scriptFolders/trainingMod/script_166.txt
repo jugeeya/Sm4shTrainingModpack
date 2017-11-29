@@ -10,9 +10,8 @@
         equals.
         bitAnd.
         if shouldRandomLedgeGetup
-          pushInt. 0x6
-          pushInt. 0x2000230
-          sys. 0x2, 0x16
+          pushInt. 0x1
+          sys. 0x1, 0x13 # get current frame
           pushInt. 0x0
           pushInt. 0x79
           sys. 0x2, 0x9

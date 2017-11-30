@@ -126,6 +126,10 @@ loc_CF:
         pushVar. 0x1, 0x26
         pushInt. 0x10
         bitAnd.
+        pushInt. 0x2712
+        pushInt. 0x2
+        sys. 0x2, 0xe
+        bitOr.
         if XPressed
           pushInt. 0x2710
           pushInt. 0x200000b3
@@ -135,6 +139,10 @@ loc_CF:
         pushVar. 0x1, 0x26
         pushInt. 0x1
         bitAnd.
+        pushInt. 0x2712
+        pushInt. 0x0
+        sys. 0x2, 0xe
+        bitOr.
         if APressed
           pushInt. 0x2710
           pushInt. 0x200000b4
@@ -144,6 +152,10 @@ loc_CF:
         pushVar. 0x1, 0x26
         pushInt. 0x4
         bitAnd.
+        pushInt. 0x2712
+        pushInt. 0x1
+        sys. 0x2, 0xe
+        bitOr.
         if BPressed
           pushInt. 0x2710
           pushInt. 0x200000b5
@@ -153,6 +165,10 @@ loc_CF:
         pushVar. 0x1, 0x26
         pushInt. 0x40
         bitAnd.
+        pushInt. 0x2712
+        pushInt. 0x3
+        sys. 0x2, 0xe
+        bitOr.
         if LPressed
           pushInt. 0x2710
           pushInt. 0x200000b6

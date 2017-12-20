@@ -1,15 +1,8 @@
         begin 0x0, 0x0
-        pushInt. 0x6
-        pushInt. 0x1200004A # showFullModVar
-        sys. 0x2, 0x16
-        pushInt. 0x1
-        equals.
-        pushInt. 0x6
-        pushInt. 0x1200004A # showFullModVar
-        sys. 0x2, 0x16
-        pushInt. 0x2
-        equals.
-        bitOr.
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
         pushInt. 0x6
         pushInt. 0x1200006e
         sys. 0x2, 0x16
@@ -17,9 +10,8 @@
         equals.
         bitAnd.
         if shouldRandomLedgeGetup
-          pushInt. 0x6
-          pushInt. 0x2000230
-          sys. 0x2, 0x16
+          pushInt. 0x1
+          sys. 0x1, 0x13 # get current frame
           pushInt. 0x0
           pushInt. 0x79
           sys. 0x2, 0x9
@@ -30,13 +22,14 @@
             pushInt. 0x0
             pushInt. 0x4
             sys. 0x2, 0x9
-            pushInt. 0x11000010
+            intToFloat 0x0
+            pushInt. 0x2000234
             sys 0x3, 0x16 # set var to random val
 
             pushInt. 0x6
-            pushInt. 0x11000010
+            pushInt. 0x2000234
             sys. 0x2, 0x16
-            pushInt. 0x0
+            pushInt. 0.0f
             equals.
             if doJump
               try doJump
@@ -47,9 +40,9 @@
             doJump:
 
             pushInt. 0x6
-            pushInt. 0x11000010
+            pushInt. 0x2000234
             sys. 0x2, 0x16
-            pushInt. 0x1
+            pushInt. 1.0f
             equals.
             if doAttack
               try doAttack
@@ -60,9 +53,9 @@
             doAttack:
 
             pushInt. 0x6
-            pushInt. 0x11000010
+            pushInt. 0x2000234
             sys. 0x2, 0x16
-            pushInt. 0x2
+            pushInt. 2.0f
             equals.
             if doRoll
               try doRoll
@@ -73,9 +66,9 @@
             doRoll:
 
             pushInt. 0x6
-            pushInt. 0x11000010
+            pushInt. 0x2000234
             sys. 0x2, 0x16
-            pushInt. 0x3
+            pushInt. 3.0f
             equals.
             if doNormal
               try doNormal

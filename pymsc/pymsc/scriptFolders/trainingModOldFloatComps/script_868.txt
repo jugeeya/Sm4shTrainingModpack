@@ -5,17 +5,21 @@
         pushInt. 0x0
         lessOrEqual.
         if hitstunEnded
-          pushInt. 0x6
-          pushInt. 0x1200004A # showFullModVar
+          #exp test
+          pushInt. 0x10
+          pushInt. 0x200000b2
           sys. 0x2, 0x16
-          pushInt. 0x1
-          equals.
-          pushInt. 0x6
-          pushInt. 0x1200004A # showFullModVar
-          sys. 0x2, 0x16
-          pushInt. 0x2
-          equals.
-          bitOr.
+          if tumbleAnim
+            pushInt. 0x2718
+            pushInt. 0x47 #Play the blast KO sfx (script_220)
+            sys 0x2, 0x1e
+          tumbleAnim:
+          #end exp
+
+          try. showMod
+            pushInt. doMod
+            callFunc 0x0
+          showMod:
 
           pushInt. 0x6
           pushInt. 0x2000218
@@ -74,17 +78,10 @@
           else done
           mashJump:
           done:
-          pushInt. 0x6
-          pushInt. 0x1200004A # showFullModVar
-          sys. 0x2, 0x16
-          pushInt. 0x1
-          equals.
-          pushInt. 0x6
-          pushInt. 0x1200004A # showFullModVar
-          sys. 0x2, 0x16
-          pushInt. 0x2
-          equals.
-          bitOr.
+          try. showMod2
+            pushInt. doMod
+            callFunc 0x0
+          showMod2:
 
           pushInt. 0x6
           pushInt. 0x2000218

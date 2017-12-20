@@ -211,17 +211,10 @@ loc_256:
         pushInt. 0x1f00000d
         sys 0x2, 0x16
 
-        pushInt. 0x6
-        pushInt. 0x1200004A # showFullModVar
-        sys. 0x2, 0x16
-        pushInt. 0x1
-        equals.
-        pushInt. 0x6
-        pushInt. 0x1200004A # showFullModVar
-        sys. 0x2, 0x16
-        pushInt. 0x2
-        equals.
-        bitOr. # showFullModVar == 1 or 2
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
 
         pushInt. 0x6
         pushInt. 0x1200006e

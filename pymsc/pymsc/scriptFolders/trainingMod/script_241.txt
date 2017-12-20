@@ -1,0 +1,162 @@
+        begin 0x0, 0x2
+        pushInt. 0x10
+        pushInt. 0x21000011 #"RA-Bit 17"
+        sys. 0x2, 0x16
+        not.
+        if loc_31
+        pushVar. 0x1, 0x9
+        pushInt. 0x3f800000
+        floatGreater.
+        if loc_31
+        pushInt. 0x1
+        else loc_36
+
+loc_31:
+        pushInt. 0x0
+
+loc_36:
+        if loc_5F
+        pushShort. 0x12
+        printf 0x1 #"sub_rebirth_uniq_process_exec_status FIGHTER_EFFECT_KIND_REBIRTH"
+
+
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x1
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x2
+        equals.
+        bitOr.
+        pushInt. 0x6
+        pushInt. 0x1200004A # showFullModVar
+        sys. 0x2, 0x16
+        pushInt. 0x3
+        equals.
+        bitOr.
+        if shouldDoMod
+          pushInt. 0x6
+          pushInt. 0x2000239
+          sys. 0x2, 0x16
+          pushInt. 2.4f
+          equals.
+          not.
+          pushInt. 0x10
+          pushInt. 0x200000B0
+          sys. 0x2, 0x16
+          bitAnd.
+          if shouldSetP1
+            pushInt. 0xc
+            pushInt. 0.0f
+            sys 0x2, 0x24 # set to 0%
+            pushInt. 0x9
+            pushInt. 0x6
+            pushInt. 0x200023c
+            sys. 0x2, 0x16
+            pushInt. 0.00001f
+            addf.
+            sys 0x2, 0x24 # add P1LockedDamageVar
+            else shouldDoMod
+          shouldSetP1:
+
+          pushInt. 0x6
+          pushInt. 0x200023a
+          sys. 0x2, 0x16
+          pushInt. 1.0f
+          equals.
+          pushInt. 0x10
+          pushInt. 0x200000B0
+          sys. 0x2, 0x16
+          not.
+          bitAnd.
+          if shouldSetCPU
+            pushInt. 0xc
+            pushInt. 0.0f
+            sys 0x2, 0x24 # set to 0%
+            pushInt. 0x9
+            pushInt. 0x6
+            pushInt. 0x2000236
+            sys. 0x2, 0x16
+            pushInt. 0.00001f
+            addf.
+            sys 0x2, 0x24 # add CPULockedDamageVar
+          shouldSetCPU:
+        shouldDoMod:
+
+        pushInt. 0x1f
+        pushInt. 0x21
+        pushInt. 0x0
+        sys 0x3, 0x1c
+        pushInt. 0x2710
+        pushInt. 0x21000011 #"RA-Bit 17"
+        sys 0x2, 0x16
+
+loc_5F:
+        pushInt. 0x10
+        pushInt. 0x2100000d #"RA-Bit 13"
+        sys. 0x2, 0x16
+        not.
+        if loc_136
+        pushInt. 0x6
+        pushInt. 0x11000002 #"RA-Basic 2"
+        sys. 0x2, 0x16
+        setVar 0x0, 0x0
+        pushInt. 0x6
+        pushInt. 0x11000003 #"RA-Basic 3"
+        sys. 0x2, 0x16
+        setVar 0x0, 0x1
+        i++ 0x0, 0x0
+        pushInt. 0x7
+        pushVar. 0x0, 0x0
+        pushInt. 0x11000002 #"RA-Basic 2"
+        sys 0x3, 0x16
+        pushVar. 0x0, 0x0
+        pushVar. 0x0, 0x1
+        greater.
+        if loc_D0
+        try loc_C3
+        pushInt. script_235
+        callFunc 0x0
+
+loc_C3:
+        pushInt. 0xe
+        sys 0x1, 0xc
+        else loc_131
+
+loc_D0:
+        pushInt. 0x10
+        pushInt. 0x21000010 #"RA-Bit 16"
+        sys. 0x2, 0x16
+        not.
+        if loc_131
+        pushInt. 0xf
+        pushInt. 0x0
+        pushInt. 0x1000006 #"LA-Float 6"
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushInt. 0x1000007 #"LA-Float 7"
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushInt. 0x0
+        pushInt. 0x1000008 #"LA-Float 8"
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushInt. 0x1000009 #"LA-Float 9"
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        pushVar. 0x0, 0x0
+        pushVar. 0x0, 0x1
+        sys 0x9, 0xc
+
+loc_131:
+        else loc_13E
+
+loc_136:
+        pushInt. 0xe
+        sys 0x1, 0xc
+
+loc_13E:
+        end

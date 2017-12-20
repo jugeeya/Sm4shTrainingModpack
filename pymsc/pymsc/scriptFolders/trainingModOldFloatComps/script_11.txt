@@ -216,7 +216,7 @@ loc_CF:
           pushInt. 0x2000230
           sys. 0x2, 0x16
           pushInt. 150.0f
-          floatGreater. # greater
+          floatEqual. # greater
           if greaterThan150
             pop
             pushInt. 1.15f

@@ -167,7 +167,7 @@ loc_71:
         if loc_8F
         pushVar. 0x1, 0x9
         pushInt. 0x3f800000
-        floatEqual.
+        floatGreater.
         if loc_8F
         pushInt. 0x1
         else loc_94
@@ -234,7 +234,7 @@ loc_117:
         pushInt. 0x0
         pushInt. 0x1f
         sys. 0x2, 0x17
-        floatNotEqual.
+        floatLessOrEqual.
         if loc_181
         try loc_181
         pushInt. 0x1

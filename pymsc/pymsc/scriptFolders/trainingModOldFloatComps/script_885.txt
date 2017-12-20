@@ -52,7 +52,7 @@
             pushInt. 0x2000126
             sys. 0x2, 0x17
             pushInt. 0.0f
-            floatGreater.
+            floatEqual.
             if angleIsPositive
               pushInt. 3.14159f
               pushInt. 0x0
@@ -95,11 +95,11 @@
         done:
         pushVar. 0x0, 0x0
         pushInt. 0x0
-        floatNotEqual.
+        floatLessOrEqual.
         ifNot loc_33
         pushVar. 0x0, 0x1
         pushInt. 0x0
-        floatNotEqual.
+        floatLessOrEqual.
         if loc_3D
 
 loc_33:
@@ -160,7 +160,7 @@ loc_D2:
 loc_E2:
         sys. 0x3, 0xa
         pushVar. 0x0, 0x6
-        floatGreater.
+        floatEqual.
         if loc_2CB
         pushInt. 0x1
         pushVar. 0x0, 0x3
@@ -224,7 +224,7 @@ loc_18E:
         pushInt. 0x42b40000
         pushVar. 0x0, 0xb
         subf.
-        floatLessOrEqual.
+        floatNotEqual.
         ifNot loc_1C3
         pushVar. 0x0, 0xa
         pushInt. 0x42b40000
@@ -254,7 +254,7 @@ loc_1D2:
         floatVarSet 0x0, 0xe
         pushVar. 0x0, 0x1
         pushInt. 0x0
-        floatGreater.
+        floatEqual.
         if loc_22F
         pushVar. 0x0, 0xd
         pushInt. 0x3f800000
@@ -292,7 +292,7 @@ loc_258:
 loc_26E:
         pushVar. 0x0, 0xc
         pushVar. 0x0, 0xd
-        floatGreater.
+        floatEqual.
         if loc_284
         pushVar. 0x0, 0xd
         floatVarSet 0x0, 0xc

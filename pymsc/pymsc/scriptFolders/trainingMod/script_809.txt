@@ -147,7 +147,7 @@ loc_18C:
         pushInt. 0x0
         pushInt. 0x20000ff
         sys. 0x2, 0x17
-        floatNotEqual.
+        floatLessOrEqual.
         if loc_1D3
         pushInt. 0x1
         else loc_1D8
@@ -191,7 +191,7 @@ loc_20F:
         pushInt. 0x0
         pushInt. 0x2000101
         sys. 0x2, 0x17
-        floatNotEqual.
+        floatLessOrEqual.
         if loc_251
         pushInt. 0x1
         else loc_256

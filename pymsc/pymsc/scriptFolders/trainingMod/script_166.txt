@@ -16,7 +16,7 @@
           pushInt. 0x79
           sys. 0x2, 0x9
           intToFloat 0x0 # random frame 0->121
-          floatEqual. # correct frame
+          floatGreater. # correct frame
           if shouldRandomLedgeGetup
             pushInt. 0x7
             pushInt. 0x0

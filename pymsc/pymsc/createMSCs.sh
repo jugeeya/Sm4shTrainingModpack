@@ -21,13 +21,23 @@ do
 	    scriptBasename=$(basename $script)
 	    if [ ${scriptBasename:0:6} == "script" ]
 	    then
-		echo "Replacing $script..."
-		rm output/$scriptBasename
+		if [ $char == "rockman" ] && [ $scriptBasename == "script_2239.txt" ]
+		then
+		    echo "Not replacing script_2239..."
+		else
+		    echo "Replacing $script..."
+		    rm output/$scriptBasename
+		fi
 	    else
 		echo "Adding $script..."
 		echo $scriptBasename >> output/Scripts
 	    fi
-	    cp $script output/$scriptBasename
+	    if [ $char == "rockman" ] && [ $scriptBasename == "script_2239.txt" ]
+	    then
+		echo "Mega Man sucks. Not removing 2239..."
+	    else
+		cp $script output/$scriptBasename
+	    fi
 	done
     fi
     if [ $char == "rockman"  ]
@@ -35,6 +45,15 @@ do
 	echo "Moving script_2324.txt..."
 	rm output/script_2324.txt
 	cp scriptFolders/rockmanFix/script_2324.txt output/script_2324.txt
+	echo "Moving script_2241.txt..."
+	rm output/script_2241.txt
+	cp scriptFolders/rockmanFix/script_2241.txt output/script_2241.txt
+    fi
+    if [ $char == "szerosuit"  ]
+    then
+	echo "Moving script_2239.txt..."
+	rm output/script_2239.txt
+	cp scriptFolders/szerosuitFix/script_2239.txt output/script_2239.txt
     fi
     cd output
     echo "Reassembling $char..."

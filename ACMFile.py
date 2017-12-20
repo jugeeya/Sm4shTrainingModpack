@@ -432,7 +432,10 @@ class ACMFile:
                 if self.blacklisted:
                     fullOutput += "\tEffect()\n\t{\r"
                 fullOutput += self.effectLines
-                fullOutput += self.origEffectLines+ "\t\t\t}\r\n\t\t}\r\n\t\tScript_End()\r\n\t}\n\r\n"
+                if self.weaponBool:
+                    fullOutput += self.origEffectLines + "\t\t}\r\n\t\tScript_End()\r\n\t}\n\r\n"
+                else:
+                    fullOutput += self.origEffectLines + "\t\t\t}\r\n\t\t}\r\n\t\tScript_End()\r\n\t}\n\r\n"
             if not inEffect:
                 if i != "\t\tTRUE(Unknown=0x2)\r":
                     fullOutput += i + "\n"
@@ -533,6 +536,16 @@ class ACMFile:
             else:
                 if basename in {"EntryR.acm", "EntryL.acm"}:
                     self.addEffect(basicVariableSet.format("0x2", hasEnteredVar))
+                    self.addEffect(basicCompare.format(toggleNumVar, greaterThanOrEqualTo, hex(4)))
+                    self.addEffect(defaultTRUE)
+                    self.inCompare += 1
+                    self.addEffect(colorOverlay.format(*RED))
+                    self.printString("MOD\nIMMUNE")
+                    self.addEffect(basicVariableSet.format(hex(3), toggleNumVar))
+                    self.addEffect(bitVariableSet.format(isPlayerOneVar))
+                    self.addEffect(bitVariableSet.format(shouldShowFullModVar))
+                    self.inCompare -= 1
+                    self.addEffect('}')
 
         if not self.shouldProcessVariables and not self.weaponBool and not self.wifiSafe:
             self.trainingOnly = True
@@ -688,7 +701,7 @@ class ACMFile:
             self.inCompare += 1
             self.addEffect(colorOverlay.format(*RED))
             self.printString("MOD\nIMMUNE")
-            self.addEffect(basicVariableSet.format(hex(3), toggleNumVar))
+            self.addEffect(basicVariableSet.format(hex(1), toggleNumVar))
             self.addEffect(bitVariableSet.format(isPlayerOneVar))
             self.addEffect(bitVariableSet.format(shouldShowFullModVar))
             self.inCompare -= 1
@@ -703,14 +716,14 @@ class ACMFile:
             self.addEffect(basicCompare.format(currentPercentVar, equalTo, hex(0)))
             self.addEffect(defaultTRUE)
             self.inCompare += 1
-            string = "POINT\n0"
-            self.printString(string)
+            string = "0"
+            #self.printString(string)
             self.inCompare -= 1
             self.addEffect("}")
             self.addEffect(defaultFALSE)
             self.inCompare += 1
             for digit in range(1,10):
-                string = "POINT\n{}".format(digit)
+                string = "{}".format(digit)
                 self.addEffect(basicCompare.format(currentPercentVar, equalTo, hex(digit)))
                 self.addEffect(defaultTRUE)
                 self.inCompare += 1
@@ -744,7 +757,7 @@ class ACMFile:
             self.handleHitboxEffects(basename, charName, tsvLines)
 
         if self.trainingOnly and (self.weaponBool or (basename != "0x00000000.acm" and not basename.startswith("Entry")) ) and basename not in hitstunAnimations:
-            if not (self.weaponBool or basename in upTaunts or basename in sideTaunts or basename in downTaunts or basename in noBufferAnimations or basename.startswith("Thrown") or basename.startswith("Win") or basename.startswith("Wait")):
+            if not (basename in upTaunts or basename in sideTaunts or basename in downTaunts or basename in noBufferAnimations or basename.startswith("Thrown") or basename.startswith("Win") or basename.startswith("Wait")) or self.weaponBool:
                 self.inCompare -= 1
                 self.addEffect("}")
             self.addEffect(defaultFALSE)
@@ -780,6 +793,7 @@ class ACMFile:
                 break
             if inMain:
                 paramList = self.getParamList(i)
+                loop = "Set_Loop"
 
                 if i.startswith("}"):
                     if self.inCompare:
@@ -825,7 +839,6 @@ class ACMFile:
                     self.addEffect(goto.format(-gotoNum))
                     gotoNum = 0
 
-                loop = "Set_Loop"
                 if i.startswith("Set_Loop"):
                     loopNum = int(paramList[0]) # if paramList[0] != "-1" else 0
                     self.addEffect(setLoop.format(loopNum))
@@ -1323,8 +1336,6 @@ class ACMFile:
 
     def didHandleTaunts(self, basename):
         if basename in downTaunts and not self.weaponBool and not self.wifiSafe:
-            mashDict = OrderedDict(
-                [(0, [RED, "MASH\nAIRDODGE"]), (1, [GREEN, "MASH\nJUMP"]), (2, [BLUE, "RANDOM\nLEDGE"]), (3, [ORANGE, "DAMAGE\n+10"]), (4, [ORANGE, "DAMAGE\n+1"]), (5, [MAGENTA, "INFINITE\nSHIELD"]), (6, [WHITE, "NONE"])])
             numToggles = len(mashDict)
             self.addEffect(basicCompare.format(mashToggleVar, greaterThanOrEqualTo, hex(numToggles-1)))
             self.addEffect(defaultTRUE)
@@ -1349,11 +1360,11 @@ class ACMFile:
                 self.addEffect(basicVariableSet.format(hex(newVal), mashToggleVar))
                 self.addEffect(colorOverlay.format(*color))
                 self.printString(string)
-                if newVal == numToggles - 2:
+                if newVal == reverseMashDict["INFINITE\nSHIELD"]:
                     self.addEffect(floatVariableSet.format("0", shieldDamageMultVar))
                     self.addEffect(floatVariableSet.format("0", shieldDegenVar))
                     self.addEffect(floatVariableSet.format("0", shieldRegenVar))
-                elif newVal == numToggles - 1:
+                elif newVal == reverseMashDict["INFINITE\nSHIELD"]+1:
                     self.addEffect(floatVariableSet.format("1.19", shieldDamageMultVar))
                     self.addEffect(floatVariableSet.format("0.13", shieldDegenVar))
                     self.addEffect(floatVariableSet.format("0.08", shieldRegenVar))
@@ -1368,10 +1379,149 @@ class ACMFile:
             self.addEffect("}")
             self.addEffect(asynchronousTimer.format(30))
             self.addEffect(allowInterrupt)
-            self.addEffect(asynchronousTimer.format(30))
             self.addEffect(terminateGraphic57)
             self.addEffect(scriptEnd)
         elif basename in upTaunts and not self.weaponBool and not self.wifiSafe:
+            savedEffectLines = self.effectLines
+            self.effectLines = ""
+
+            self.addEffect(floatCompare.format(lockConditionsSetVar, equalTo, self.getHexFloat(1.0)))
+            self.addEffect(defaultTRUE)
+            self.inCompare += 1
+
+            # if isPlayerOne
+            self.addEffect(ifBitIsSet.format(isPlayerOneVar))
+            self.addEffect(defaultTRUE)
+            self.inCompare += 1
+
+            self.addEffect(floatCompare.format(shouldLockP1DamageVar, equalTo, self.getHexFloat(1.0)))
+            self.addEffect(defaultTRUE)
+            self.inCompare += 1
+
+            self.printString("UNLOCK\nPCT")
+            self.addEffect(colorOverlay.format(*RED))
+            self.addEffect(floatVariableSet.format(2.4, shouldLockP1DamageVar))
+            self.addEffect(asynchronousTimer.format(30))
+            self.addEffect(allowInterrupt)
+            self.addEffect(terminateGraphic57)
+
+            self.inCompare -= 1
+            self.addEffect('}')
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
+            self.printString("LOCK\nPCT")
+            self.addEffect(colorOverlay.format(*BLUE))
+            self.addEffect(floatVariableSet.format(1.0, shouldLockP1DamageVar))
+            self.addEffect(bitVariableClear.format(hasSetDamageVar))
+            self.addEffect(asynchronousTimer.format(30))
+            self.addEffect(allowInterrupt)
+            self.addEffect(terminateGraphic57)
+
+            self.inCompare -= 1
+            self.addEffect('}')
+            self.inCompare -= 1
+            self.addEffect('}')
+
+            # if isCPU
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
+            self.addEffect(floatCompare.format(shouldLockCPUDamageVar, equalTo, self.getHexFloat(1.0)))
+            self.addEffect(defaultTRUE)
+            self.inCompare += 1
+
+            self.printString("UNLOCK\nPCT")
+            self.addEffect(colorOverlay.format(*RED))
+            self.addEffect(floatVariableSet.format(0.5, shouldLockCPUDamageVar))
+            self.addEffect(asynchronousTimer.format(30))
+            self.addEffect(allowInterrupt)
+            self.addEffect(terminateGraphic57)
+
+            self.inCompare -= 1
+            self.addEffect('}')
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
+            self.printString("LOCK\nPCT")
+            self.addEffect(colorOverlay.format(*BLUE))
+            self.addEffect(floatVariableSet.format(1.0, shouldLockCPUDamageVar))
+            self.addEffect(bitVariableClear.format(hasSetDamageVar))
+            self.addEffect(asynchronousTimer.format(30))
+            self.addEffect(allowInterrupt)
+            self.addEffect(terminateGraphic57)
+
+            self.inCompare -= 1
+            self.addEffect('}')
+
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.inCompare -= 1
+            self.addEffect("}")
+
+            # else, do normal uptaunt code
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
+            self.addEffect(basicCompare.format(toggleNumVar, equalTo, "0x0"))
+            self.addEffect(defaultTRUE)
+            self.inCompare += 1
+
+            self.addEffect(colorOverlay.format(*RED))
+            self.printString("FULL\nMOD")
+            self.addEffect(basicVariableSet.format("0x1", toggleNumVar))
+            self.addEffect(bitVariableSet.format(shouldShowFullModVar))
+
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
+            self.addEffect(basicCompare.format(toggleNumVar, equalTo, "0x1"))
+            self.addEffect(defaultTRUE)
+            self.inCompare += 1
+            self.addEffect(colorOverlay.format(*GREEN))
+            self.printString("HITBOXES\nVIS OFF")
+            self.addEffect(basicVariableSet.format("0x2", toggleNumVar))
+            self.addEffect(bitVariableClear.format(shouldShowFullModVar))
+
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
+            self.addEffect(basicCompare.format(toggleNumVar, equalTo, "0x2"))
+            self.addEffect(defaultTRUE)
+            self.inCompare += 1
+
+            self.addEffect(colorOverlay.format(*BLUE))
+            self.printString("INPUT\nDISPLAY")
+            self.addEffect(basicVariableSet.format("0x3", toggleNumVar))
+
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
+            self.addEffect(colorOverlay.format(*WHITE))
+            self.printString("VANILLA")
+            self.addEffect(basicVariableSet.format("0x0", toggleNumVar))
+
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.addEffect(asynchronousTimer.format(30))
+            self.addEffect(allowInterrupt)
+            self.addEffect(terminateGraphic57)
+
+            self.inCompare -= 1
+            self.addEffect("}")
+            newEffectLines = savedEffectLines + self.effectLines
+            self.effectLines = newEffectLines
+            '''
             effectToggleLines = ""
             effectToggleLines = self.addEffectToString(basicCompare.format(toggleNumVar, equalTo, "0x0"), effectToggleLines)
 
@@ -1425,9 +1575,10 @@ class ACMFile:
             effectToggleLines = self.addEffectToString(terminateGraphic57, effectToggleLines)
             effectToggleLines = self.addEffectToString(scriptEnd, effectToggleLines)
             self.effectLines += effectToggleLines
+            '''
         elif basename in sideTaunts and not self.weaponBool and not self.wifiSafe:
             # normal, 0,
-            self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(3)))
+            self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['DAMAGE\n+10'])))
             self.addEffect(defaultTRUE)
             self.inCompare+=1
             self.addEffect("Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=10, Angle=0x4A, KBG=0x0, WBKB=0x0, BKB=0x0, Size=200, X=0, Y=0, Z=0, Effect=0x0, Trip=0, Hitlag=0, SDI=1, Clang=0x1, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x0, SFX=0x0,Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4)")
@@ -1435,7 +1586,7 @@ class ACMFile:
             self.addEffect("}")
             self.addEffect(defaultFALSE)
             self.inCompare+=1
-            self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(4)))
+            self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['DAMAGE\n+1'])))
             self.addEffect(defaultTRUE)
             self.inCompare+=1
             self.addEffect("Hitbox(ID=0x0, Part=0x0, Bone=0x0, Damage=1, Angle=0x4A, KBG=0x0, WBKB=0x0, BKB=0x0, Size=200, X=0, Y=0, Z=0, Effect=0x0, Trip=0, Hitlag=0, SDI=1, Clang=0x1, Rebound=0x1, ShieldDamage=0x0, SFXLevel=0x0, SFX=0x0,Ground/Air=0x3, Direct/Indirect=0x1, Type=0x4)")

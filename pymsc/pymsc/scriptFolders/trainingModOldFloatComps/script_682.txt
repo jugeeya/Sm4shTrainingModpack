@@ -14,7 +14,7 @@
 
         pushInt. 0x11000010
         sys 0x3, 0x16
-        
+
         try. loc_11
         pushInt. script_683
         callFunc 0x0

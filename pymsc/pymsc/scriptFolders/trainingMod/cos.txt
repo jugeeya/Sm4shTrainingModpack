@@ -1,0 +1,52 @@
+#Takes a float x (in radians) and returns the float cos(x)
+.alias 0,localVar
+
+.alias 0,x
+.alias 1,x2
+.alias 2,x4
+.alias 3,x6
+.alias 4,x8
+
+begin 1,5
+
+pushVar. localVar,x
+pushVar. localVar,x
+multf.
+floatVarSet. localVar,x2
+pushVar. localVar,x
+pushVar. localVar,x
+multf.
+multf.
+floatVarSet. localVar,x4
+pushVar. localVar,x
+pushVar. localVar,x
+multf.
+multf.
+floatVarSet. localVar,x6
+pushVar. localVar,x
+pushVar. localVar,x
+multf.
+multf.
+floatVarSet localVar,x8
+
+pushInt. 1f
+pushVar. localVar,x2
+pushInt. 2f
+divf.
+subf.
+pushVar. localVar,x4
+pushInt. 24f
+divf.
+addf.
+pushVar. localVar,x6
+pushInt. 720f
+divf.
+subf.
+pushVar. localVar,x8
+pushInt. 40320f
+divf.
+addf.
+
+
+return_6
+end

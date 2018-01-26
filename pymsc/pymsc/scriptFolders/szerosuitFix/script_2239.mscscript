@@ -1,0 +1,35 @@
+        begin 0x0, 0x0
+        pushInt. 0x7
+        pushInt. 60.0f
+        pushInt. 0x1200004A
+        sys 0x3, 0x16
+        pushShort. 0x3d
+        printf 0x1 #"ENTRY This Fighter is driven by msc."
+        try loc_16
+        pushInt. script_0
+        callFunc 0x0
+
+loc_16:
+        pushInt. 0x0
+        sys. 0x1, 0x7
+        setVar 0x1, 0x0
+        pushInt. 0x1
+        sys. 0x1, 0x7
+        setVar 0x1, 0x1
+        try loc_3A
+        pushInt. script_2243
+        callFunc 0x0
+
+loc_3A:
+        pushInt. 0x2
+        pushInt. script_1
+        sys 0x2, 0x0
+        pushInt. 0x3
+        pushInt. script_5
+        sys 0x2, 0x0
+        pushInt. 0x4
+        pushInt. script_10
+        sys 0x2, 0x0
+        pushInt. script_73
+        callFunc2 0x0
+        end

@@ -1,0 +1,59 @@
+        begin 0x0, 0x0
+        pushInt. 0x6
+        sys. 0x1, 0x18
+        pushInt. 0x1
+        equals. 
+        ifNot loc_4A
+        pushVar. 0x1, 0x13
+        pushInt. 0x0
+        equals. 
+        if loc_40
+        pushVar. 0x1, 0x12
+        pushInt. 0x2
+        equals. 
+        if loc_40
+        pushInt. 0x1
+        else loc_45
+
+loc_40:
+        pushInt. 0x0
+
+loc_45:
+        if loc_54
+
+loc_4A:
+        pushInt. 0x1
+        else loc_59
+
+loc_54:
+        pushInt. 0x0
+
+loc_59:
+        ifNot loc_90
+        pushVar. 0x1, 0x13
+        pushInt. 0x0
+        notEqual. 
+        if loc_86
+        pushVar. 0x1, 0x12
+        pushInt. 0x0
+        equals. 
+        if loc_86
+        pushInt. 0x1
+        else loc_8B
+
+loc_86:
+        pushInt. 0x0
+
+loc_8B:
+        if loc_9A
+
+loc_90:
+        pushInt. 0x1
+        else loc_9F
+
+loc_9A:
+        pushInt. 0x0
+
+loc_9F:
+        return_6 
+        end 

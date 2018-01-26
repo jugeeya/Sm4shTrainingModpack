@@ -1,0 +1,81 @@
+        begin 0x0, 0x0
+        pushVar. 0x1, 0x12
+        pushInt. 0x0
+        notEquals.
+        if loc_1A
+        pushInt. 0x0
+        return_6
+
+loc_1A:
+        pushInt. 0x15
+        pushInt. 0x1e000029 #"Action Status-Type1? 41"
+        sys. 0x2, 0x16
+        if loc_59
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
+
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. mashAirdodge
+        equals.
+        pushVar. 0x1, 0x5
+        pushInt. 0x54 # if prevAction was DownStand
+        equals.
+        bitAnd.
+
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. randomGetup
+        equals.
+        pushVar. 0x1, 0x5
+        pushInt. 0x75 # if prevAction >= ledgeAttack
+        greaterOrEqual.
+        pushVar. 0x1, 0x5
+        pushInt. 0x77 # if prevAction <= ledgeNormal
+        lessOrEqual.
+        bitAnd.
+        bitAnd.
+
+        bitOr.
+
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. holdShield
+        equals.
+        pushInt. 0x6
+        pushInt. 0x1200006e
+        sys. 0x2, 0x16
+        pushInt. infiniteShield
+        equals.
+        bitOr. # hold shield options
+
+        bitOr.
+
+        bitAnd.
+        ifNot callShield
+        unk_2E. loc_38
+        pushInt. script_50
+        callFunc 0x0
+
+loc_38:
+        if loc_59
+        callShield:
+        unk_2E loc_53
+        pushInt. 0x1b
+        pushInt. 0x1
+        pushInt. script_16 #"call action GuardOn"
+        callFunc 0x2
+
+loc_53:
+        pushInt. 0x1
+        return_6
+
+loc_59:
+        pushInt. 0x0
+        return_6
+        end

@@ -1,0 +1,125 @@
+        begin 0x0, 0x2
+        pushInt. 0x68
+        setVar 0x0, 0x0
+        pushInt. 0x10
+        sys. 0x1, 0xe
+
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. mashAttack
+        equals.
+        bitAnd.
+        if shouldMashAerial
+          pop
+          pushInt. 0x6
+          pushInt. mashAttackVar
+          sys. 0x2, 0x16
+          floatVarSet 0x0, 0x1
+          pushVar. 0x0, 0x1
+          pushInt. 1.25f
+          equals.
+          if nair
+            pushInt. 0x1
+            else shouldMashAerial
+          nair:
+          pushVar. 0x0, 0x1
+          pushInt. 2.0f
+          equals.
+          if fair
+            pushInt. 0x2
+            else shouldMashAerial
+          fair:
+          pushVar. 0x0, 0x1
+          pushInt. 3.0f
+          equals.
+          if uair
+            pushInt. 0x3
+            else shouldMashAerial
+          uair:
+          pushVar. 0x0, 0x1
+          pushInt. 4.0f
+          equals.
+          if bair
+            pushInt. 0x4
+            else shouldMashAerial
+          bair:
+          pushVar. 0x0, 0x1
+          pushInt. 5.0f
+          equals.
+          if dair
+            pushInt. 0x5
+            else shouldMashAerial
+          dair:
+        shouldMashAerial:
+
+        setVar 0x0, 0x1
+        pushVar. 0x0, 0x1
+        pushInt. 0x1
+        equals.
+        if loc_1
+        pushInt. 0xd
+        pushInt. 0x2
+        pushInt. 0xe
+        sys 0x3, 0x21
+        else loc_5
+
+loc_1:
+        pushVar. 0x0, 0x1
+        pushInt. 0x2
+        equals.
+        if loc_2
+        pushInt. 0x69
+        setVar 0x0, 0x0
+        pushInt. 0xd
+        pushInt. 0x2
+        pushInt. 0xf
+        sys 0x3, 0x21
+        else loc_5
+
+loc_2:
+        pushVar. 0x0, 0x1
+        pushInt. 0x3
+        equals.
+        if loc_3
+        pushInt. 0x6a
+        setVar 0x0, 0x0
+        pushInt. 0xd
+        pushInt. 0x2
+        pushInt. 0x12
+        sys 0x3, 0x21
+        else loc_5
+
+loc_3:
+        pushVar. 0x0, 0x1
+        pushInt. 0x4
+        equals.
+        if loc_4
+        pushInt. 0x6b
+        setVar 0x0, 0x0
+        pushInt. 0xd
+        pushInt. 0x2
+        pushInt. 0x13
+        sys 0x3, 0x21
+        else loc_5
+
+loc_4:
+        pushVar. 0x0, 0x1
+        pushInt. 0x5
+        equals.
+        if loc_5
+        pushInt. 0x6c
+        setVar 0x0, 0x0
+        pushInt. 0xd
+        pushInt. 0x2
+        pushInt. 0x14
+        sys 0x3, 0x21
+
+loc_5:
+        pushVar. 0x0, 0x0
+        return_6
+        end

@@ -1,0 +1,252 @@
+begin 0x0, 0x0
+pushInt. 0x6
+pushInt. mashToggleVar
+sys. 0x2, 0x16
+pushInt. damage10
+greaterOrEqual.
+pushInt. 0x6
+pushInt. mashToggleVar
+sys. 0x2, 0x16
+pushInt. damage1
+lessOrEqual.
+bitAnd.
+if lockConditionsSet
+  pushInt. 0x7
+  pushInt. 1.0f
+  pushInt. lockConditionsSetVar
+  sys 0x3, 0x16
+  else lockConditionsNotSet
+lockConditionsSet:
+  pushInt. 0x7
+  pushInt. 0.5f
+  pushInt. lockConditionsSetVar
+  sys 0x3, 0x16
+lockConditionsNotSet:
+
+pushInt. 0x10
+pushInt. isPlayerOneVar
+sys. 0x2, 0x16
+if isPlayerOne
+  pushInt. 0x7
+  pushInt. 0x0
+  sys. 0x1, 0x25
+  pushInt. playerOneDamageVar # put player one percentage here
+  sys 0x3, 0x16
+
+  pushInt. 0x6
+  pushInt. shouldLockP1DamageVar #shouldLockP1
+  sys. 0x2, 0x16
+  pushInt. 1.0f
+  equals.
+  pushInt. 0x10
+  pushInt. hasSetDamageVar
+  sys. 0x2, 0x16
+  not. # and not hasSetDamageVar
+  bitAnd.
+  if lockP1Damage
+    pushInt. 0x2710
+    pushInt. hasSetDamageVar
+    sys 0x2, 0x16 # set hasSetDamageVar
+
+    pushInt. 0x7
+    pushInt. 0x0
+    sys. 0x1, 0x25
+    pushInt. playerOneLockedDamageVar # put player one locked percentage here
+    sys 0x3, 0x16
+  lockP1Damage:
+  else isCPU
+isPlayerOne:
+  pushInt. 0x6
+  pushInt. shouldLockCPUDamageVar #shouldLockCPU
+  sys. 0x2, 0x16
+  pushInt. 1.0f
+  equals.
+  pushInt. 0x10
+  pushInt. hasSetDamageVar
+  sys. 0x2, 0x16
+  not. # and not hasSetDamageVar
+  bitAnd.
+  if lockCPUDamage
+    pushInt. 0x2710
+    pushInt. hasSetDamageVar
+    sys 0x2, 0x16 # set hasSetDamageVar
+
+    pushInt. 0x7
+    pushInt. 0x0
+    sys. 0x1, 0x25
+    pushInt. CPULockedDamageVar # put CPU locked percentage here
+    sys 0x3, 0x16
+  lockCPUDamage:
+isCPU:
+
+try. showMod
+  pushInt. doMod
+  callFunc 0x0
+showMod:
+pushInt. 0x6
+pushInt. hasEnteredVar
+sys. 0x2, 0x16
+pushInt. 0x2
+notEquals. # if in training
+bitAnd.
+if notPlayerOneInTraining
+
+  pushInt. 0xa
+
+  # rage = 1 + ((percent - 35) * (1.15 - 1) / (150 - 35))
+  # (((((((percent + damage * staleness) / 10 + (((percent + damage * staleness) * base_damage * (1 - (1 - staleness) * 0.3)) / 20)) * 1.4 * (200 / (weight + 100))) + 18) * (kbg / 100)) + bkb)) * (r * rage)
+  # ^credit: ruben_dal
+  # so we can just calculate and multiply rage here
+
+  pushInt. 1.0f
+
+  pushInt. 0x6
+  pushInt. playerOneDamageVar
+  sys. 0x2, 0x16
+  pushInt. 35.0f
+  subf. # ((player one's percent - 35)
+
+  pushInt. 1.15f
+  pushInt. 1.0f
+  subf.
+  pushInt. 150.0f
+  pushInt. 35.0f
+  subf.
+  divf. # (1.15 - 1) / (150 - 35)
+
+  multf. # ((percent - 35) * (1.15 - 1) / (150 - 35))
+  addf. # 1 + ((percent - 35) * (1.15 - 1) / (150 - 35))
+
+  # of course, <35%: 1.0; > 150%: 1.15
+  pushInt. 0x6
+  pushInt. playerOneDamageVar
+  sys. 0x2, 0x16
+  pushInt. 35.0f
+  floatLess.
+  if lessThan35
+    pop
+    pushInt. 1.0f
+    else greaterThan150
+  lessThan35:
+  pushInt. 0x6
+  pushInt. playerOneDamageVar
+  sys. 0x2, 0x16
+  pushInt. 150.0f
+  floatGreater. # greater
+  if greaterThan150
+    pop
+    pushInt. 1.15f
+  greaterThan150:
+
+  sys 0x2, 0x24 # multiply knockback taken
+notPlayerOneInTraining:
+
+pushInt. 0x6
+pushInt. toggleNumVar
+sys. 0x2, 0x16
+pushInt. inputDisplay
+equals.
+if shouldInputDisplay
+  pushInt. 0x1
+  sys. 0x1, 0x13
+  pushVar. 0x1, 0x14
+  notEquals.
+  if newFrame # zero out all vars
+    pushInt. 0x2711
+    pushInt. zInputVar
+    sys 0x2, 0x16
+    pushInt. 0x2711
+    pushInt. xInputVar
+    sys 0x2, 0x16
+    pushInt. 0x2711
+    pushInt. aInputVar
+    sys 0x2, 0x16
+    pushInt. 0x2711
+    pushInt. bInputVar
+    sys 0x2, 0x16
+    pushInt. 0x2711
+    pushInt. rInputVar
+    sys 0x2, 0x16
+
+    pushInt. 0x7
+    pushInt. 0x0
+    sys. 0x1, 0xf
+    pushInt. 10.0f
+    multf.
+    floatToInt 0x0
+    intToFloat 0x0
+    pushInt. stickXInputVar
+    sys 0x3, 0x16
+    pushInt. 0x7
+    pushInt. 0x1
+    sys. 0x1, 0xf
+    pushInt. 10.0f
+    multf.
+    floatToInt 0x0
+    intToFloat 0x0
+    pushInt. stickYInputVar
+    sys 0x3, 0x16
+  newFrame:
+
+  pushVar. 0x1, 0x18
+  pushInt. 0x20000000
+  bitAnd.
+  if ZPressed
+    pushInt. 0x2710
+    pushInt. zInputVar
+    sys 0x2, 0x16
+  ZPressed:
+
+  pushVar. 0x1, 0x26
+  pushInt. 0x10
+  bitAnd.
+  pushInt. 0x2712
+  pushInt. 0x2
+  sys. 0x2, 0xe
+  bitOr.
+  if XPressed
+    pushInt. 0x2710
+    pushInt. xInputVar
+    sys 0x2, 0x16
+  XPressed:
+
+  pushVar. 0x1, 0x26
+  pushInt. 0x1
+  bitAnd.
+  pushInt. 0x2712
+  pushInt. 0x0
+  sys. 0x2, 0xe
+  bitOr.
+  if APressed
+    pushInt. 0x2710
+    pushInt. aInputVar
+    sys 0x2, 0x16
+  APressed:
+
+  pushVar. 0x1, 0x26
+  pushInt. 0x4
+  bitAnd.
+  pushInt. 0x2712
+  pushInt. 0x1
+  sys. 0x2, 0xe
+  bitOr.
+  if BPressed
+    pushInt. 0x2710
+    pushInt. bInputVar
+    sys 0x2, 0x16
+  BPressed:
+
+  pushVar. 0x1, 0x26
+  pushInt. 0x40
+  bitAnd.
+  pushInt. 0x2712
+  pushInt. 0x3
+  sys. 0x2, 0xe
+  bitOr.
+  if LPressed
+    pushInt. 0x2710
+    pushInt. rInputVar
+    sys 0x2, 0x16
+  LPressed:
+shouldInputDisplay:
+end

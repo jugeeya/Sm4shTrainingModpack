@@ -15,11 +15,13 @@ showSegmentGreen = "Graphic_Effect6(Graphic=0x1000057, Bone=0x0, Z={}, Y={}, X={
 # z,y,x,zrot,size
 showSegment = "EFFECT_FOLLOW_COLOR(unknown=0x1000057, unknown=0x0, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown={}, unknown={}, unknown={})"
 grayHitbox = "Graphic_Effect6(Graphic=0x1000013, Bone={}, Z={}, Y={}, X={}, ZRot=0, YRot=0, XRot=0, Size={}, Terminate=0x1, Unknown=0x420C0000)"
+respawnPlat = "Graphic_Effect6(Graphic=0x1000044, Bone={}, Z={}, Y={}, X={}, ZRot={}, YRot={}, XRot={}, Size={}, Terminate=0x1, Unknown=0x420C0000)"
 coloredHitbox = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown={}, unknown={}, unknown={})"
 grabHitbox = "EFFECT_FOLLOW_COLOR(unknown=0x1000013, unknown={}, unknown={}, unknown={}, unknown={}, unknown=0x0, unknown=0x0, unknown=0x0, unknown={}, unknown=0x1, unknown=0x0, unknown=0x437F0000, unknown=0x0)"
 terminateGraphic13 = "Terminate_Graphic_Effect(Graphic=0x1000013, unknown=0x1, unknown=0x1)"
 terminateGraphic31 = "Terminate_Graphic_Effect(Graphic=0x1000031, unknown=0x1, unknown=0x1)"
 terminateGraphic57 = "Terminate_Graphic_Effect(Graphic=0x1000057, unknown=0x1, unknown=0x1)"
+terminateGraphic61 = "Terminate_Graphic_Effect(Graphic=0x1000044, unknown=0x1, unknown=0x1)"
 colorOverlay = "Color_Overlay(Red={}, Green={}, Blue={}, Alpha={})"
 terminateOverlays = "Terminate_Overlays()"
 subroutine = "Subroutine(Hash={})"
@@ -74,14 +76,15 @@ L_INPUT_POS = [0, 30, 2]
 STICK_INPUT_POS = [0, 23, 5]
 
 mashDict = OrderedDict(
-    [(0, [RED, "MASH\nAIRDODGE"]),
-     (1, [GREEN, "MASH\nJUMP"]),
-     (2, [BLUE, "RANDOM\nLEDGE"]),
-     (3, [ORANGE, "DAMAGE\n+10"]),
-     (4, [ORANGE, "DAMAGE\n+1"]),
-     (5, [MAGENTA, "INFINITE\nSHIELD"]),
-     (6, [CYAN, "HOLD\nSHIELD"]),
-     (7, [WHITE, "NONE"])])
+    [(0, [CYAN, "MASH\nAIRDODGE"]),
+     (1, [MAGENTA, "MASH\nATTACK"]),
+     (2, [GREEN, "MASH\nJUMP"]),
+     (3, [BLUE, "RANDOM\nLEDGE"]),
+     (4, [ORANGE, "DAMAGE\n+10"]),
+     (5, [ORANGE, "DAMAGE\n+1"]),
+     (6, [TURQUOISE, "INFINITE\nSHIELD"]),
+     (7, [RED, "HOLD\nSHIELD"]),
+     (8, [WHITE, "NONE"])])
 
 # string to index
 reverseMashDict = {}
@@ -100,6 +103,7 @@ greaterThan = "0x5"
 toggleNumVar = "0x1200004A" # brawl glide data param (originally 60)
 hasEnteredVar = "0x1200004B" # brawl glide data param (originally 1)
 mashToggleVar = "0x1200006E" # brawl cliffclimb over 100% (originally 100)
+mashAttackVar = "0x200023d"
 DIChangeVar = "0x2000126" # brawl max kb to execute momentum commands (originally 0.2)
 DIDirectionVar = "0x2000127" # brawl (originally )
 maxDIChange = 0.17

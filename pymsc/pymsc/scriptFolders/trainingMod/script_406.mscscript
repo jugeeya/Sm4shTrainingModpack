@@ -1,0 +1,100 @@
+        begin 0x0, 0x0
+        pushVar. 0x1, 0x12
+        pushInt. 0x2
+        equals.  #"if is aerial"
+        if loc_38
+        pushInt. 0x2727
+        sys. 0x1, 0x1a
+        if loc_38
+        try loc_37
+        pushInt. 0x7d
+        pushInt. 0x0
+        pushInt. script_16 #"call action MissFoot"
+        callFunc 0x2
+
+loc_37:
+        return_7
+
+loc_38:
+        pushVar. 0x1, 0x12
+        pushInt. 0x2
+        equals.  #"if is aerial"
+        if loc_5E
+        try loc_5D
+        pushInt. 0xe
+        pushInt. 0x0
+        pushInt. script_16 #"call action Fall"
+        callFunc 0x2
+
+loc_5D:
+        return_7
+
+loc_5E:
+        try. loc_6A
+        pushInt. script_402
+        callFunc 0x0
+
+loc_6A:
+        if loc_70
+        return_7
+
+loc_70:
+        pushInt. 0x0
+        pushInt. 0x3
+        sys. 0x2, 0x17
+        pushInt. 0x0
+        floatLess.
+        if loc_9F
+        try loc_9E
+        pushInt. 0x59
+        pushInt. 0x0
+        pushInt. script_16 #"call action ShieldBreak"
+        callFunc 0x2
+
+loc_9E:
+        return_7
+
+loc_9F:
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. holdShield
+        equals.
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. infiniteShield
+        equals.
+        bitOr.
+        bitAnd.
+        not.
+        if loc_EF
+        pushInt. 0x2713
+        pushInt. 0x3
+        sys. 0x2, 0xe # if shield is not held
+        if loc_EF
+        pushInt. 0x6
+        pushInt. 0x11000002 #"RA-Basic 2"
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        lessOrEqual.
+        if loc_EF
+        pushVar. 0x1, 0x12
+        pushInt. 0x0
+        equals.  #"if is grounded"
+        if loc_EF
+        try loc_EE
+        pushInt. 0x1d
+        pushInt. 0x1
+        pushInt. script_16 #"call action GuardOff"
+        callFunc 0x2
+
+loc_EE:
+        return_7
+
+loc_EF:
+        end

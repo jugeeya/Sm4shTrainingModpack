@@ -1,0 +1,296 @@
+        begin 0x0, 0x2
+        try loc_11
+        pushInt. script_790
+        callFunc 0x0
+
+loc_11:
+        try. loc_1D
+        pushInt. script_95
+        callFunc 0x0
+
+loc_1D:
+        pushInt. 0x0
+        equals.
+        if loc_275
+        pushInt. 0x10
+        pushInt. 0x2100001a
+        sys. 0x2, 0x16
+        if loc_96
+        try. loc_46
+        pushInt. script_84
+        callFunc 0x0
+
+loc_46:
+        pushInt. 0x0
+        pushInt. 0x2000082
+        sys. 0x2, 0x17
+        floatGreaterOrEqual.
+        if loc_7A
+        try loc_6F
+        pushInt. 0x65
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_6F:
+        pushInt. 0x1
+        return_6
+        else loc_96
+
+loc_7A:
+        try loc_90
+        pushInt. 0x64
+        pushInt. 0x1
+        pushInt. script_16
+        callFunc 0x2
+
+loc_90:
+        pushInt. 0x1
+        return_6
+
+loc_96:
+        pushInt. 0x10
+        pushInt. 0x21000012
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        equals.
+        if loc_136
+        try. loc_BA
+        pushInt. script_93
+        callFunc 0x0
+
+loc_BA:
+        floatVarSet 0x0, 0x0
+        pushInt. 0x6
+        pushInt. 0x11000004
+        sys. 0x2, 0x16
+        intToFloat 0x0
+        floatVarSet 0x0, 0x1
+        pushVar. 0x0, 0x0
+        pushInt. 0xbf800000
+        floatLess.
+        ifNot loc_F9
+        pushVar. 0x0, 0x1
+        pushInt. 0x6
+        pushInt. 0x1200011d
+        sys. 0x2, 0x16
+        intToFloat 0x0
+        floatGreaterOrEqual.
+        if loc_103
+
+loc_F9:
+        pushInt. 0x1
+        else loc_108
+
+loc_103:
+        pushInt. 0x0
+
+loc_108:
+        if loc_131
+        try. loc_119
+        pushInt. script_812
+        callFunc 0x0
+
+loc_119:
+        if loc_124
+        pushInt. 0x1
+        return_6
+
+loc_124:
+        pushInt. 0x2710
+        pushInt. 0x21000012
+        sys 0x2, 0x16
+
+loc_131:
+        else loc_14D
+
+loc_136:
+        try. loc_142
+        pushInt. script_812
+        callFunc 0x0
+
+loc_142:
+        if loc_14D
+        pushInt. 0x1
+        return_6
+
+loc_14D:
+        pushInt. 0x10
+        pushInt. 0x2000000b
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        equals.
+        if loc_187
+        pushInt. 0x10
+        pushInt. 0x20000032
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        equals.
+        if loc_187
+        pushInt. 0x1
+        else loc_18C
+
+loc_187:
+        pushInt. 0x0
+
+loc_18C:
+        if loc_275
+        pushInt. 0x6
+        pushInt. 0x11000006
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        lessOrEqual.
+        if loc_1D3
+        pushInt. 0x3
+        pushInt. 0x4
+        sys. 0x2, 0x11
+        pushInt. 0x0
+        pushInt. 0x20000ff
+        sys. 0x2, 0x17
+        floatLessOrEqual.
+        if loc_1D3
+        pushInt. 0x1
+        else loc_1D8
+
+loc_1D3:
+        pushInt. 0x0
+
+loc_1D8:
+        if loc_20F
+        pushInt. 0x2710
+        pushInt. 0x21000025
+        sys 0x2, 0x16
+        pushInt. 0x19
+        pushInt. 0x1f00000b
+        sys 0x2, 0x16
+        pushInt. 0x19
+        pushInt. 0x1f00000e
+        sys 0x2, 0x16
+
+        try. showMod2
+          pushInt. doMod
+          callFunc 0x0
+        showMod2:
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. mashAttack
+        equals.
+        bitAnd.
+
+        if tryAerial
+        try tryAerial
+          pushInt. 0x6
+          pushInt. mashAttackVar
+          sys. 0x2, 0x16
+          pushInt. 5.0f
+          floatLessOrEqual.
+          if aerialAttack
+            pushInt. 0x34
+            else callActionAerial
+          aerialAttack:
+            pushInt. 0x1c
+            pushInt. 0x1f00000a
+            sys. 0x2, 0x16
+
+            pushInt. 0x15
+            pushInt. 0x1e000062
+            pushInt. 0x6
+            pushInt. mashAttackVar
+            sys. 0x2, 0x16
+            pushInt. 6.0f
+            subf.
+            floatToInt 0x0
+            addi.
+            sys. 0x2, 0x16
+            bitOr.
+            if tryAerial
+              pushInt. 0x6
+              pushInt. mashAttackVar
+              sys. 0x2, 0x16
+              pushInt. 6.0f
+              subf.
+              floatToInt 0x0
+              pushInt. 0x152
+              addi.
+          callActionAerial:
+          pushInt. 0x0
+          pushInt. script_16
+          callFunc 0x2
+        tryAerial:
+
+        try loc_203
+        pushInt. script_105
+        callFunc 0x0
+
+loc_203:
+        try loc_20F
+        pushInt. script_104
+        callFunc 0x0
+
+loc_20F:
+        pushInt. 0x6
+        pushInt. 0x11000007
+        sys. 0x2, 0x16
+        pushInt. 0x0
+        lessOrEqual.
+        if loc_251
+        pushInt. 0x3
+        pushInt. 0x4
+        sys. 0x2, 0x11
+        pushInt. 0x0
+        pushInt. 0x2000101
+        sys. 0x2, 0x17
+        floatLessOrEqual.
+        if loc_251
+        pushInt. 0x1
+        else loc_256
+
+loc_251:
+        pushInt. 0x0
+
+loc_256:
+        if loc_275
+	      pushInt. 0x2710
+	      pushInt. 0x21000026
+	      sys 0x2, 0x16
+        pushInt. 0x19
+        pushInt. 0x1f00000c
+        sys 0x2, 0x16
+        pushInt. 0x19
+        pushInt. 0x1f00000d
+        sys 0x2, 0x16
+
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
+
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. mashAirdodge
+        equals.
+        pushInt. 0x6
+        pushInt. canReallyAirdodgeVar
+        sys. 0x2, 0x16
+        pushInt. 1.0f
+        equals.
+        bitAnd.
+
+        bitAnd.
+        if shouldMashAirdodge
+      	  try done
+        	pushInt. 0x22
+        	pushInt. 0x0
+        	pushInt. script_16
+        	callFunc 0x2
+        else done
+        shouldMashAirdodge:
+        done:
+
+
+loc_275:
+        pushInt. 0x0
+        return_6
+        end

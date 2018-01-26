@@ -1,0 +1,130 @@
+        begin 0x0, 0x0
+        pushInt. 0x1
+        sys. 0x1, 0x30
+        pushInt. 0x0
+        equals.
+        if loc_7
+        pushVar. 0x1, 0x8
+        pushInt. 0x0
+        equals.
+        if loc_1
+        pushVar. 0x1, 0x9
+        pushInt. 0x49742400
+        floatLess.
+        if loc_1
+        pushInt. 0x1
+        else loc_2
+
+loc_1:
+        pushInt. 0x0
+
+loc_2:
+        if loc_5
+        pushInt. 0x2
+        sys. 0x1, 0x49
+        pushInt. 0x1
+        equals.
+        if loc_3
+        pushInt. 0x0
+        sys. 0x1, 0x4c
+        float+= 0x1, 0x9
+        pushInt. 0x1
+        setVar 0x1, 0x3
+        else loc_4
+
+loc_3:
+        pushVar. 0x1, 0xa
+        pushInt. 0x3f800000
+        addf.
+        floatVarSet 0x1, 0x9
+        pushVar. 0x1, 0x9
+        floatVarSet 0x1, 0xa
+        pushInt. 0x0
+        setVar 0x1, 0x3
+
+loc_4:
+        else loc_6
+
+loc_5:
+        pushInt. 0x2
+        sys. 0x1, 0x49
+        setVar 0x1, 0x3
+
+loc_6:
+        else loc_8
+
+loc_7:
+        pushInt. 0x1
+        setVar 0x1, 0x3
+
+loc_8:
+        pushVar. 0x1, 0xe
+        pushInt. 0x0
+        notEqual.
+        if loc_9
+        unk_2E loc_9
+        pushVar. 0x1, 0xe
+        callFunc 0x0
+
+loc_9:
+        pushInt. 0x1
+        sys. 0x1, 0x18
+        setVar 0x1, 0x12
+
+        pushInt. 0x6
+        pushInt. toggleNumVar
+        sys. 0x2, 0x16
+        pushInt. fullMod
+        greaterOrEqual.
+        pushInt. 0x6
+        pushInt. toggleNumVar
+        sys. 0x2, 0x16
+        pushInt. inputDisplay
+        lessOrEqual.
+        bitAnd.
+        if correctToggles
+        try correctToggles
+          pushInt. performEveryFrame
+          callFunc 0x0
+        correctToggles:
+
+        pushInt. 0x1
+        sys. 0x1, 0x13 #"push animation frame"
+        floatVarSet 0x1, 0x14
+        pushVar. 0x1, 0x2
+        pushInt. 0x0
+        notEqual.
+        if loc_B
+        unk_2E loc_A
+        pushVar. 0x1, 0x2
+        callFunc 0x0
+
+loc_A:
+        pushInt. 0x0
+        setVar 0x1, 0x2
+
+loc_B:
+        pushVar. 0x1, 0x3
+        not.
+        if loc_D
+        pushVar. 0x1, 0xf
+        pushInt. 0x0
+        notEqual.
+        if loc_C
+        unk_2E loc_C
+        pushVar. 0x1, 0xf
+        callFunc 0x0
+
+loc_C:
+        pushVar. 0x1, 0x10
+        pushInt. 0x0
+        notEqual.
+        if loc_D
+        unk_2E loc_D
+        pushVar. 0x1, 0x10
+        callFunc 0x0
+
+loc_D:
+        pushInt. 0x0
+        setVar 0x1, 0x8
+        end

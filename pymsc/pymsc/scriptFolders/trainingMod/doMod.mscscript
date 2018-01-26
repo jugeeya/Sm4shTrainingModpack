@@ -1,0 +1,24 @@
+begin 0x0, 0x0
+pushInt. 0x6
+pushInt. toggleNumVar
+sys. 0x2, 0x16
+pushInt. fullMod
+equals.
+pushInt. 0x6
+pushInt. toggleNumVar
+sys. 0x2, 0x16
+pushInt. hitboxVisOff
+equals.
+bitOr.
+pushInt. 0x6
+pushInt. toggleNumVar
+sys. 0x2, 0x16
+pushInt. inputDisplay
+equals.
+bitOr.
+pushInt. 0x10
+pushInt. isPlayerOneVar
+sys. 0x2, 0x16
+not.
+bitAnd.
+return_6

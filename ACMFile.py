@@ -58,6 +58,7 @@ class ACMFile:
             self.addEffect(extsubroutine.format("0x00000000"))
             self.addEffect(synchronousTimer.format("1"))
             self.addEffect(terminateGraphic13)
+            self.addEffect(terminateGraphic61)
             bone = "0x0"
             size = 5/2/2 * 19 / 200
 
@@ -68,12 +69,14 @@ class ACMFile:
             self.inCompare+=1
             x = -x
             self.addEffect(grayHitbox.format(bone,z,y,x,size))
+            self.addEffect(respawnPlat.format(bone,z-20,y,x-5,0,90,-90,size*8))
             self.inCompare-=1
             self.addEffect("}")
             self.addEffect(defaultFALSE)
             self.inCompare+=1
             x = -x
             self.addEffect(grayHitbox.format(bone,z,y,x,size))
+            self.addEffect(respawnPlat.format(bone,z+20,y,x+5,0,90,90,size*8))
             self.inCompare-=1
             self.addEffect("}")
 
@@ -569,6 +572,7 @@ class ACMFile:
                 self.addEffect(extsubroutine.format("0x00000000"))
                 self.addEffect(synchronousTimer.format("1"))
                 self.addEffect(terminateGraphic13)
+                self.addEffect(terminateGraphic61)
                 bone = "0x0"
                 size = 5/2/2 * 19 / 200
 
@@ -579,12 +583,20 @@ class ACMFile:
                 self.inCompare+=1
                 x = -x
                 self.addEffect(grayHitbox.format(bone,z,y,x,size))
+                if basename.startswith("Turn"):
+                    self.addEffect(respawnPlat.format(bone,z+20,y,x+5,0,90,90,size*8))
+                else:
+                    self.addEffect(respawnPlat.format(bone,z-20,y,x-5,0,90,-90,size*8))
                 self.inCompare-=1
                 self.addEffect("}")
                 self.addEffect(defaultFALSE)
                 self.inCompare+=1
                 x = -x
                 self.addEffect(grayHitbox.format(bone,z,y,x,size))
+                if basename.startswith("Turn"):
+                    self.addEffect(respawnPlat.format(bone,z-20,y,x-5,0,90,-90,size*8))
+                else:
+                    self.addEffect(respawnPlat.format(bone,z+20,y,x+5,0,90,90,size*8))
                 self.inCompare-=1
                 self.addEffect("}")
 
@@ -606,11 +618,13 @@ class ACMFile:
                 self.inCompare += 1
 
         #experimental
+        '''
         if self.weaponBool:
             self.trainingOnly = True
             self.addEffect(ifBitIsSet.format(shouldShowFullModVar))
             self.addEffect(defaultTRUE)
             self.inCompare += 1
+        '''
 
         with open(filename, newline="\r\n") as f:
             lines = f.readlines()
@@ -1521,63 +1535,38 @@ class ACMFile:
             self.addEffect("}")
             newEffectLines = savedEffectLines + self.effectLines
             self.effectLines = newEffectLines
-            '''
-            effectToggleLines = ""
-            effectToggleLines = self.addEffectToString(basicCompare.format(toggleNumVar, equalTo, "0x0"), effectToggleLines)
-
-            effectToggleLines = self.addEffectToString(defaultTRUE, effectToggleLines)
-            self.inCompare += 1
-            effectToggleLines = self.addEffectToString(colorOverlay.format(*RED), effectToggleLines)
-            for segment in self.printString("FULL\nMOD", True):
-                effectToggleLines = self.addEffectToString(segment, effectToggleLines)
-            effectToggleLines = self.addEffectToString(basicVariableSet.format("0x1", toggleNumVar), effectToggleLines)
-            effectToggleLines = self.addEffectToString(bitVariableSet.format(shouldShowFullModVar), effectToggleLines)
-            self.inCompare -= 1
-            effectToggleLines = self.addEffectToString("}", effectToggleLines)
-            effectToggleLines = self.addEffectToString(defaultFALSE, effectToggleLines)
-            self.inCompare += 1
-            effectToggleLines = self.addEffectToString(basicCompare.format(toggleNumVar, equalTo, "0x1"), effectToggleLines)
-            effectToggleLines = self.addEffectToString(defaultTRUE, effectToggleLines)
-            self.inCompare += 1
-            effectToggleLines = self.addEffectToString(colorOverlay.format(*GREEN), effectToggleLines)
-            for segment in self.printString("HITBOXES\nVIS OFF", True):
-                effectToggleLines = self.addEffectToString(segment, effectToggleLines)
-            effectToggleLines = self.addEffectToString(basicVariableSet.format("0x2", toggleNumVar), effectToggleLines)
-            effectToggleLines = self.addEffectToString(bitVariableClear.format(shouldShowFullModVar), effectToggleLines)
-            self.inCompare -= 1
-            effectToggleLines = self.addEffectToString("}", effectToggleLines)
-            effectToggleLines = self.addEffectToString(defaultFALSE, effectToggleLines)
-            self.inCompare += 1
-            effectToggleLines = self.addEffectToString(basicCompare.format(toggleNumVar, equalTo, "0x2"), effectToggleLines)
-            effectToggleLines = self.addEffectToString(defaultTRUE, effectToggleLines)
-            self.inCompare += 1
-            effectToggleLines = self.addEffectToString(colorOverlay.format(*BLUE), effectToggleLines)
-            for segment in self.printString("INPUT\nDISPLAY", True):
-                effectToggleLines = self.addEffectToString(segment, effectToggleLines)
-            effectToggleLines = self.addEffectToString(basicVariableSet.format("0x3", toggleNumVar), effectToggleLines)
-            self.inCompare -= 1
-            effectToggleLines = self.addEffectToString("}", effectToggleLines)
-            effectToggleLines = self.addEffectToString(defaultFALSE, effectToggleLines)
-            self.inCompare += 1
-            effectToggleLines = self.addEffectToString(colorOverlay.format(*WHITE), effectToggleLines)
-            for segment in self.printString("VANILLA", True):
-                effectToggleLines = self.addEffectToString(segment, effectToggleLines)
-            effectToggleLines = self.addEffectToString(basicVariableSet.format("0x0", toggleNumVar), effectToggleLines)
-            self.inCompare -= 1
-            effectToggleLines = self.addEffectToString("}", effectToggleLines)
-            self.inCompare -= 1
-            effectToggleLines = self.addEffectToString("}", effectToggleLines)
-            self.inCompare -= 1
-            effectToggleLines = self.addEffectToString("}", effectToggleLines)
-            effectToggleLines = self.addEffectToString(asynchronousTimer.format(30), effectToggleLines)
-            effectToggleLines = self.addEffectToString(allowInterrupt, effectToggleLines)
-            effectToggleLines = self.addEffectToString(asynchronousTimer.format(30), effectToggleLines)
-            effectToggleLines = self.addEffectToString(terminateGraphic57, effectToggleLines)
-            effectToggleLines = self.addEffectToString(scriptEnd, effectToggleLines)
-            self.effectLines += effectToggleLines
-            '''
         elif basename in sideTaunts and not self.weaponBool and not self.wifiSafe:
-            # normal, 0,
+            self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['MASH\nATTACK'])))
+            self.addEffect(defaultTRUE)
+            self.inCompare+=1
+
+            AttackValues = [1.25, 2, 3, 4, 5, 6, 7, 8, 9, 1.25]
+            AttackDict = OrderedDict(
+                [(1.25, "NAIR"), (2, "FAIR"), (3, "BAIR"), (4, "UPAIR"), (5, "DAIR"),
+                (6, "NeutralB"), (7, "SideB"), (8, "UpB"), (9, "DownB")])
+            for AttackIndex in range(len(AttackValues)-1):
+                currVal = AttackValues[AttackIndex]
+                newVal = AttackValues[AttackIndex+1]
+                attackString = AttackDict[newVal]
+                self.addEffect(floatCompare.format(mashAttackVar, equalTo, self.getHexFloat(currVal)))
+                self.addEffect(defaultTRUE)
+                self.inCompare += 1
+                self.addEffect(floatVariableSet.format(newVal, mashAttackVar))
+                self.printString(attackString)
+                self.inCompare -= 1
+                self.addEffect("}")
+                self.addEffect(defaultFALSE)
+                self.inCompare = self.inCompare + 1
+            self.inCompare -= 1
+            while self.inCompare > 3:
+                self.addEffect("}")
+                self.inCompare -= 1
+            self.addEffect("}")
+
+            self.inCompare-=1
+            self.addEffect("}")
+            self.addEffect(defaultFALSE)
+            self.inCompare+=1
             self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['DAMAGE\n+10'])))
             self.addEffect(defaultTRUE)
             self.inCompare+=1

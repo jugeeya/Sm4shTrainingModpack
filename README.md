@@ -22,6 +22,7 @@ The whole workspace should look like:
     -edgeCaseCode/
     -all_other_python_scripts_and_FITX_exes
 ```
+# Hitbox Effects Portion (ACMD, using FITX)
 ## Compiling all characters game-wide
 
 ```
@@ -125,3 +126,14 @@ Used in conjunction with test compilations in order to place an edited script in
 
 ## FITC, FITD, and SALT
 These are included because the current version of FITX is crucial to the performance of the scripts, as some bugs greatly affect a good few characters. 
+
+# Toggle Effects (MSC, using PyMSC)
+# Hitbox Effects Portion (ACMD, using FITX)
+## Compiling all characters (for both game-wide and training-mode-only)
+In the pymsc/pymsc folder, 
+
+```
+python3 createMSCs.py all
+```
+
+Upon running this command, every fighter will be compiled based on the data in AllFighterData and the output (in the form of \[charName\].mscsb files in the correct directory) will be placed in a new folder entitled AllFighterMSCCompiled. This essentially contains the remainder of the unpacked contents of data/fighter. From this output folder, the character folders can be dragged into Sm4shexplorer's data/fighter at which point the modpack can be packed.

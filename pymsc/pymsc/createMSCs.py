@@ -6,12 +6,14 @@ if len(sys.argv) < 3:
 allChars = sys.argv[1:-1]
 mscFolder = sys.argv[-1]
 
-charsToFix = ["rockman", "szerosuit", "yoshi"]
+charsToFix = ["rockman", "szerosuit", "yoshi", "shulk"]
 aliasDict = {
     "toggleNumVar":0x1200004A,
     "hasEnteredVar":0x1200004B,
     "mashToggleVar":0x1200006E,
     "mashAttackVar":0x200023d,
+    "spamOptionVar":0x2000240,
+    "techOptionVar":0x2000241,
     "isPlayerOneVar":0x200000B0,
     "playerOneDamageVar":0x2000230,
     "playerOneLockedDamageVar":0x200023c,
@@ -43,12 +45,14 @@ aliasDict = {
     "mashAirdodge":0,
     "mashAttack":1,
     "mashJump":2,
-    "randomGetup":3,
-    "damage10":4,
-    "damage1":5,
-    "infiniteShield":6,
-    "holdShield":7,
-    "vanillaMash":8
+    "spamOption":3,
+    "randomTech":4,
+    "randomGetup":5,
+    "damage10":6,
+    "damage1":7,
+    "infiniteShield":8,
+    "holdShield":9,
+    "vanillaMash":10
 }
 
 if allChars == ["all"]:

@@ -8,21 +8,71 @@
           pushInt. doMod
           callFunc 0x0
         showMod:
+
         pushInt. 0x6
         pushInt. mashToggleVar
         sys. 0x2, 0x16
         pushInt. mashAttack
         equals.
+        pushInt. 0x6
+        pushInt. mashAttackVar
+        sys. 0x2, 0x16
+        pushInt. 5.0f
+        floatLessOrEqual.
+        bitAnd.
+
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. spamOption
+        equals.
+        pushInt. 0x6
+        pushInt. spamOptionVar
+        sys. 0x2, 0x16
+        pushInt. 52.25f
+        floatGreaterOrEqual.
+        bitAnd.
+        pushInt. 0x6
+        pushInt. spamOptionVar
+        sys. 0x2, 0x16
+        pushInt. 56.0f
+        floatLessOrEqual.
+        bitAnd.
+
+        bitOr.
+
+
         bitAnd.
         if shouldMashAerial
           pop
           pushInt. 0x6
+          pushInt. mashToggleVar
+          sys. 0x2, 0x16
+          pushInt. mashAttack
+          equals.
+          pushInt. 0x6
           pushInt. mashAttackVar
           sys. 0x2, 0x16
+          pushInt. 5.0f
+          floatLessOrEqual.
+          bitAnd. # if mash attack is set
+          if mashAttackSet
+            pushInt. 0x6
+            pushInt. mashAttackVar
+            sys. 0x2, 0x16
+            else spamOptionSet
+          mashAttackSet:
+            pushInt. 0x6
+            pushInt. spamOptionVar
+            sys. 0x2, 0x16
+            pushInt. 51.0f
+            subf. # else, spam option is set. {52.25,...,56} - 51 = {1.25,...,5}
+          spamOptionSet:
+
           floatVarSet 0x0, 0x1
           pushVar. 0x0, 0x1
-          pushInt. 1.25f
-          equals.
+          pushInt. 2.0f
+          floatLess. # == 1.25; but we'll try < 2.0f
           if nair
             pushInt. 0x1
             else shouldMashAerial

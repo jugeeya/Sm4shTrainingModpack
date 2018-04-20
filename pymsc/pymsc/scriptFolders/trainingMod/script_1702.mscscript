@@ -1,0 +1,77 @@
+        begin 0x0, 0x0
+        pushInt. 0x9
+        sys 0x1, 0x21
+        pushInt. 0x2711
+        pushInt. 0x20000003 #"LA-Bit 3"
+        sys 0x2, 0x16
+
+        try. showMod
+          pushInt. doMod
+          callFunc 0x0
+        showMod:
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
+        pushInt. randomTech
+        equals.
+        bitAnd.
+        if modActive
+          pushInt. 0
+          pushInt. 50
+          sys. 0x2, 0x9
+          pushInt. 26
+          lessThan.
+          if shouldForwardTech
+          try forwardTech
+            pushInt. 0xea
+            pushInt. 0x0
+            pushInt. 0x3f800000
+            pushInt. script_22 #"call animation 0xea"
+            callFunc 0x3
+            forwardTech:
+            else backwardTech
+          shouldForwardTech:
+          try backwardTech
+            pushInt. 0xeb
+            pushInt. 0x0
+            pushInt. 0x3f800000
+            pushInt. script_22 #"call animation 0xeb"
+            callFunc 0x3
+          backwardTech:
+          else loc_4 # jump to end call
+        modActive:
+
+        unk_2E. loc_1
+        pushInt. script_88
+        callFunc 0x0
+
+loc_1:
+        pushInt. 0x0
+        floatGreaterOrEqual.
+        if loc_3
+        unk_2E loc_2
+        pushInt. 0xea
+        pushInt. 0x0
+        pushInt. 0x3f800000
+        pushInt. script_22 #"call animation 0xea"
+        callFunc 0x3
+
+loc_2:
+        else loc_4
+
+loc_3:
+        unk_2E loc_4
+        pushInt. 0xeb
+        pushInt. 0x0
+        pushInt. 0x3f800000
+        pushInt. script_22 #"call animation 0xeb"
+        callFunc 0x3
+
+loc_4:
+        unk_2E loc_5
+        pushInt. script_1703
+        pushInt. script_78
+        callFunc 0x1
+
+loc_5:
+        end

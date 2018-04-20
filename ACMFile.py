@@ -721,10 +721,10 @@ class ACMFile:
             self.inCompare -= 1
             self.addEffect('}')
 
-            self.addEffect(basicCompare.format(mashToggleVar, greaterThanOrEqualTo, "0x3"))
+            self.addEffect(basicCompare.format(mashToggleVar, greaterThanOrEqualTo, hex(reverseMashDict['DAMAGE\n+10'])))
             self.addEffect(defaultTRUE)
             self.inCompare += 1
-            self.addEffect(basicCompare.format(mashToggleVar,lessThanOrEqualTo, "0x4"))
+            self.addEffect(basicCompare.format(mashToggleVar,lessThanOrEqualTo, hex(reverseMashDict['DAMAGE\n+1'])))
             self.addEffect(defaultTRUE)
             self.inCompare += 1
             self.addEffect(basicCompare.format(currentPercentVar, equalTo, hex(0)))
@@ -752,10 +752,10 @@ class ACMFile:
                 self.inCompare = self.inCompare - 1
             self.addEffect("}")
 
-            self.addEffect(basicCompare.format(mashToggleVar, notEqualTo, "0x3"))
+            self.addEffect(basicCompare.format(mashToggleVar, notEqualTo, hex(reverseMashDict['DAMAGE\n+10'])))
             self.addEffect(defaultTRUE)
             self.inCompare += 1
-            self.addEffect(basicCompare.format(mashToggleVar, notEqualTo, "0x4"))
+            self.addEffect(basicCompare.format(mashToggleVar, notEqualTo, hex(reverseMashDict['DAMAGE\n+1'])))
             self.addEffect(defaultTRUE)
             self.inCompare += 1
             self.addEffect(terminateGraphic57)
@@ -1536,6 +1536,40 @@ class ACMFile:
             newEffectLines = savedEffectLines + self.effectLines
             self.effectLines = newEffectLines
         elif basename in sideTaunts and not self.weaponBool and not self.wifiSafe:
+            self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['SPAM\nOPTION'])))
+            self.addEffect(defaultTRUE)
+            self.inCompare+=1
+
+            SpamValues = [50, 51, 52.25, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 50]
+            SpamDict = OrderedDict(
+                [(50, "AIRDODGE"), (51, "JUMP"), (52.25, "NAIR"), (53, "FAIR"), (54, "BAIR"),
+                (55, "UPAIR"), (56, "DAIR"),
+                (57, "NeutralB"), (58, "SideB"), (59, "UpB"), (60, "DownB"), (61, "JAB"),
+                (62, "FTILT"), (63, "UTILT"), (64, "DTILT"), (65, "FSMASH"), (66, "DSMASH"),
+                (67, "USMASH"), (68, "DASH\nATK"), (69, "GRAB"), (70, "SPOTDODGE"), (71, "ROLL")])
+            for SpamIndex in range(len(SpamValues)-1):
+                currVal = SpamValues[SpamIndex]
+                newVal = SpamValues[SpamIndex+1]
+                spamString = SpamDict[newVal]
+                self.addEffect(floatCompare.format(spamOptionVar, equalTo, self.getHexFloat(currVal)))
+                self.addEffect(defaultTRUE)
+                self.inCompare += 1
+                self.addEffect(floatVariableSet.format(newVal, spamOptionVar))
+                self.printString(spamString)
+                self.inCompare -= 1
+                self.addEffect("}")
+                self.addEffect(defaultFALSE)
+                self.inCompare = self.inCompare + 1
+            self.inCompare -= 1
+            while self.inCompare > 3:
+                self.addEffect("}")
+                self.inCompare -= 1
+            self.addEffect("}")
+            self.inCompare -= 1
+            self.addEffect("}")
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1
+
             self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['MASH\nATTACK'])))
             self.addEffect(defaultTRUE)
             self.inCompare+=1
@@ -1558,13 +1592,47 @@ class ACMFile:
                 self.addEffect(defaultFALSE)
                 self.inCompare = self.inCompare + 1
             self.inCompare -= 1
-            while self.inCompare > 3:
+            while self.inCompare > 4:
                 self.addEffect("}")
                 self.inCompare -= 1
             self.addEffect("}")
 
             self.inCompare-=1
             self.addEffect("}")
+
+            # self.addEffect(defaultFALSE)
+            # self.inCompare += 1
+            #
+            # self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['RANDOM\nTECH'])))
+            # self.addEffect(defaultTRUE)
+            # self.inCompare+=1
+            #
+            # TechValues = [30, 31, 32, 30]
+            # TechDict = OrderedDict(
+            #     [(30, "RANDOM"), (31, "IN PLACE"), (32, "ROLL")])
+            # for TechIndex in range(len(TechValues)-1):
+            #     currVal = TechValues[TechIndex]
+            #     newVal = TechValues[TechIndex+1]
+            #     techString = TechDict[newVal]
+            #     self.addEffect(floatCompare.format(techOptionVar, equalTo, self.getHexFloat(currVal)))
+            #     self.addEffect(defaultTRUE)
+            #     self.inCompare += 1
+            #     self.addEffect(floatVariableSet.format(newVal, techOptionVar))
+            #     self.printString(techString)
+            #     self.inCompare -= 1
+            #     self.addEffect("}")
+            #     self.addEffect(defaultFALSE)
+            #     self.inCompare = self.inCompare + 1
+            # self.inCompare -= 1
+            # while self.inCompare > 4:
+            #     self.addEffect("}")
+            #     self.inCompare -= 1
+            # self.addEffect("}")
+            #
+            # self.inCompare-=1
+            # self.addEffect("}")
+
+
             self.addEffect(defaultFALSE)
             self.inCompare+=1
             self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['DAMAGE\n+10'])))
@@ -1583,9 +1651,9 @@ class ACMFile:
             self.addEffect("}")
             self.addEffect(defaultFALSE)
             self.inCompare+=1
-            DIValues = [0.2, 0, 0.785398, 1.570796, 2.356194, -3.14159, -2.356194,  -1.570796, -0.785398,  10, 20, 0.2]
+            DIValues = [0.2, 0, 0.785398, 1.570796, 2.356194, -3.14159, -2.356194,  -1.570796, -0.785398,  10, 20, 30, 0.2]
             DIDict = OrderedDict(
-                [(0.2, WHITE), (-3.14159, BLACK), (2.356194, BLACK), (1.570796, BLACK), (0.785398, BLACK), (0, BLACK), (-0.785398, BLACK), (-1.570796, BLACK), (-2.356194, BLACK), (10, MAGENTA), (20, MAGENTA)])
+                [(0.2, WHITE), (-3.14159, BLACK), (2.356194, BLACK), (1.570796, BLACK), (0.785398, BLACK), (0, BLACK), (-0.785398, BLACK), (-1.570796, BLACK), (-2.356194, BLACK), (10, MAGENTA), (20, MAGENTA), (30, MAGENTA)])
             for DIindex in range(len(DIValues)-1):
                 currVal = DIValues[DIindex]
                 newVal = DIValues[DIindex+1]
@@ -1602,9 +1670,11 @@ class ACMFile:
                         for i in range(1, len(DIValues)-3):
                             processingVal = DIValues[i]
                             self.addEffect(showAngle.format(0,-30*math.sin(processingVal)+10,30*math.cos(processingVal),math.degrees(processingVal)))
-                    elif newVal == 20:
+                    elif newVal in {20, 30}:
                         for processingVal in {0, -3.14159}:
                             self.addEffect(showAngle.format(0,-30*math.sin(processingVal)+10,30*math.cos(processingVal),math.degrees(processingVal)))
+                        if newVal == 30:
+                            self.addEffect("Graphic_Effect6(Graphic=0x100001C, Bone=0x0, Z=0, Y=10, X=0, ZRot=0, YRot=0, XRot=0, Size=3.0, Terminate=0x1, Unknown=0x420C0000)")
                 self.inCompare = self.inCompare - 1
                 self.addEffect("}")
                 self.addEffect(defaultFALSE)

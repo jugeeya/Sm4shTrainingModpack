@@ -45,6 +45,31 @@ loc_1A:
         pushInt. 0x6
         pushInt. mashToggleVar
         sys. 0x2, 0x16
+        pushInt. randomTech
+        equals.
+        pushVar. 0x1, 0x5
+        pushInt. 0x64 # if prevAction >= Passive
+        greaterOrEqual.
+        pushVar. 0x1, 0x5
+        pushInt. 0x65 # if prevAction <= PassiveRoll
+        lessOrEqual.
+        bitAnd.
+
+        pushVar. 0x1, 0x5
+        pushInt. 0x54 # if prevAction >= DownStand
+        greaterOrEqual.
+        pushVar. 0x1, 0x5
+        pushInt. 0x56 # if prevAction <= DownForward/Back
+        lessOrEqual.
+        bitAnd.
+        bitOr.
+        bitAnd.
+
+        bitOr.
+
+        pushInt. 0x6
+        pushInt. mashToggleVar
+        sys. 0x2, 0x16
         pushInt. holdShield
         equals.
         pushInt. 0x6

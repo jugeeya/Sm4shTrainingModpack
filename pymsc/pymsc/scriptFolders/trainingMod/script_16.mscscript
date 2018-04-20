@@ -1,0 +1,118 @@
+        begin 0x2, 0x2
+        pushVar. 0x0, 0x0
+        pushInt. 0x4d
+        equals.
+        pushVar. 0x0, 0x0
+        pushInt. 0x4b
+        equals.
+        bitOr. # DownBound or DamageFlyTop?
+
+        pushVar. 0x1, 0x5
+        pushInt. 0x48 # if prevAction = spin anim
+        equals.
+
+        pushVar. 0x1, 0x5
+        pushInt. 0xb3 # if prevAction >= StepPose
+        greaterOrEqual.
+        pushVar. 0x1, 0x5
+        pushInt. 0xb7 # if prevAction <= StepFall
+        lessOrEqual.
+        bitAnd.
+
+        bitOr.
+        not.
+        bitAnd.
+        if missTech
+          try. showMod
+            pushInt. doMod
+            callFunc 0x0
+          showMod:
+          pushInt. 0x6
+          pushInt. mashToggleVar
+          sys. 0x2, 0x16
+          pushInt. randomTech
+          equals.
+          bitAnd.
+          if modActive
+            pushInt. 0x7
+            pushInt. 0
+            pushInt. 4
+            sys. 0x2, 0x9
+            intToFloat 0x0
+            pushInt. 0x2000234
+            sys 0x3, 0x16 # set var to random val
+
+            pushInt. 0x6
+            pushInt. 0x2000234
+            sys. 0x2, 0x16
+            pushInt. 1.0f
+            floatLessOrEqual.
+            if stillMissTech
+              else modActive # change nothing
+            stillMissTech:
+
+            pushInt. 0x6
+            pushInt. 0x2000234
+            sys. 0x2, 0x16
+            pushInt. 2.0f
+            floatLessOrEqual.
+            # pushInt. 0x15
+            # pushInt. 0x1e000013
+            # sys. 0x2, 0x16
+            # bitAnd.
+            if techInPlace
+              pushInt. 0x64
+              setVar 0x0, 0x0
+              else modActive
+            techInPlace:
+
+            # otherwise, tech forward or back
+
+            # pushInt. 0x15
+            # pushInt. 0x1e000014
+            # sys. 0x2, 0x16
+            pushInt. 1
+            if techFB
+              pushInt. 0x65
+              setVar 0x0, 0x0
+              else modActive
+            techFB:
+          modActive:
+        missTech:
+
+        pushVar. 0x0, 0x0
+        pushInt. 0x54
+        equals.
+        if missTechGetUp
+          try. showMod2
+            pushInt. doMod
+            callFunc 0x0
+          showMod2:
+          pushInt. 0x6
+          pushInt. mashToggleVar
+          sys. 0x2, 0x16
+          pushInt. randomTech
+          equals.
+          bitAnd.
+          if modActive2
+            pushInt. 0
+            pushInt. 3
+            sys. 0x2, 0x9
+            pushInt. 0x54
+            addi.
+            setVar 0x0, 0x0
+            pushInt. 0x1
+            setVar 0x0, 0x1
+          modActive2:
+        missTechGetUp:
+
+        pushVar. 0x1, 0xb
+        if loc_1
+        try loc_1
+        pushVar. 0x0, 0x0
+        pushVar. 0x0, 0x1
+        pushVar. 0x1, 0xb
+        callFunc 0x2
+
+loc_1:
+        end

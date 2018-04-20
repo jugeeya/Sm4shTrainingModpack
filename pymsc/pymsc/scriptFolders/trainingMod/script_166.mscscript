@@ -19,12 +19,12 @@
           intToFloat 0x0 # random frame 0->121
           floatGreater. # correct frame
           if shouldRandomLedgeGetup
-            pushInt. 0x0
-            pushInt. 0x4
+            pushInt. 0
+            pushInt. 4
             sys. 0x2, 0x9
-            setVar 0,0 # set var to random val
+            setVar 0, 0
 
-            pushVar. 0,0
+            pushVar. 0, 0
             pushInt. 0
             equals.
             if doJump
@@ -47,8 +47,8 @@
             doAttack:
 
             pushVar. 0,0
-            pushInt. 0
-            equals. 2
+            pushInt. 2
+            equals.
             if doRoll
               try doRoll
               pushInt. 0x77
@@ -176,11 +176,6 @@ loc_9F:
         pushInt. inputDisplay
         equals.
         bitOr.
-        pushInt. 0x10
-        pushInt. isPlayerOneVar
-        sys. 0x2, 0x16
-        not.
-        bitAnd.
         pushInt. 0x6
         pushInt. mashToggleVar
         sys. 0x2, 0x16
@@ -228,11 +223,6 @@ loc_E6:
         pushInt. inputDisplay
         equals.
         bitOr.
-        pushInt. 0x10
-        pushInt. isPlayerOneVar
-        sys. 0x2, 0x16
-        not.
-        bitAnd.
         pushInt. 0x6
         pushInt. mashToggleVar
         sys. 0x2, 0x16

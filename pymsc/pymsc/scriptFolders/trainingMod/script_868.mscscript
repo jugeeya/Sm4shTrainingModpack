@@ -16,31 +16,6 @@
           pushInt. mashJump
           equals.
           bitAnd.
-
-          # pushInt. 0x6
-          # pushInt. 0x2000218
-          # sys. 0x2, 0x16
-          # pushInt. 10.0f
-          # floatLess. # noBufferVar < 10.0 (should be 0.8)
-          # pushInt. 0x6
-          # pushInt. canReallyAnyActionVar
-          # sys. 0x2, 0x16
-          # pushInt. 1.0f
-          # equals.
-          # bitAnd.
-          pushInt. 0x15
-          pushInt. 0x1e00003e
-          sys. 0x2, 0x16
-          pushInt. 0x15
-          pushInt. 0x1e00003f
-          sys. 0x2, 0x16
-          pushInt. 0x1c
-          pushInt. 0x1f000011
-          sys. 0x2, 0x16
-          bitOr.
-          bitOr.
-
-          bitAnd.
           if shouldMashJump
             pushInt. 0x6
             pushInt. 0x10000001
@@ -50,20 +25,32 @@
             sys. 0x2, 0x16
             lessThan.
             if tryJump
-              pushInt. 0x7
-              pushInt. 0x6
-              pushInt. 0x10000001
-              sys. 0x2, 0x16 # get numJumpsUsed
-              pushInt. 0x1
-              addi.
-              pushInt. 0x10000001
-              sys 0x3, 0x16 # set numJumpsUsed = numJumpsUsed + 1
-
               pushVar. 0x1, 0x12
               pushInt. 0x2
               equals.
+              pushInt. 0x15
+              pushInt. 0x1e00003e
+              sys. 0x2, 0x16
+              pushInt. 0x15
+              pushInt. 0x1e00003f
+              sys. 0x2, 0x16
+              pushInt. 0x1c
+              pushInt. 0x1f000011
+              sys. 0x2, 0x16
+              bitOr.
+              bitOr.
+              bitAnd.
               if aerialJump
                 try aerialJumpAction
+                pushInt. 0x7
+                pushInt. 0x6
+                pushInt. 0x10000001
+                sys. 0x2, 0x16 # get numJumpsUsed
+                pushInt. 0x1
+                addi.
+                pushInt. 0x10000001
+                sys 0x3, 0x16 # set numJumpsUsed = numJumpsUsed + 1
+
                 pushInt. 0x6
                 pushInt. 0x1300010c
                 sys. 0x2, 0x16
@@ -81,7 +68,28 @@
                 aerialJumpAction:
                 else shouldMashJump
               aerialJump:
+                pushInt. 0x15
+                pushInt. 0x1e00002b
+                sys. 0x2, 0x16
+                pushInt. 0x15
+                pushInt. 0x1e00002c
+                sys. 0x2, 0x16
+                pushInt. 0x1c
+                pushInt. 0x1f000006
+                sys. 0x2, 0x16
+                bitOr.
+                bitOr.
+                if tryJump
                 try tryJump
+                pushInt. 0x7
+                pushInt. 0x6
+                pushInt. 0x10000001
+                sys. 0x2, 0x16 # get numJumpsUsed
+                pushInt. 0x1
+                addi.
+                pushInt. 0x10000001
+                sys 0x3, 0x16 # set numJumpsUsed = numJumpsUsed + 1
+                
                 pushInt. 0xb
                 pushInt. 0x1
                 pushInt. script_16
@@ -111,19 +119,28 @@
           # pushInt. 1.0f
           # equals.
           # bitAnd.
-          pushInt. 0x15
-          pushInt. 0x1e00003d
-          sys. 0x2, 0x16
-          pushInt. 0x1c
-          pushInt. 0x1f00000d
-          sys. 0x2, 0x16
-          bitOr.
 
-          bitAnd.
+          # old, working
+          # pushInt. 0x15
+          # pushInt. 0x1e00003d
+          # sys. 0x2, 0x16
+          # pushInt. 0x1c
+          # pushInt. 0x1f00000d
+          # sys. 0x2, 0x16
+          # bitOr.
+          # bitAnd.
           if shouldMashAirdodge
             pushVar. 0x1, 0x12
             pushInt. 0x2
             equals.
+            pushInt. 0x15
+            pushInt. 0x1e00003d
+            sys. 0x2, 0x16
+            pushInt. 0x1c
+            pushInt. 0x1f00000d
+            sys. 0x2, 0x16
+            bitOr.
+            bitAnd.
             if tryAirdodge
               try tryAirdodgeAction
               pushInt. 0x22
@@ -133,11 +150,24 @@
               tryAirdodgeAction:
             else shouldMashAirdodge
             tryAirdodge:
-              try shouldMashAirdodge
+            pushVar. 0x1, 0x12
+            pushInt. 0x0
+            equals.
+            pushInt. 0x15
+            pushInt. 0x1e000029
+            sys. 0x2, 0x16
+            pushInt. 0x1c
+            pushInt. 0x1f000005
+            sys. 0x2, 0x16
+            bitOr.
+            bitAnd.
+            if tryShieldOn
+              try tryShieldOn
               pushInt. 0x1b
               pushInt. 0x0
               pushInt. script_16 # shield on
               callFunc 0x2
+            tryShieldOn:
           shouldMashAirdodge:
 
           try. showMod3
@@ -158,19 +188,18 @@
           # pushInt. 10.0f
           # floatLess. # noBufferVar < 10 (should be 0.8)
 
-          pushInt. 0x15
-          pushInt. 0x1e000061
-          sys. 0x2, 0x16
-          pushInt. 0x1c
-          pushInt. 0x1f00000e
-          sys. 0x2, 0x16
-          bitOr.
-
-          bitAnd.
           if tryAerial
             pushVar. 0x1, 0x12
             pushInt. 0x2
             equals.
+            pushInt. 0x15
+            pushInt. 0x1e000061
+            sys. 0x2, 0x16
+            pushInt. 0x1c
+            pushInt. 0x1f00000e
+            sys. 0x2, 0x16
+            bitOr.
+            bitAnd.
             if tryAerial
               try tryAerial
               pushInt. 0x6

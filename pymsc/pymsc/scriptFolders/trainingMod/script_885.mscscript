@@ -43,6 +43,24 @@
             else getSinOfAngle
           calcRandomDIInAway:
           pushInt. 0x0
+          pushInt. DIChangeVar
+          sys. 0x2, 0x17
+          pushInt. 30.0f # if it's 30, do random DI in/no DI/DI away
+          equals.
+          if calcRandomDIInAwayNoDI
+            pushInt. 0x0
+            pushInt. 0x3
+            sys. 0x2, 0x9
+            intToFloat 0x0
+            pushInt. 0.5f
+            multf.
+            pushInt. 3.14159f
+            multf.
+            pushInt. 3.14159f
+            subf. # push random left/right/none
+            else getSinOfAngle
+          calcRandomDIInAwayNoDI:
+          pushInt. 0x0
           sys. 0x1, 0x15 # get facing direction
           pushInt. 1.0f # -1 is reversed from normal?
           equals.

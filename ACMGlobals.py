@@ -79,12 +79,14 @@ mashDict = OrderedDict(
     [(0, [CYAN, "MASH\nAIRDODGE"]),
      (1, [MAGENTA, "MASH\nATTACK"]),
      (2, [GREEN, "MASH\nJUMP"]),
-     (3, [BLUE, "RANDOM\nLEDGE"]),
-     (4, [ORANGE, "DAMAGE\n+10"]),
-     (5, [ORANGE, "DAMAGE\n+1"]),
-     (6, [TURQUOISE, "INFINITE\nSHIELD"]),
-     (7, [RED, "HOLD\nSHIELD"]),
-     (8, [WHITE, "NONE"])])
+     (3, [RED, "SPAM\nOPTION"]),
+     (4, [PURPLE, "RANDOM\nTECH"]),
+     (5, [BLUE, "RANDOM\nLEDGE"]),
+     (6, [ORANGE, "DAMAGE\n+10"]),
+     (7, [ORANGE, "DAMAGE\n+1"]),
+     (8, [TURQUOISE, "INFINITE\nSHIELD"]),
+     (9, [RED, "HOLD\nSHIELD"]),
+     (10, [WHITE, "NONE"])])
 
 # string to index
 reverseMashDict = {}
@@ -104,6 +106,8 @@ toggleNumVar = "0x1200004A" # brawl glide data param (originally 60)
 hasEnteredVar = "0x1200004B" # brawl glide data param (originally 1)
 mashToggleVar = "0x1200006E" # brawl cliffclimb over 100% (originally 100)
 mashAttackVar = "0x200023d"
+spamOptionVar = "0x2000240"
+techOptionVar = "0x2000241"
 DIChangeVar = "0x2000126" # brawl max kb to execute momentum commands (originally 0.2)
 DIDirectionVar = "0x2000127" # brawl (originally )
 maxDIChange = 0.17

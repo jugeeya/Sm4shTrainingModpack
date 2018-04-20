@@ -467,6 +467,17 @@ sys. 0x2, 0x16
 pushInt. 0x2
 notEquals. # if in training
 if inTraining
+
+  # change shulk's monado art duration and cooldowns
+  pushInt. 0x7
+  pushInt. 100000.0f # infinity
+  pushInt. 0x5000001 # set duration
+  sys 0x3, 0x16
+  pushInt. 0x7
+  pushInt. 0x1 # 1 frame
+  pushInt. 0x15000002 # set cooldowns
+  sys 0x3, 0x16
+
   pushInt. 0x272e
 
   # rage = 1 + ((percent - 35) * (1.15 - 1) / (150 - 35))
@@ -479,7 +490,7 @@ if inTraining
   pushInt. 0x0
   sys. 0x1, 0x25
   pushInt. 35.0f
-  subf. # (percent - 35)
+  subf. # ((player one's percent - 35)
 
   pushInt. 1.15f
   pushInt. 1.0f

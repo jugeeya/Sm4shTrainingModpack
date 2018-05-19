@@ -1,0 +1,362 @@
+begin 0x0, 0x7
+
+.alias 0x0,SavedX
+.alias 0x1,SavedY
+.alias 0x2,SavedZ
+.alias 0x3,SavedLR
+.alias 0x4,SavedGroundAirState
+.alias 0x5,SavedPercent
+.alias 0x6,SavedState
+
+pushInt. 0x10
+pushInt. isPlayerOneVar
+sys. 0x2, 0x16
+if IsPlayerOne
+  pushInt. P1SavedX
+  setVar 0x0, SavedX
+  pushInt. P1SavedY
+  setVar 0x0, SavedY
+  pushInt. P1SavedZ
+  setVar 0x0, SavedZ
+  pushInt. P1SavedLR
+  setVar 0x0, SavedLR
+  pushInt. P1SavedGroundAirState
+  setVar 0x0, SavedGroundAirState
+  pushInt. P1SavedPercent
+  setVar 0x0, SavedPercent
+  pushInt. P1SavedState
+  setVar 0x0, SavedState
+  else IsCPU
+IsPlayerOne:
+  pushInt. CPUSavedX
+  setVar 0x0, SavedX
+  pushInt. CPUSavedY
+  setVar 0x0, SavedY
+  pushInt. CPUSavedZ
+  setVar 0x0, SavedZ
+  pushInt. CPUSavedLR
+  setVar 0x0, SavedLR
+  pushInt. CPUSavedGroundAirState
+  setVar 0x0, SavedGroundAirState
+  pushInt. CPUSavedPercent
+  setVar 0x0, SavedPercent
+  pushInt. CPUSavedState
+  setVar 0x0, SavedState
+IsCPU:
+
+pushInt. 0x2710
+pushInt. 0x5 # up D-Pad pressed
+sys. 0x2, 0xe
+pushInt. 0x2712
+pushInt. 0x9 # grab held
+sys. 0x2, 0xe
+bitAnd.
+if GrabDPadUp
+  pushInt. 0x6
+  pushVar. 0x0, SavedState
+  sys. 0x2, 0x16
+  pushInt. 0x2
+  equals.
+  if AlertMove
+    pushInt. 0x7
+    pushInt. 0x3
+    pushInt. P1SavedState
+    sys 0x3, 0x16
+    pushInt. 0x7
+    pushInt. 0x3
+    pushInt. CPUSavedState
+    sys 0x3, 0x16
+  AlertMove:
+GrabDPadUp:
+
+pushInt. 0x6
+pushVar. 0x0, SavedState
+sys. 0x2, 0x16
+pushInt. 0x3
+equals.
+if MoveToCameraBounds
+  pushInt. 0x7
+  pushInt. 0x4
+  pushVar. 0x0, SavedState
+  sys 0x3, 0x16
+
+  pushVar. 0x1, 0x12
+  pushInt. 0x0
+  equals.
+  if IsGrounded
+    pushInt. 0x3
+
+    pushInt. 0xb
+    pushInt. 0x6
+    pushVar. 0x0, SavedX
+    sys. 0x2, 0x16
+    pushInt. 0.0f
+    floatLess.
+    subi.
+    sys. 0x1, 0x2c # -X/+X Camera Boundary; 0xb - sign(savedX)
+
+    pushInt. 0xd
+    sys. 0x1, 0x2c # -Y Camera Boundary
+    pushInt. 0x0
+    sys 0x4, 0x14 # set position
+  IsGrounded:
+
+  pushVar. 0x1, 0x12
+  pushInt. 0x2
+  equals.
+  if IsAerial
+    pushInt. 0x3
+
+    pushInt. 0xb
+    pushInt. 0x6
+    pushVar. 0x0, SavedX
+    sys. 0x2, 0x16
+    pushInt. 0.0f
+    floatLess.
+    subi.
+    sys. 0x1, 0x2c # -X/+X Camera Boundary; 0xb - sign(savedX)
+    pushInt. 0x0
+    pushInt. 0x0
+    sys 0x4, 0x14 # set position
+  IsAerial:
+
+  try SetAerial
+    pushInt. 0x2
+    pushInt. script_20
+    callFunc 0x1 # set to air state
+  SetAerial:
+  else MoveToCorrectPos
+MoveToCameraBounds:
+
+pushInt. 0x6
+pushVar. 0x0, SavedState
+sys. 0x2, 0x16
+pushInt. 0x4
+equals.
+if MoveToCorrectPos
+  pushInt. 0x2710
+  pushInt. 0x0
+  pushInt. 0x0
+  sys 0x3, 0x10 # Set horiz and verti speed to 0
+
+  pushInt. 0xd
+  pushInt. 0x0
+  pushInt. 0x0
+  sys 0x3, 0x10 # Set horiz and verti launch speed to 0
+
+  pushInt. 0x11
+  pushInt. 0x1
+  pushInt. 0x0
+  sys 0x3, 0x10 # set v velocity to 0
+
+  pushInt. 0x12
+  pushInt. 0x1
+  pushInt. 0x0
+  sys 0x3, 0x10 # set v velocity to 0
+
+  pushInt. 0xb
+  pushInt. 0x1
+  sys 0x2, 0x10
+
+  pushInt. 0x11
+  pushInt. 0x2
+  pushInt. 0x0
+  sys 0x3, 0x10 # set h velocity to 0
+
+  pushInt. 0x12
+  pushInt. 0x2
+  pushInt. 0x0
+  sys 0x3, 0x10 # set h velocity to 0
+
+  pushInt. 0xb
+  pushInt. 0x2
+  sys 0x2, 0x10
+
+  pushInt. 0x3
+
+  pushInt. 0x6
+  pushVar. 0x0, SavedX
+  sys. 0x2, 0x16
+
+  pushInt. 0x6
+  pushVar. 0x0, SavedY
+  sys. 0x2, 0x16
+
+  pushInt. 0x6
+  pushVar. 0x0, SavedZ
+  sys. 0x2, 0x16
+  sys 0x4, 0x14 # set position
+
+  pushInt. 0x0
+  pushInt. 0x6
+  pushVar. 0x0, SavedLR
+  sys. 0x2, 0x16
+  sys 0x2, 0x14 # set facing direction
+
+  pushInt. 0xc
+  pushInt. 0.0f
+  sys 0x2, 0x24 # set to 0%
+  pushInt. 0x9
+  pushInt. 0x6
+  pushVar. 0x0, SavedPercent
+  sys. 0x2, 0x16
+  pushInt. 0.00001f
+  addf.
+  sys 0x2, 0x24 # set percent
+
+  pushInt. 0x6
+  pushVar. 0x0, SavedGroundAirState
+  sys. 0x2, 0x16
+  pushInt. 0x0
+  equals.
+  if WasGrounded
+    try WasGrounded
+    pushInt. 0x0
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2 # Call Idle action
+  WasGrounded:
+
+  pushInt. 0x6
+  pushVar. 0x0, SavedGroundAirState
+  sys. 0x2, 0x16
+  pushInt. 0x1
+  equals.
+  if WasOnLedge
+    try WasOnLedge
+    pushInt. 0x72
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2 # Call CliffCatch action testing?
+  WasOnLedge:
+
+  pushInt. 0x6
+  pushVar. 0x0, SavedGroundAirState
+  sys. 0x2, 0x16
+  pushInt. 0x2
+  equals.
+  if WasAerial
+    try WasAerial
+    pushInt. 0xe
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2 # Call Falling action
+  WasAerial:
+
+  try. GetXAbsDiff
+    pushInt. 0x1
+    sys. 0x1, 0x15
+    pushInt. 0x6
+    pushVar. 0x0, SavedX
+    sys. 0x2, 0x16
+    subf.
+    pushInt. script_13
+    callFunc 0x1
+  GetXAbsDiff:
+  pushInt. 1.0f
+  floatLessOrEqual.
+  try. GetYAbsDiff
+    pushInt. 0x2
+    sys. 0x1, 0x15
+    pushInt. 0x6
+    pushVar. 0x0, SavedY
+    sys. 0x2, 0x16
+    subf.
+    pushInt. script_13
+    callFunc 0x1
+  GetYAbsDiff:
+  pushInt. 1.0f
+  floatLessOrEqual.
+  bitAnd.
+  if InCorrectPosition
+    pushInt. 0x7
+    pushInt. 0x2
+    pushVar. 0x0, SavedState
+    sys 0x3, 0x16
+  InCorrectPosition:
+MoveToCorrectPos:
+
+pushInt. 0x2710
+pushInt. 0x6 # down D-Pad pressed
+sys. 0x2, 0xe
+pushInt. 0x2712
+pushInt. 0x9 # grab held
+sys. 0x2, 0xe
+bitAnd.
+if GrabDPadDown
+  pushInt. 0x7
+  pushInt. 0x1
+  pushInt. P1SavedState
+  sys 0x3, 0x16
+  pushInt. 0x7
+  pushInt. 0x1
+  pushInt. CPUSavedState
+  sys 0x3, 0x16
+GrabDPadDown:
+
+pushInt. 0x6
+pushVar. 0x0, SavedState
+sys. 0x2, 0x16
+pushInt. 0x1
+equals.
+if SaveAllVariables
+  pushInt. 0x7
+  pushInt. 0x2
+  pushVar. 0x0, SavedState
+  sys 0x3, 0x16
+
+  pushInt. 0x2710
+  pushInt. 0x100001c # Ness magic star
+  pushInt. 0x3 # HipN
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 1.0f
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  pushInt. 0x0
+  sys 0x11, 0x1c
+
+  pushInt. 0x7
+  pushInt. 0x1
+  sys. 0x1, 0x15
+  pushVar. 0x0, SavedX
+  sys 0x3, 0x16
+
+  pushInt. 0x7
+  pushInt. 0x2
+  sys. 0x1, 0x15
+  pushVar. 0x0, SavedY
+  sys 0x3, 0x16
+
+  pushInt. 0x7
+  pushInt. 0x3
+  sys. 0x1, 0x15
+  pushVar. 0x0, SavedZ
+  sys 0x3, 0x16
+
+  pushInt. 0x7
+  pushInt. 0x0
+  sys. 0x1, 0x15
+  pushVar. 0x0, SavedLR
+  sys 0x3, 0x16
+
+  pushInt. 0x7
+  pushInt. 0x0
+  sys. 0x1, 0x25
+  pushVar. 0x0, SavedPercent
+  sys 0x3, 0x16
+
+  pushInt. 0x7
+  pushVar. 0x1, 0x12
+  pushVar. 0x0, SavedGroundAirState
+  sys 0x3, 0x16
+SaveAllVariables:
+end

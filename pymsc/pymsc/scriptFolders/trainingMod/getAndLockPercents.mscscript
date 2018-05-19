@@ -1,0 +1,81 @@
+begin 0x0, 0x0
+pushInt. 0x6
+pushInt. mashToggleVar
+sys. 0x2, 0x16
+pushInt. damage10
+greaterOrEqual.
+pushInt. 0x6
+pushInt. mashToggleVar
+sys. 0x2, 0x16
+pushInt. damage1
+lessOrEqual.
+bitAnd.
+if lockConditionsSet
+  pushInt. 0x7
+  pushInt. 1.0f
+  pushInt. lockConditionsSetVar
+  sys 0x3, 0x16
+  else lockConditionsNotSet
+lockConditionsSet:
+  pushInt. 0x7
+  pushInt. 0.5f
+  pushInt. lockConditionsSetVar
+  sys 0x3, 0x16
+lockConditionsNotSet:
+
+pushInt. 0x10
+pushInt. isPlayerOneVar
+sys. 0x2, 0x16
+if isPlayerOne
+  pushInt. 0x7
+  pushInt. 0x0
+  sys. 0x1, 0x25
+  pushInt. playerOneDamageVar # put player one percentage here
+  sys 0x3, 0x16
+
+  pushInt. 0x6
+  pushInt. shouldLockP1DamageVar #shouldLockP1
+  sys. 0x2, 0x16
+  pushInt. 1.0f
+  equals.
+  pushInt. 0x10
+  pushInt. hasSetDamageVar
+  sys. 0x2, 0x16
+  not. # and not hasSetDamageVar
+  bitAnd.
+  if lockP1Damage
+    pushInt. 0x2710
+    pushInt. hasSetDamageVar
+    sys 0x2, 0x16 # set hasSetDamageVar
+
+    pushInt. 0x7
+    pushInt. 0x0
+    sys. 0x1, 0x25
+    pushInt. playerOneLockedDamageVar # put player one locked percentage here
+    sys 0x3, 0x16
+  lockP1Damage:
+  else isCPU
+isPlayerOne:
+  pushInt. 0x6
+  pushInt. shouldLockCPUDamageVar #shouldLockCPU
+  sys. 0x2, 0x16
+  pushInt. 1.0f
+  equals.
+  pushInt. 0x10
+  pushInt. hasSetDamageVar
+  sys. 0x2, 0x16
+  not. # and not hasSetDamageVar
+  bitAnd.
+  if lockCPUDamage
+    pushInt. 0x2710
+    pushInt. hasSetDamageVar
+    sys 0x2, 0x16 # set hasSetDamageVar
+
+    pushInt. 0x7
+    pushInt. 0x0
+    sys. 0x1, 0x25
+    pushInt. CPULockedDamageVar # put CPU locked percentage here
+    sys 0x3, 0x16
+  lockCPUDamage:
+isCPU:
+end

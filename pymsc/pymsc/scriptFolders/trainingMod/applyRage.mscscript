@@ -1,0 +1,47 @@
+begin 0x0, 0x0
+pushInt. 0x272e
+
+# rage = 1 + ((percent - 35) * (1.15 - 1) / (150 - 35))
+# (((((((percent + damage * staleness) / 10 + (((percent + damage * staleness) * base_damage * (1 - (1 - staleness) * 0.3)) / 20)) * 1.4 * (200 / (weight + 100))) + 18) * (kbg / 100)) + bkb)) * (r * rage)
+# ^credit: ruben_dal
+# so we can just calculate and multiply rage here
+
+pushInt. 1.0f
+
+pushInt. 0x0
+sys. 0x1, 0x25
+pushInt. 35.0f
+subf. # (percent - 35)
+
+pushInt. 1.15f
+pushInt. 1.0f
+subf.
+pushInt. 150.0f
+pushInt. 35.0f
+subf.
+divf. # (1.15 - 1) / (150 - 35)
+
+multf. # ((percent - 35) * (1.15 - 1) / (150 - 35))
+addf. # 1 + ((percent - 35) * (1.15 - 1) / (150 - 35))
+
+# of course, <35%: 1.0; > 150%: 1.15
+pushInt. 0x0
+sys. 0x1, 0x25
+pushInt. 35.0f
+floatLess.
+if lessThan35
+  pop
+  pushInt. 1.0f
+  else greaterThan150
+lessThan35:
+pushInt. 0x0
+sys. 0x1, 0x25
+pushInt. 150.0f
+floatGreater. # greater
+if greaterThan150
+  pop
+  pushInt. 1.15f
+greaterThan150:
+
+sys 0x2, 0x2e # multiply knockback given
+end

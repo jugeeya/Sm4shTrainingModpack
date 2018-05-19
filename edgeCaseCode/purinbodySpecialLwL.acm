@@ -11,6 +11,7 @@ MoveDef SpecialLwL
 
 	Effect()
 	{
+		Allow_Interrupt()
 		Asynchronous_Timer(Frames=1)
 		Color_Overlay(Red=0, Green=0, Blue=255, Alpha=128)
 		Asynchronous_Timer(Frames=2)

@@ -148,6 +148,9 @@ def main():
                     outputFile.write(currFile.processFile(isTrainingOnly=trainingMode, isWeapon=weaponBool))
                     specificEffectLines = currFile.getSpecificEffectLines()
                     outputFile.close()
+                    if char == "bayonetta" and file == "SpecialAirHi.acm":
+                        shutil.copy("edgeCaseCode/bayonettabodySpecialAirHi.acm", "{}/animcmd/{}".format(outputDir, file))
+                        print("Copying special edge case for bayonetta...")
 
             compiledDir = "AllFighterDataCompiled/{}Compiled".format(inputDir[:-5])
             if trainingMode:

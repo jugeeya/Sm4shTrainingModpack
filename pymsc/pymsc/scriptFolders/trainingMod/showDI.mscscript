@@ -1,0 +1,237 @@
+begin 0x0, 0xa
+
+.alias 0,LaunchSpeedXVar
+.alias 1,LaunchSpeedYVar
+.alias 2,HorizontalSpeedVar
+.alias 3,VerticalSpeedVar
+.alias 4,InitLaunchXVar
+.alias 5,InitLaunchYVar
+.alias 6,CurrX
+.alias 7,CurrY
+.alias 8,HitstunFrames
+.alias 9,TotalHitstunFrames
+
+pushInt. 0x2723
+pushInt. withDIGraphic
+pushInt. 0x0
+pushInt. 0x0
+sys 0x4, 0x1c # terminate graphic
+pushInt. 0x2723
+pushInt. noDIGraphic
+pushInt. 0x0
+pushInt. 0x0
+sys 0x4, 0x1c # terminate graphic
+
+pushInt. 0x6
+pushInt. 0x1000003e
+sys. 0x2, 0x16
+setVar 0, HitstunFrames
+
+pushVar. 0, HitstunFrames
+setVar 0, TotalHitstunFrames
+
+   pushInt. 0x1
+   sys. 0x1, 0x15
+   floatVarSet 0, CurrX
+
+   pushInt. 0x2
+   sys. 0x1, 0x15
+   floatVarSet 0, CurrY
+
+   pushInt. 0x4
+   pushInt. 0x4
+   sys. 0x2, 0x11
+   floatVarSet 0, LaunchSpeedXVar
+
+   pushInt. 0x5
+   pushInt. 0x4
+   sys. 0x2, 0x11
+   # gravity boost is already applied
+   #pushInt. 0x0
+   #pushInt. 0x3000018
+   #sys. 0x2, 0x17
+   #pushInt. 0.075f
+   #subf.
+   #pushInt. 5.0f
+   #multf.
+   #addf.
+   floatVarSet 0, LaunchSpeedYVar
+
+   pushVar. 0, LaunchSpeedXVar
+   floatVarSet 0, InitLaunchXVar
+
+   pushVar. 0, LaunchSpeedYVar
+   floatVarSet 0, InitLaunchYVar
+   
+   # set vertical character speed to 0
+   pushInt. 0x0
+   floatVarSet 0, VerticalSpeedVar
+
+   # set horizontal character speed to 0
+   pushInt. 0x0
+   floatVarSet 0, HorizontalSpeedVar
+
+   # place graphic at point
+   pushInt. 0x3
+   pushInt. noDIGraphic
+   pushVar. 0, CurrX
+   pushVar. 0, CurrY
+   pushInt. 0x0 # Z
+
+   # rotations
+   pushInt. 0x0
+   pushInt. 0x0
+   pushInt. 0x0
+              
+   pushInt. noDISize
+   pushInt. 0x0
+   pushInt. 0x0
+   sys 0xb, 0x1c
+   
+# start loop
+hitstunLoop:
+   # calculate new launch speeds and point
+   pushVar. 0, LaunchSpeedXVar
+
+   pushInt. 0xa
+   pushVar. 0, InitLaunchXVar
+   pushVar. 0, InitLaunchYVar 
+   sys. 0x3, 0xa
+   
+   pushInt. -0.051f
+   multf.
+   addf.
+   floatVarSet 0, LaunchSpeedXVar
+
+   #try. launchSpeedXAbs
+   #   pushVar. 0, LaunchSpeedXVar
+   #   pushInt. script_13
+   #   callFunc 0x1
+   #launchSpeedXAbs:
+   #pushInt. 0.051f
+   #floatLess.
+   #if negligibleX
+   #   pushInt. 0x0
+   #   floatVarSet 0, LaunchSpeedXVar
+   #negligibleX:
+
+   pushVar. 0, LaunchSpeedYVar
+
+   pushInt. 0xa
+   pushVar. 0, InitLaunchYVar
+   pushVar. 0, InitLaunchXVar 
+   sys. 0x3, 0xa
+
+   pushInt. -0.051f
+   multf.
+   addf.
+   floatVarSet 0, LaunchSpeedYVar
+
+   #try. launchSpeedYAbs
+   #   pushVar. 0, LaunchSpeedYVar
+   #   pushInt. script_13
+   #   callFunc 0x1
+   #launchSpeedYAbs:
+   #pushInt. 0.051f
+   #floatLess.
+   #if negligibleY
+   #   pushInt. 0x0
+   #   floatVarSet 0, LaunchSpeedYVar
+   #negligibleY:
+
+   pushVar. 0x1, 0x12
+   pushInt. 0x2
+   equals.
+   if isInAir
+      # extra processing for gravity/fallspeed in Y
+
+      pushVar. 0, VerticalSpeedVar
+      pushInt. 0x0
+      pushInt. 0x3000018
+      sys. 0x2, 0x17 # char gravity
+      subf.
+      floatVarSet 0, VerticalSpeedVar
+
+      pushVar. 0, VerticalSpeedVar
+      pushInt. 0x0
+      pushInt. 0x3000019
+      sys. 0x2, 0x17
+      negf.
+      floatGreater.
+      if maxIsCharSpeed
+         pushVar. 0, VerticalSpeedVar
+         else doneMax
+      maxIsCharSpeed:
+        pushInt. 0x0
+        pushInt. 0x3000019
+        sys. 0x2, 0x17
+        negf. # -fallspeed
+      doneMax:
+      floatVarSet 0, VerticalSpeedVar
+   
+      pushInt. 0x0
+      floatVarSet 0, HorizontalSpeedVar
+   isInAir:
+
+   pushVar. 0x1, 0x12
+   pushInt. 0x0
+   equals.
+   if isOnGround
+      pushInt. 0x0
+      floatVarSet 0, VerticalSpeedVar
+
+      pushVar. 0, HorizontalSpeedVar
+      pushInt. 0x0
+      pushInt. 0x3000007
+      sys. 0x2, 0x17 # char traction
+      subf.
+      floatVarSet 0, HorizontalSpeedVar
+   isOnGround:
+
+   # Set new positions
+
+   pushVar. 0, CurrX
+   pushVar. 0, LaunchSpeedXVar
+   pushVar. 0, HorizontalSpeedVar
+   addf.
+   addf.
+   floatVarSet 0, CurrX # horizontal_position += horizontalLaunchSpeed + horizontalSpeed
+
+   pushVar. 0, CurrY
+   pushVar. 0, LaunchSpeedYVar
+   pushVar. 0, VerticalSpeedVar
+   addf.
+   addf.
+   floatVarSet 0, CurrY # vert_position += vertLaunchSpeed + max(gravity, fall speed) 
+
+   pushVar. 0, HitstunFrames
+   pushInt. 0x3
+   modi.
+   pushInt. 0x1
+   equals.
+   if oddFrame
+      # place graphic
+      pushInt. 0x3
+      pushInt. noDIGraphic
+      pushVar. 0, CurrX
+      pushVar. 0, CurrY
+      pushInt. 0x0 # Z
+
+      # rotations
+      pushInt. 0x0
+      pushInt. 0x0
+      pushInt. 0x0
+
+      pushInt. noDISize
+      pushInt. 0x0
+      pushInt. 0x0
+      sys 0xb, 0x1c
+   oddFrame:
+i-- 0, HitstunFrames
+pushVar. 0, HitstunFrames
+pushInt. 0x0
+greater.
+if hitstunRemains
+   else hitstunLoop
+hitstunRemains:
+end

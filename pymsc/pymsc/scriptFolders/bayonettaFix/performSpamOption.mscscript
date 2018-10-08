@@ -1,0 +1,382 @@
+begin 0x0, 0x1
+pushInt. 0x6
+pushInt. spamOptionVar
+sys. 0x2, 0x16
+floatVarSet 0,0 # holds spamOptionVar value
+
+# try airdodge
+pushVar. 0x1, 0x12
+pushInt. 0x2
+equals.
+pushInt. 0x15
+pushInt. 0x1e00003d
+sys. 0x2, 0x16
+pushInt. 0x1c
+pushInt. 0x1f00000d
+sys. 0x2, 0x16
+bitOr.
+bitAnd.
+pushVar. 0,0
+pushInt. 50.0f
+equals.
+bitAnd.
+if tryAirdodge
+  try tryAirdodge
+  pushInt. 0x22
+  pushInt. 0x0
+  pushInt. script_16 # airdodge
+  callFunc 0x2
+tryAirdodge:
+
+# try jump: either from ground, or aerial
+pushVar. 0,0
+pushInt. 51.0f
+equals.
+if tryJump
+  pushInt. 0x6
+  pushInt. 0x10000001
+  sys. 0x2, 0x16
+  pushInt. 0x6
+  pushInt. 0x10000002
+  sys. 0x2, 0x16
+  lessThan.
+  if tryJump
+    pushVar. 0x1, 0x12
+    pushInt. 0x2
+    equals.
+    pushInt. 0x15
+    pushInt. 0x1e00003e
+    sys. 0x2, 0x16
+    pushInt. 0x15
+    pushInt. 0x1e00003f
+    sys. 0x2, 0x16
+    pushInt. 0x1c
+    pushInt. 0x1f000011
+    sys. 0x2, 0x16
+    bitOr.
+    bitOr.
+    bitAnd.
+    if aerialJump
+      try aerialJumpAction
+      pushInt. 0x7
+      pushInt. 0x6
+      pushInt. 0x10000001
+      sys. 0x2, 0x16 # get numJumpsUsed
+      pushInt. 0x1
+      addi.
+      pushInt. 0x10000001
+      sys 0x3, 0x16 # set numJumpsUsed = numJumpsUsed + 1
+
+      pushInt. 0x6
+      pushInt. 0x1300010c
+      sys. 0x2, 0x16
+      pushInt. 0x1
+      equals.
+      if normalJumpType
+       pushInt. 0xc
+       else callJumpAction
+      normalJumpType:
+        pushInt. 0xd
+      callJumpAction:
+      pushInt. 0x1
+      pushInt. script_16
+      callFunc 0x2
+      aerialJumpAction:
+      else tryJump
+    aerialJump:
+      pushInt. 0x15
+      pushInt. 0x1e00002b
+      sys. 0x2, 0x16
+      pushInt. 0x15
+      pushInt. 0x1e00002c
+      sys. 0x2, 0x16
+      pushInt. 0x1c
+      pushInt. 0x1f000006
+      sys. 0x2, 0x16
+      bitOr.
+      bitOr.
+      if tryJump
+      try tryJump
+      pushInt. 0x7
+      pushInt. 0x6
+      pushInt. 0x10000001
+      sys. 0x2, 0x16 # get numJumpsUsed
+      pushInt. 0x1
+      addi.
+      pushInt. 0x10000001
+      sys 0x3, 0x16 # set numJumpsUsed = numJumpsUsed + 1
+
+      pushInt. 0xb
+      pushInt. 0x1
+      pushInt. script_16
+      callFunc 0x2
+tryJump:
+
+# try aerial attack (separate from specials now)
+pushVar. 0,0
+pushInt. 52.25f
+floatGreaterOrEqual.
+pushVar. 0,0
+pushInt. 56.0f
+floatLessOrEqual.
+bitAnd.
+if tryAerial
+  # experimental
+  pushInt. 0x2710
+  pushInt. 0x21000005
+  sys 0x2, 0x16
+
+  pushVar. 0x1, 0x12
+  pushInt. 0x2
+  equals.
+  pushInt. 0x15
+  pushInt. 0x1e000061
+  sys. 0x2, 0x16
+  pushInt. 0x1c
+  pushInt. 0x1f00000e
+  sys. 0x2, 0x16
+  bitOr.
+  bitAnd.
+  if tryAerial
+    try tryAerial
+    pushInt. 0x34
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+tryAerial:
+
+# try special attacks
+pushVar. 0,0
+pushInt. 57.0f
+floatGreaterOrEqual.
+pushVar. 0,0
+pushInt. 60.0f
+floatLessOrEqual.
+bitAnd.
+if trySpecial
+  pushVar. 0,0
+  pushInt. 58.0f
+  floatEqual.
+  pushVar. 0,0
+  pushInt. 59.0f
+  floatEqual.
+  bitOr. # SpecialS or SpecialHi
+  pushVar. 0x1, 0x12
+  pushInt. 0x2
+  equals.
+  not. # if not in air
+  bitAnd.
+  if trySpecial
+  pushInt. 0x1c
+  pushInt. 0x1f00000a
+  sys. 0x2, 0x16
+  pushInt. 0x1c
+  pushInt. 0x1f000000
+  sys. 0x2, 0x16
+  bitOr.
+
+  pushInt. 0x15
+  pushInt. 0x1e000062
+  pushVar. 0,0
+  pushInt. 57.0f # {57,...,60} - 57 = {0,...,3}
+  subf.
+  floatToInt 0x0
+  addi.
+  sys. 0x2, 0x16
+  bitOr.
+  if trySpecial
+    try trySpecial
+    pushVar. 0,0
+    pushInt. 57.0f
+    subf.
+    floatToInt 0x0
+    pushInt. 0x152
+    addi.
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+trySpecial:
+
+# try grounded attacks
+pushVar. 0,0
+pushInt. 61.0f
+floatGreaterOrEqual.
+pushVar. 0,0
+pushInt. 71.0f
+floatLessOrEqual.
+bitAnd.
+if tryGrounded
+  pushInt. 0x1c
+  pushInt. 0x1f000003
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e000052
+  sys. 0x2, 0x16
+  bitOr.
+  pushVar. 0,0
+  pushInt. 61.0f
+  equals.
+  bitAnd.
+  if tryJab
+    try tryJab
+    pushInt. 0x25
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+  tryJab:
+
+  pushInt. 0x1c
+  pushInt. 0x1f000003
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e000055
+  pushVar. 0,0
+  pushInt. 62.0f
+  subf.
+  floatToInt 0
+  addi.
+  sys. 0x2, 0x16 # get 0x...55 + {0,1,2}
+  bitOr.
+  pushVar. 0,0
+  pushInt. 62.0f
+  floatGreaterOrEqual.
+  pushVar. 0,0
+  pushInt. 64.0f
+  floatLessOrEqual.
+  bitAnd.
+  bitAnd.
+  if tryTilt
+    try tryTilt
+    pushInt. 0x28
+    pushVar. 0,0
+    pushInt. 62.0f
+    subf.
+    floatToInt 0
+    addi.
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+  tryTilt:
+
+  pushInt. 0x1c
+  pushInt. 0x1f000003
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e000059
+  pushVar. 0,0
+  pushInt. 65.0f
+  subf.
+  floatToInt 0
+  pushInt. 3
+  multi.
+  addi.
+  sys. 0x2, 0x16 # get 0x...59 + 3*{0,1,2}
+  bitOr.
+  pushVar. 0,0
+  pushInt. 65.0f
+  floatGreaterOrEqual.
+  pushVar. 0,0
+  pushInt. 67.0f
+  floatLessOrEqual.
+  bitAnd.
+  bitAnd.
+  if trySmash
+    try trySmash
+    pushInt. 0x2b
+    pushVar. 0,0
+    pushInt. 65.0f
+    subf.
+    floatToInt 0
+    pushInt. 3
+    multi.
+    addi.
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+  trySmash:
+
+  pushInt. 0x1c
+  pushInt. 0x1f000003
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e000054
+  sys. 0x2, 0x16
+  bitOr.
+  pushVar. 0,0
+  pushInt. 68.0f
+  equals.
+  bitAnd.
+  if tryDashAttack
+    try tryDashAttack
+    pushInt. 0x27
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+  tryDashAttack:
+
+  pushInt. 0x1c
+  pushInt. 0x1f000002
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e00006d
+  sys. 0x2, 0x16
+  bitOr.
+  pushVar. 0,0
+  pushInt. 69.0f
+  equals.
+  bitAnd.
+  if tryGrab
+    try tryGrab
+    pushInt. 0x35
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+  tryGrab:
+
+  pushInt. 0x1c
+  pushInt. 0x1f000004
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e000026
+  sys. 0x2, 0x16
+  bitOr.
+  pushVar. 0,0
+  pushInt. 70.0f
+  equals.
+  bitAnd.
+  if trySpotdodge
+    try trySpotdodge
+    pushInt. 0x1f
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+  trySpotdodge:
+
+  pushInt. 0x1c
+  pushInt. 0x1f000004
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e000027
+  sys. 0x2, 0x16
+  pushInt. 0x15
+  pushInt. 0x1e000028
+  sys. 0x2, 0x16
+  bitOr.
+  bitOr.
+  pushVar. 0,0
+  pushInt. 71.0f
+  equals.
+  bitAnd.
+  if tryRoll
+    try tryRoll
+    pushInt. 0x20
+    pushInt. 0
+    pushInt. 2
+    sys. 0x2, 0x9
+    addi. # randomly push EscapeF or EscapeB
+    pushInt. 0x0
+    pushInt. script_16
+    callFunc 0x2
+  tryRoll:
+tryGrounded:
+end

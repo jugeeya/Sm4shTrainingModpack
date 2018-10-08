@@ -527,6 +527,16 @@ class ACMFile:
         filename = self.filePath
         basename = os.path.basename(filename)
 
+        with open(filename, newline="\r\n") as f:
+            lines = f.readlines()
+        lines = [x.strip('\n') for x in lines]
+        #if self.trainingOnly:
+        self.parseForEffect(lines)
+        for l in lines:
+            self.myLines.append(l)
+
+        tsvLines = []
+
         if isBlacklisted:
             self.blacklisted = True
             self.effectLines = ""
@@ -536,6 +546,7 @@ class ACMFile:
                 if basename in {"EntryR.acm", "EntryL.acm"}:
                     self.addEffect(basicVariableSet.format("0x0", toggleNumVar))
                     self.addEffect(basicVariableSet.format("0x0", hasEnteredVar))
+                    self.effectLines += self.origEffectLines
             else:
                 if basename in {"EntryR.acm", "EntryL.acm"}:
                     self.addEffect(basicVariableSet.format("0x2", hasEnteredVar))
@@ -549,14 +560,15 @@ class ACMFile:
                     self.addEffect(bitVariableSet.format(shouldShowFullModVar))
                     self.inCompare -= 1
                     self.addEffect('}')
+                    self.effectLines += self.origEffectLines
 
         if not self.shouldProcessVariables and not self.weaponBool and not self.wifiSafe:
             self.trainingOnly = True
             if basename == "0x00000000.acm" or basename.startswith("Entry"):
                 pass
-            elif basename in upTaunts or basename.startswith("Wait"):
+            elif basename in upTaunts:
                 self.addEffect(basicCompare.format(hasEnteredVar, notEqualTo, "0x0"))
-            elif basename in sideTaunts or basename in downTaunts or basename in noBufferAnimations or basename.startswith("Wait"):
+            elif basename in sideTaunts or basename in downTaunts or basename in noBufferAnimations:
                 self.addEffect(basicCompare.format(toggleNumVar, greaterThanOrEqualTo, "0x1"))
                 self.addEffect(defaultTRUE)
                 self.inCompare += 1
@@ -609,7 +621,10 @@ class ACMFile:
                 self.addEffect(defaultFALSE)
                 self.inCompare += 1
 
-                self.addEffect(basicCompare.format(toggleNumVar, equalTo, "0x1"))
+                if basename.startswith("Wait"):
+                    self.addEffect(basicCompare.format(hasEnteredVar, notEqualTo, "0x0"))
+                else:
+                    self.addEffect(basicCompare.format(toggleNumVar, equalTo, "0x1"))
             else:
                 self.addEffect(basicCompare.format(toggleNumVar, equalTo, "0x1"))
 
@@ -625,16 +640,6 @@ class ACMFile:
             self.addEffect(defaultTRUE)
             self.inCompare += 1
         '''
-
-        with open(filename, newline="\r\n") as f:
-            lines = f.readlines()
-        lines = [x.strip('\n') for x in lines]
-        if self.trainingOnly:
-            self.parseForEffect(lines)
-        for l in lines:
-            self.myLines.append(l)
-
-        tsvLines = []
 
         # tsvData found in TSV folder; read any file for example layout
         charName = os.path.split(os.path.dirname(filename))[0][:-5]
@@ -684,6 +689,7 @@ class ACMFile:
         elif not self.weaponBool and self.didHandleSubroutine(basename):
             pass
         elif self.didHandleEdgeCase(edgeCaseFilename):
+            print("HANDLED EDGE CASE FOR " + edgeCaseFilename)
             pass
         elif self.didHandleTaunts(basename):
             pass
@@ -1592,7 +1598,35 @@ class ACMFile:
                 self.addEffect(defaultFALSE)
                 self.inCompare = self.inCompare + 1
             self.inCompare -= 1
-            while self.inCompare > 4:
+            while self.inCompare > 3:
+                self.addEffect("}")
+                self.inCompare -= 1
+            self.addEffect("}")
+
+            self.addEffect(defaultFALSE)
+            self.inCompare += 1            
+            self.addEffect(basicCompare.format(mashToggleVar, equalTo, hex(reverseMashDict['RANDOM\nLEDGE'])))
+            self.addEffect(defaultTRUE)
+            self.inCompare+=1
+
+            LedgeValues = [1.35, 0, 1, 2, 3, 1.35]
+            LedgeDict = OrderedDict(
+                [(1.35, "RANDOM"), (0, "NORMAL"), (1, "JUMP"), (2, "ROLL"), (3, "ATTACK")])
+            for LedgeIndex in range(len(LedgeValues)-1):
+                currVal = LedgeValues[LedgeIndex]
+                newVal = LedgeValues[LedgeIndex+1]
+                attackString = LedgeDict[newVal]
+                self.addEffect(floatCompare.format(randomLedgeVar, equalTo, self.getHexFloat(currVal)))
+                self.addEffect(defaultTRUE)
+                self.inCompare += 1
+                self.addEffect(floatVariableSet.format(newVal, randomLedgeVar))
+                self.printString(attackString)
+                self.inCompare -= 1
+                self.addEffect("}")
+                self.addEffect(defaultFALSE)
+                self.inCompare = self.inCompare + 1
+            self.inCompare -= 1
+            while self.inCompare > 5:
                 self.addEffect("}")
                 self.inCompare -= 1
             self.addEffect("}")
@@ -1694,6 +1728,7 @@ class ACMFile:
         if basename == unshield:
             self.addLagEffects('7')
         elif basename == shieldDamage:
+            self.addEffect(asynchronousTimer.format("1"))
             self.addEffect(colorOverlay.format(*GREEN))
             self.addEffect(scriptEnd)
         elif basename == ledgecatch:
@@ -1773,9 +1808,9 @@ class ACMFile:
         return True
 
     def didHandleEdgeCase(self, filename):
-        # special edge case: bayo up b not working in vanilla fix; doesn't work
+        # special edge case: bayo up b not working in vanilla fix
         '''
-        if filename == "bayonettabodySpecialHi.acm" and self.trainingOnly:
+        if filename == "bayonettabodySpecialAirHi.acm" and self.trainingOnly:
             self.effectLines = "\tEffect()\n\t{\r\n" + self.origEffectLines
             return True
         '''

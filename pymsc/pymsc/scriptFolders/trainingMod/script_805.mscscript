@@ -1,0 +1,105 @@
+        begin 0x0, 0x0
+        #pushInt. 0x7
+        #pushInt. 0x1
+        #pushInt. noDIFirstPointVar
+        #sys 0x3, 0x16
+        try. loc_1
+        pushInt. script_802
+        callFunc 0x0
+
+loc_1:
+        pushInt. 0x1
+        equals. 
+        if loc_2
+        pushInt. 0x1
+        return_6 
+
+loc_2:
+        try. loc_3
+        pushInt. script_803
+        callFunc 0x0
+
+loc_3:
+        pushInt. 0x1
+        equals. 
+        if loc_4
+        pushInt. 0x1
+        return_6 
+
+loc_4:
+        try. loc_5
+        pushInt. script_804
+        callFunc 0x0
+
+loc_5:
+        pushInt. 0x1
+        equals. 
+        if loc_6
+        pushInt. 0x1
+        return_6 
+
+loc_6:
+        try. loc_7
+        pushInt. script_59
+        callFunc 0x0
+
+loc_7:
+        if loc_8
+        pushInt. 0x1
+        return_6 
+
+loc_8:
+        try. loc_9
+        pushInt. script_61
+        callFunc 0x0
+
+loc_9:
+        if loc_A
+        pushInt. 0x1
+        return_6 
+
+loc_A:
+        try. loc_B
+        pushInt. script_62
+        callFunc 0x0
+
+loc_B:
+        if loc_C
+        pushInt. 0x1
+        return_6 
+
+loc_C:
+        try. loc_D
+        pushInt. script_63
+        callFunc 0x0
+
+loc_D:
+        if loc_E
+        pushInt. 0x1
+        return_6 
+
+loc_E:
+        pushVar. 0x1, 0x3
+        not. 
+        if loc_11
+        try. loc_F
+        pushInt. script_809
+        callFunc 0x0
+
+loc_F:
+        if loc_10
+        pushInt. 0x1
+        return_6 
+
+loc_10:
+        else loc_12
+
+loc_11:
+        try loc_12
+        pushInt. script_811
+        callFunc 0x0
+
+loc_12:
+        pushInt. 0x0
+        return_6 
+        end 

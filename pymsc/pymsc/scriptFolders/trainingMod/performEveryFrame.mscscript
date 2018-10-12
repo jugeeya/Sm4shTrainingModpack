@@ -54,5 +54,55 @@ if newFrame
     pushInt. saveStates
     callFunc 0x0
   doSavedStates:
+
+  pushInt. 0x6
+  pushInt. toggleNumVar
+  sys. 0x2, 0x16
+  pushInt. fullMod
+  equals.
+  pushInt. 0x10
+  pushInt. isPlayerOneVar
+  sys. 0x2, 0x16
+  not.
+  bitAnd.
+  if shouldShowDI
+    pushInt. 0x6
+    pushInt. 0x1000003e
+    sys. 0x2, 0x16
+    pushInt. 0x0
+    greater.
+    if inHitstun
+      pushInt. 0x3
+      pushInt. withDIGraphic
+      pushInt. 0x1
+      sys. 0x1, 0x15 # current X
+      pushInt. 0x2
+      sys. 0x1, 0x15 # current Y
+      pushInt. 0x3
+      sys. 0x1, 0x15 # current Z
+
+      pushInt. 0x0
+      pushInt. 0x0 # Yrot
+      pushInt. 0x0
+
+      # adjust according to graphic
+      pushInt. withDISize
+      pushInt. 0x0
+      pushInt. 0x0
+      sys 0xb, 0x1c
+      else doneHitstun
+    inHitstun:
+      pushInt. 0x2723
+      pushInt. withDIGraphic
+      pushInt. 0x0
+      pushInt. 0x0
+      sys 0x4, 0x1c # terminate graphic
+      pushInt. 0x2723
+      pushInt. noDIGraphic
+      pushInt. 0x0
+      pushInt. 0x0
+      sys 0x4, 0x1c # terminate graphic
+    doneHitstun:
+  shouldShowDI:
 newFrame:
 end

@@ -1,4 +1,3 @@
-
         begin 0x0, 0x1
         try. showMod
           pushInt. doMod
@@ -17,15 +16,44 @@
           pushInt. 121
           sys. 0x2, 0x9
           intToFloat 0x0 # random frame 0->121
-          floatGreater. # correct frame
+          floatEqual. # correct frame
+          pushInt. 0x1
+          sys. 0x1, 0x13
+          pushInt. 130.0f
+          floatGreaterOrEqual.
+          bitOr. # or if after than the 130th frame 
           if shouldRandomLedgeGetup
-            pushInt. 0
-            pushInt. 4
-            sys. 0x2, 0x9
-            setVar 0, 0
+            pushInt. 0x6
+            pushInt. randomLedgeVar
+            sys. 0x2, 0x16
+            pushInt. 1.35f
+            floatEqual.
+            if actualRandomLedge
+              pushInt. 0
+              pushInt. 4
+              sys. 0x2, 0x9
+              intToFloat 0
+              else doneChoosingOption
+            actualRandomLedge:
+              pushInt. 0x6
+              pushInt. randomLedgeVar
+              sys. 0x2, 0x16
+            doneChoosingOption:
+            floatVarSet 0, 0
+
+            pushVar. 0,0
+            pushInt. 0.0f
+            equals.
+            if doNormal
+              try doNormal
+              pushInt. 0x76
+              pushInt. 0x1
+              pushInt. script_16
+              callFunc 0x2
+            doNormal:
 
             pushVar. 0, 0
-            pushInt. 0
+            pushInt. 1.0f
             equals.
             if doJump
               try doJump
@@ -36,18 +64,7 @@
             doJump:
 
             pushVar. 0,0
-            pushInt. 1
-            equals.
-            if doAttack
-              try doAttack
-              pushInt. 0x75
-              pushInt. 0x1
-              pushInt. script_16
-              callFunc 0x2
-            doAttack:
-
-            pushVar. 0,0
-            pushInt. 2
+            pushInt. 2.0f
             equals.
             if doRoll
               try doRoll
@@ -58,15 +75,16 @@
             doRoll:
 
             pushVar. 0,0
-            pushInt. 3
+            pushInt. 3.0f
             equals.
-            if doNormal
-              try doNormal
-              pushInt. 0x76
+            if doAttack
+              try doAttack
+              pushInt. 0x75
               pushInt. 0x1
               pushInt. script_16
               callFunc 0x2
-            doNormal:
+            doAttack:
+
         shouldRandomLedgeGetup:
 
         pushVar. 0x1, 0x12

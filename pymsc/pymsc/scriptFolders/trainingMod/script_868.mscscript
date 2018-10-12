@@ -1,4 +1,9 @@
         begin 0x0, 0x2
+        #pushInt. 0x7
+        #pushInt. 0x1
+        #pushInt. noDIFirstPointVar
+        #sys 0x3, 0x16
+
         pushInt. 0x6
         pushInt. 0x1000003e
         sys. 0x2, 0x16

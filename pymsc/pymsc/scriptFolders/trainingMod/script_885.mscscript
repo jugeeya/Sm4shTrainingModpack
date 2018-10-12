@@ -1,7 +1,23 @@
         begin 0x0, 0x11
-        try. showMod
-          pushInt. doMod
+        pushInt. 0x6
+        pushInt. toggleNumVar
+        sys. 0x2, 0x16
+        pushInt. fullMod
+        equals.
+        pushInt. 0x10
+        pushInt. isPlayerOneVar
+        sys. 0x2, 0x16
+        not.
+        bitAnd.
+        if shouldShowDI
+        try shouldShowDI
+          pushInt. showDI
           callFunc 0x0
+        shouldShowDI:
+
+        try. showMod
+            pushInt. doMod
+            callFunc 0x0
         showMod:
         pushInt. 0x0
         pushInt. DIChangeVar
@@ -74,15 +90,19 @@
               pushInt. 3.14159f
               pushInt. 0x0
               pushInt. DIChangeVar
-              sys. 0x2, 0x17 , vals should be -pi through pi
+              sys. 0x2, 0x17 # vals should be -pi through pi
               subf.
               else getSinOfAngle
             angleIsPositive:
+              try. getDIChangeAbs
+                pushInt. 0x0
+                pushInt. DIChangeVar
+                sys. 0x2, 0x17 # vals should be -pi through pi
+                pushInt. script_13
+                callFunc 0x1
+              getDIChangeAbs:
               pushInt. 3.14159f
-              pushInt. 0x0
-              pushInt. DIChangeVar
-              sys. 0x2, 0x17 , vals should be -pi through pi
-              addf.
+              subf.
               else getSinOfAngle
           shouldReverse:
           pushInt. 0x0
@@ -110,6 +130,7 @@
           pushVar. 0x1, 0x20 # stickY
           floatVarSet 0x0, 0x1
         done:
+
         pushVar. 0x0, 0x0
         pushInt. 0x0
         floatNotEqual.

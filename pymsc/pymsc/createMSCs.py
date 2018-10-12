@@ -1,12 +1,16 @@
 import os, sys, struct, subprocess, shlex, glob, shutil
 import disasm
+
+def floatToHex(f):
+    return int(hex(struct.unpack('<I', struct.pack('<f', f))[0]), 16)
+
 if len(sys.argv) < 3:
     print("Usage: List of characters to be processed followed by replacement MSC folder")
     exit()
 allChars = sys.argv[1:-1]
 mscFolder = sys.argv[-1]
 
-charsToFix = ["rockman", "szerosuit", "yoshi", "shulk"]
+charsToFix = ["bayonetta", "rockman", "szerosuit", "yoshi", "shulk"]
 aliasDict = {
     "toggleNumVar":0x1200004A,
     "hasEnteredVar":0x1200004B,
@@ -14,6 +18,14 @@ aliasDict = {
     "mashAttackVar":0x200023d,
     "spamOptionVar":0x2000240,
     "techOptionVar":0x2000241,
+    "randomLedgeVar":0x20002df,
+    # Show No DI
+    "prevHitstunVar":0x20002de,
+    "withDIGraphic":0x1000031,
+    "withDISize":floatToHex(0.2),
+    "noDIGraphic":0x1000041,
+    "noDISize":floatToHex(0.1),
+    
     # SaveState
     "P1SavedX":0x2000242,
     "P1SavedY":0x2000243,
